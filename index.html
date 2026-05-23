@@ -1,0 +1,2353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<title>Shelf Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;
+  --surface:#13131d;
+  --surface2:#1a1a28;
+  --border:#252536;
+  --text:#e8e6e1;
+  --text-dim:#8a8898;
+  --accent:#d4a843;
+  --accent-glow:#d4a84333;
+  --green:#4ade80;
+  --red:#f87171;
+  --blue:#60a5fa;
+  --tag-bg:#1e1e2e;
+  --radius:10px;
+}
+html{font-size:15px}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'DM Sans',system-ui,sans-serif;
+  min-height:100dvh;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ---- HEADER ---- */
+.header{
+  position:sticky;top:0;z-index:100;
+  background:linear-gradient(180deg, var(--bg) 70%, transparent);
+  padding:16px 16px 12px;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.06em;color:var(--accent);line-height:1}
+.logo span{color:var(--text);font-size:0.7em;margin-left:4px;letter-spacing:0.02em}
+.header-actions{display:flex;gap:8px;align-items:center}
+.icon-btn{
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text-dim);width:38px;height:38px;
+  border-radius:8px;display:grid;place-items:center;
+  cursor:pointer;font-size:1.1rem;transition:all 0.15s;
+}
+.icon-btn:hover,.icon-btn:active{color:var(--accent);border-color:var(--accent)}
+.icon-btn.active{color:var(--accent);border-color:var(--accent);background:var(--accent-glow)}
+.icon-btn.syncing{animation:pulse 1s infinite}
+.icon-btn{position:relative}
+.filter-badge{
+  position:absolute;top:-4px;right:-4px;
+  background:var(--accent);color:var(--bg);
+  font-size:0.6rem;font-weight:700;
+  min-width:16px;height:16px;
+  border-radius:8px;display:none;
+  align-items:center;justify-content:center;
+  padding:0 4px;line-height:1;
+}
+.filter-badge.show{display:flex}
+
+/* Filter sections */
+.filter-section{margin-bottom:18px}
+.filter-section-label{
+  font-size:0.8rem;color:var(--text-dim);font-weight:600;
+  margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;
+}
+
+/* Active filters bar */
+.active-filters{
+  display:none;padding:0 16px 10px;
+  flex-wrap:wrap;gap:6px;align-items:center;
+}
+.active-filters.show{display:flex}
+.active-filter-chip{
+  display:flex;align-items:center;gap:4px;
+  background:var(--accent-glow);color:var(--accent);
+  border:1px solid #d4a84322;
+  padding:3px 10px;border-radius:20px;
+  font-size:0.7rem;cursor:pointer;
+  transition:all 0.15s;
+}
+.active-filter-chip:hover{background:var(--accent);color:var(--bg)}
+.active-filter-chip .x{font-weight:700;margin-left:2px}
+.clear-all-chip{
+  background:transparent;color:var(--text-dim);
+  border:1px dashed var(--border);
+  padding:3px 10px;border-radius:20px;
+  font-size:0.7rem;cursor:pointer;
+}
+.clear-all-chip:hover{color:var(--red);border-color:var(--red)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+.search-wrap{position:relative}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-dim);pointer-events:none}
+.search-input{
+  width:100%;background:var(--surface);border:1px solid var(--border);
+  color:var(--text);padding:10px 12px 10px 40px;border-radius:var(--radius);
+  font-size:0.95rem;font-family:inherit;transition:border-color 0.15s;outline:none;
+}
+.search-input::placeholder{color:var(--text-dim)}
+.search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.search-clear{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:var(--text-dim);cursor:pointer;
+  font-size:1.2rem;display:none;padding:4px;
+}
+.search-clear.show{display:block}
+
+/* ---- STATS BAR ---- */
+.stats-bar{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--border);border-radius:var(--radius);overflow:hidden;
+  margin:0 16px 16px;
+}
+.stat{background:var(--surface);padding:10px 8px;text-align:center}
+.stat-value{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.03em;line-height:1.1}
+.stat-label{font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px}
+.stat-value.positive{color:var(--green)}
+.stat-value.negative{color:var(--red)}
+
+/* ---- RESULTS INFO ---- */
+.results-info{
+  padding:0 16px 10px;font-size:0.8rem;color:var(--text-dim);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.sort-select{
+  background:var(--surface);border:1px solid var(--border);color:var(--text-dim);
+  font-family:inherit;font-size:0.8rem;cursor:pointer;
+  padding:4px 24px 4px 8px;border-radius:6px;outline:none;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%238a8898' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 8px center;
+}
+.sort-select:focus{border-color:var(--accent)}
+
+/* Section divider */
+.section-divider{
+  grid-column:1/-1;
+  display:flex;align-items:center;gap:12px;
+  padding:12px 0 4px;color:var(--text-dim);font-size:0.75rem;
+  text-transform:uppercase;letter-spacing:0.1em;font-weight:600;
+}
+.section-divider::before,.section-divider::after{
+  content:'';flex:1;height:1px;background:var(--border);
+}
+.sort-btn:hover{color:var(--accent)}
+
+/* ---- FILM CARDS ---- */
+.card-list{padding:0 16px 100px;display:flex;flex-direction:column;gap:8px}
+.film-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px;
+  cursor:pointer;transition:all 0.15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.film-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.film-card:active{transform:scale(0.995)}
+.film-card.expanded .card-details{display:block}
+.film-card.expanded .card-expand-hint{display:none}
+
+.card-main{display:flex;align-items:flex-start;gap:12px}
+.card-poster{
+  width:44px;height:64px;flex-shrink:0;
+  border-radius:4px;overflow:hidden;
+  background:var(--surface2);border:1px solid var(--border);
+  display:grid;place-items:center;
+}
+.card-poster img{width:100%;height:100%;object-fit:cover}
+.card-poster svg{color:var(--text-dim);opacity:0.3}
+.card-info{flex:1;min-width:0}
+.card-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.card-title{font-weight:600;font-size:1rem;line-height:1.3;flex:1}
+.card-format{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0}
+.format-badge{
+  background:var(--surface2);border:1px solid var(--border);
+  font-size:0.65rem;padding:2px 7px;border-radius:5px;
+  color:var(--text-dim);letter-spacing:0.03em;font-weight:500;white-space:nowrap;
+}
+.format-badge.fmt-4k{color:#c084fc;border-color:#c084fc44}
+.format-badge.fmt-bluray{color:var(--blue);border-color:#60a5fa44}
+.format-badge.fmt-dvd{color:#94a3b8;border-color:#94a3b844}
+.format-badge.fmt-digital{color:var(--green);border-color:#4ade8044}
+.format-badge.fmt-vhs{color:var(--accent);border-color:var(--accent-glow)}
+.format-badge.fmt-physical{color:var(--blue);border-color:#60a5fa44}
+
+.card-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.card-prices{
+  font-size:0.75rem;color:var(--text-dim);margin-top:6px;
+  display:flex;align-items:center;gap:4px;
+}
+.card-prices .price-label{
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.05em;
+  color:var(--text-dim);opacity:0.7;
+}
+.card-prices .price-sep{color:var(--border);margin:0 2px}
+.meta-tag{font-size:0.7rem;color:var(--text-dim);background:var(--tag-bg);padding:2px 8px;border-radius:20px}
+.meta-tag.type-movie{color:#a78bfa}
+.meta-tag.type-series{color:#34d399}
+.meta-tag.type-documentary{color:#fbbf24}
+.status-tag{font-size:0.7rem;padding:2px 8px;border-radius:20px}
+.status-tag.keep{background:#166534;color:#4ade80}
+.status-tag.unwatched{background:#713f12;color:#fbbf24}
+.status-tag.sell{background:#7f1d1d;color:#f87171}
+.universe-tag{color:#f472b6;background:#831843;border:none}
+
+.card-details{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.detail-poster-row{display:flex;gap:14px;margin-bottom:12px}
+.detail-poster{
+  width:80px;height:120px;flex-shrink:0;border-radius:6px;overflow:hidden;
+  background:var(--surface2);border:1px solid var(--border);
+  display:grid;place-items:center;cursor:pointer;position:relative;
+}
+.detail-poster img{width:100%;height:100%;object-fit:cover}
+.detail-poster svg{color:var(--text-dim);opacity:0.3}
+.detail-poster:hover::after{
+  content:'\\270E';position:absolute;inset:0;
+  background:rgba(0,0,0,0.6);display:grid;place-items:center;
+  color:var(--accent);font-size:1.4rem;
+}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.detail-item{font-size:0.8rem}
+.detail-label{color:var(--text-dim);font-size:0.7rem;margin-bottom:1px}
+.detail-value{color:var(--text)}
+.genre-list{margin-top:8px;display:flex;gap:4px;flex-wrap:wrap}
+.genre-chip{
+  font-size:0.65rem;background:var(--accent-glow);color:var(--accent);
+  padding:2px 8px;border-radius:20px;border:1px solid #d4a84322;
+}
+.card-actions{
+  display:flex;gap:8px;margin-top:12px;padding-top:12px;
+  border-top:1px solid var(--border);
+}
+.card-action-btn{
+  flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);
+  background:var(--surface2);color:var(--text-dim);font-family:inherit;
+  font-size:0.8rem;cursor:pointer;transition:all 0.15s;
+}
+.card-action-btn:hover{border-color:var(--accent);color:var(--accent)}
+.card-action-btn.delete{border-color:#7f1d1d;color:var(--red)}
+.card-action-btn.delete:hover{background:#7f1d1d33}
+
+/* Poster modal */
+.poster-modal{
+  background:var(--surface);border-radius:var(--radius);
+  padding:20px;max-width:360px;width:100%;
+  border:1px solid var(--border);
+}
+.poster-modal-title{
+  font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--accent);
+  margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;
+}
+.poster-preview{
+  width:120px;height:180px;margin:0 auto 16px;border-radius:6px;overflow:hidden;
+  background:var(--surface2);border:1px solid var(--border);display:grid;place-items:center;
+}
+.poster-preview img{width:100%;height:100%;object-fit:cover}
+.poster-search-results{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  margin:12px 0;max-height:200px;overflow-y:auto;
+}
+.poster-option{
+  border-radius:4px;overflow:hidden;cursor:pointer;
+  border:2px solid transparent;transition:border-color 0.15s;
+  aspect-ratio:2/3;
+}
+.poster-option:hover{border-color:var(--accent)}
+.poster-option.selected{border-color:var(--accent)}
+.poster-option img{width:100%;height:100%;object-fit:cover}
+
+/* ---- EMPTY STATE ---- */
+.empty-state{text-align:center;padding:60px 20px;color:var(--text-dim)}
+.empty-state svg{margin-bottom:16px;opacity:0.4}
+.empty-state p{font-size:0.95rem;margin-bottom:4px}
+.empty-state small{font-size:0.8rem;opacity:0.7}
+
+/* ---- FAB (Add Button) ---- */
+.fab{
+  position:fixed;bottom:24px;right:24px;z-index:90;
+  width:56px;height:56px;border-radius:50%;border:none;
+  background:var(--accent);color:var(--bg);
+  font-size:1.8rem;font-weight:300;
+  cursor:pointer;
+  box-shadow:0 4px 20px rgba(212,168,67,0.4);
+  transition:all 0.2s;
+  display:grid;place-items:center;
+}
+.fab:hover{transform:scale(1.1)}
+.fab:active{transform:scale(0.95)}
+
+/* ---- MODAL ---- */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.8);
+  z-index:200;display:none;align-items:flex-end;justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;
+  padding:20px 20px 40px;width:100%;max-width:500px;
+  max-height:90dvh;overflow-y:auto;
+  border:1px solid var(--border);border-bottom:none;
+}
+.modal-title{
+  font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--accent);
+  margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;
+}
+.modal-close{background:none;border:none;color:var(--text-dim);font-size:1.5rem;cursor:pointer;padding:4px}
+
+/* Form fields */
+.field{margin-bottom:16px}
+.field-label{display:block;font-size:0.8rem;color:var(--text-dim);margin-bottom:6px;font-weight:500}
+.field-input,.field-select{
+  width:100%;background:var(--bg);border:1px solid var(--border);
+  color:var(--text);padding:10px 12px;border-radius:8px;
+  font-family:inherit;font-size:0.9rem;outline:none;
+}
+.field-input:focus,.field-select:focus{border-color:var(--accent)}
+.field-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%238a8898' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* Checkbox grid */
+.check-grid{display:flex;flex-wrap:wrap;gap:6px}
+.check-item{
+  display:flex;align-items:center;gap:5px;
+  background:var(--bg);border:1px solid var(--border);
+  padding:5px 10px;border-radius:20px;cursor:pointer;
+  font-size:0.8rem;color:var(--text-dim);transition:all 0.15s;
+  user-select:none;-webkit-user-select:none;
+}
+.check-item:has(input:checked){border-color:var(--accent);color:var(--accent);background:var(--accent-glow)}
+.check-item input{display:none}
+.add-option-btn{
+  background:none;border:1px dashed var(--border);
+  color:var(--text-dim);padding:5px 10px;border-radius:20px;
+  font-size:0.8rem;cursor:pointer;font-family:inherit;
+}
+.add-option-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Inline add */
+.inline-add{display:none;gap:6px;margin-top:8px;align-items:center}
+.inline-add.open{display:flex}
+.inline-add input{
+  flex:1;background:var(--bg);border:1px solid var(--border);
+  color:var(--text);padding:6px 10px;border-radius:6px;
+  font-family:inherit;font-size:0.85rem;outline:none;
+}
+.inline-add input:focus{border-color:var(--accent)}
+.inline-add button{
+  background:var(--accent);color:var(--bg);border:none;
+  padding:6px 12px;border-radius:6px;font-family:inherit;
+  font-size:0.85rem;cursor:pointer;font-weight:600;
+}
+
+.btn{
+  background:var(--accent);color:var(--bg);border:none;
+  padding:12px 20px;border-radius:8px;font-family:inherit;
+  font-weight:600;font-size:0.95rem;cursor:pointer;
+  width:100%;transition:opacity 0.15s;
+}
+.btn:hover{opacity:0.9}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+.btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn-danger{background:transparent;color:var(--red);border:1px solid #7f1d1d}
+.btn-danger:hover{background:#7f1d1d33}
+.btn+.btn{margin-top:8px}
+.btn-row{display:flex;gap:8px;margin-top:8px}
+.btn-row .btn{flex:1}
+
+/* ---- SETTINGS PANEL ---- */
+.settings-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);
+  z-index:200;display:none;align-items:flex-end;justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.settings-overlay.open{display:flex}
+.settings-panel{
+  background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;
+  padding:24px 20px 40px;width:100%;max-width:500px;
+  max-height:80dvh;overflow-y:auto;border:1px solid var(--border);border-bottom:none;
+}
+.settings-title{
+  font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--accent);
+  margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;
+}
+.settings-close{background:none;border:none;color:var(--text-dim);font-size:1.5rem;cursor:pointer;padding:4px}
+.setting-group{margin-bottom:20px}
+.setting-label{font-size:0.8rem;color:var(--text-dim);margin-bottom:6px;display:block}
+.setting-input{
+  width:100%;background:var(--bg);border:1px solid var(--border);
+  color:var(--text);padding:10px 12px;border-radius:8px;
+  font-family:inherit;font-size:0.9rem;outline:none;
+}
+.setting-input:focus{border-color:var(--accent)}
+.setting-help{font-size:0.75rem;color:var(--text-dim);margin-top:4px;line-height:1.4}
+.conn-status{display:flex;align-items:center;gap:6px;font-size:0.8rem;margin-bottom:12px}
+.conn-dot{width:8px;height:8px;border-radius:50%}
+.conn-dot.connected{background:var(--green)}
+.conn-dot.disconnected{background:var(--red)}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text);padding:10px 20px;border-radius:8px;
+  font-size:0.85rem;z-index:300;opacity:0;transition:opacity 0.3s;
+  pointer-events:none;white-space:nowrap;
+}
+.toast.show{opacity:1}
+.toast.error{border-color:#7f1d1d;color:var(--red)}
+.toast.success{border-color:#166534;color:var(--green)}
+
+/* Confirm dialog */
+.confirm-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.8);
+  z-index:300;display:none;align-items:center;justify-content:center;
+  padding:20px;
+}
+.confirm-overlay.open{display:flex}
+.confirm-box{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px;max-width:340px;width:100%;
+  text-align:center;
+}
+.confirm-box p{margin-bottom:16px;font-size:0.95rem;line-height:1.4}
+.confirm-box .btn-row{margin-top:0}
+
+/* ---- WATCH NEXT ---- */
+.manage-tabs{
+  display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px;
+}
+.manage-tab{
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text-dim);padding:6px 12px;border-radius:20px;
+  font-family:inherit;font-size:0.75rem;cursor:pointer;
+  transition:all 0.15s;
+}
+.manage-tab.active{background:var(--accent-glow);color:var(--accent);border-color:#d4a84344}
+.manage-list{
+  max-height:300px;overflow-y:auto;margin-bottom:12px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.manage-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 12px;background:var(--bg);border:1px solid var(--border);
+  border-radius:6px;font-size:0.85rem;
+}
+.manage-item-delete{
+  background:none;border:none;color:var(--text-dim);
+  cursor:pointer;font-size:1.1rem;padding:2px 6px;
+  border-radius:4px;transition:all 0.15s;
+}
+.manage-item-delete:hover{color:var(--red);background:#7f1d1d33}
+.manage-item .in-use{font-size:0.65rem;color:var(--text-dim);margin-left:8px}
+.manage-add-row{display:flex;gap:8px;align-items:center}
+.manage-add-row .field-input{flex:1}
+
+.wn-card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.wn-poster{
+  width:80px;height:120px;flex-shrink:0;border-radius:6px;overflow:hidden;
+  background:var(--surface2);border:1px solid var(--border);
+  display:grid;place-items:center;
+}
+.wn-poster img{width:100%;height:100%;object-fit:cover}
+.wn-poster svg{color:var(--text-dim);opacity:0.3}
+.wn-info{flex:1;min-width:0}
+.wn-title{font-weight:700;font-size:1.1rem;line-height:1.3;margin-bottom:6px}
+.wn-meta{font-size:0.8rem;color:var(--text-dim);margin-bottom:8px;display:flex;flex-wrap:wrap;gap:6px}
+.wn-genres{display:flex;flex-wrap:wrap;gap:4px}
+.wn-reason{
+  margin-top:12px;padding:10px 14px;
+  background:var(--accent-glow);border:1px solid #d4a84322;
+  border-radius:8px;font-size:0.8rem;color:var(--accent);
+  line-height:1.4;
+}
+
+/* ---- RESPONSIVE ---- */
+@media(min-width:600px){
+  .card-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  /* Center modals on larger screens instead of bottom-sheet */
+  .modal-overlay,.settings-overlay{align-items:center}
+  .modal,.settings-panel{
+    border-radius:var(--radius);
+    border:1px solid var(--border);
+    max-height:85vh;
+  }
+  .stats-bar{grid-template-columns:repeat(4,1fr)}
+}
+@media(min-width:900px){
+  .card-list{grid-template-columns:repeat(3,1fr)}
+  body{max-width:960px;margin:0 auto}
+  .header{padding:20px 24px 14px}
+  .card-list{padding:0 24px 100px}
+  .stats-bar{margin:0 24px 16px}
+  .results-info{padding:0 24px 10px}
+  .active-filters{padding:0 24px 10px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="logo">SHELF LIFE <span>&#127902;</span> <span style="font-size:0.4em;color:var(--text-dim);letter-spacing:0.02em" id="headerVersion"></span></div>
+    <div class="header-actions">
+      <button class="icon-btn" id="watchNextBtn" title="Watch Next">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </button>
+      <button class="icon-btn" id="filterBtn" title="Filters">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        <span class="filter-badge" id="filterBadge"></span>
+      </button>
+      <button class="icon-btn" id="syncBtn" title="Sync">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </button>
+      <button class="icon-btn" id="settingsBtn" title="Settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="search-wrap">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" class="search-input" id="searchInput" placeholder="Search titles..." autocomplete="off" spellcheck="false">
+    <button class="search-clear" id="searchClear">&times;</button>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar" id="statsBar">
+  <div class="stat"><div class="stat-value" id="statTitles">-</div><div class="stat-label">Titles</div></div>
+  <div class="stat"><div class="stat-value" id="statCog">-</div><div class="stat-label">Spent</div></div>
+  <div class="stat"><div class="stat-value" id="statMarket">-</div><div class="stat-label">Market</div></div>
+  <div class="stat"><div class="stat-value" id="statGain">-</div><div class="stat-label">Gain/Loss</div></div>
+</div>
+
+<!-- RESULTS INFO -->
+<div class="results-info">
+  <span id="resultCount">-</span>
+  <select class="sort-select" id="sortSelect">
+    <option value="alpha-asc">A → Z</option>
+    <option value="alpha-desc">Z → A</option>
+    <option value="cog-desc">Spent: High → Low</option>
+    <option value="cog-asc">Spent: Low → High</option>
+    <option value="market-desc">Market: High → Low</option>
+    <option value="market-asc">Market: Low → High</option>
+  </select>
+</div>
+
+<!-- ACTIVE FILTERS -->
+<div class="active-filters" id="activeFilters"></div>
+
+<!-- CARD LIST -->
+<div class="card-list" id="cardList"></div>
+
+<!-- FAB -->
+<button class="fab" id="addBtn" title="Add Film">+</button>
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="formOverlay">
+  <div class="modal" id="formModal">
+    <div class="modal-title">
+      <span id="formTitle">Add Film</span>
+      <button class="modal-close" id="formClose">&times;</button>
+    </div>
+    <div id="formBody">
+      <div class="field">
+        <label class="field-label">Title *</label>
+        <input type="text" class="field-input" id="fTitle" placeholder="Film title" required>
+      </div>
+      
+      <div class="field">
+        <label class="field-label">Format / System</label>
+        <div class="check-grid" id="fFormats"></div>
+        <div class="inline-add" id="addFormatWrap">
+          <input type="text" placeholder="New format" id="addFormatInput">
+          <button id="addFormatConfirm">Add</button>
+        </div>
+      </div>
+      
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">Cost (CoG)</label>
+          <input type="number" class="field-input" id="fCog" placeholder="0.00" step="0.01" min="0">
+        </div>
+        <div class="field">
+          <label class="field-label">Market Value</label>
+          <input type="number" class="field-input" id="fMarket" placeholder="0.00" step="0.01" min="0">
+        </div>
+      </div>
+      
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">Acquisition Date</label>
+          <input type="date" class="field-input" id="fAcqDate">
+        </div>
+        <div class="field">
+          <label class="field-label">Last Watched</label>
+          <input type="date" class="field-input" id="fWatched">
+        </div>
+      </div>
+      
+      <div class="field">
+        <label class="field-label">Vendor</label>
+        <select class="field-select" id="fVendor"><option value="">Select...</option></select>
+        <div class="inline-add" id="addVendorWrap">
+          <input type="text" placeholder="New vendor" id="addVendorInput">
+          <button id="addVendorConfirm">Add</button>
+        </div>
+      </div>
+      
+      <div class="field">
+        <label class="field-label">Universe</label>
+        <select class="field-select" id="fUniverse"><option value="">Select...</option></select>
+        <div class="inline-add" id="addUniverseWrap">
+          <input type="text" placeholder="New universe" id="addUniverseInput">
+          <button id="addUniverseConfirm">Add</button>
+        </div>
+      </div>
+      
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">Type</label>
+          <select class="field-select" id="fType"><option value="">Select...</option></select>
+          <div class="inline-add" id="addTypeWrap">
+            <input type="text" placeholder="New type" id="addTypeInput">
+            <button id="addTypeConfirm">Add</button>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Status</label>
+          <select class="field-select" id="fStatus"><option value="">Select...</option></select>
+          <div class="inline-add" id="addStatusWrap">
+            <input type="text" placeholder="New status" id="addStatusInput">
+            <button id="addStatusConfirm">Add</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="field">
+        <label class="field-label">Genre</label>
+        <div class="check-grid" id="fGenres"></div>
+        <div class="inline-add" id="addGenreWrap">
+          <input type="text" placeholder="New genre" id="addGenreInput">
+          <button id="addGenreConfirm">Add</button>
+        </div>
+      </div>
+      
+      <button class="btn" id="formSave">Save Film</button>
+      <button class="btn btn-danger" id="formDelete" style="display:none">Delete Film</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS OVERLAY -->
+<div class="settings-overlay" id="settingsOverlay">
+  <div class="settings-panel">
+    <div class="settings-title">
+      Settings
+      <button class="settings-close" id="settingsClose">&times;</button>
+    </div>
+    <div class="conn-status">
+      <div class="conn-dot disconnected" id="connDot"></div>
+      <span id="connText">Using local data</span>
+    </div>
+    <div class="setting-group">
+      <label class="setting-label">Google Sheets API URL</label>
+      <input type="url" class="setting-input" id="sheetsUrl" placeholder="Paste your Apps Script URL here">
+      <div class="setting-help">Connects the app to your shared Google Sheet for two-device sync.</div>
+    </div>
+    <button class="btn" id="connectBtn">Connect</button>
+    <div class="setting-group" style="margin-top:20px">
+      <label class="setting-label">TMDB API Key (for posters)</label>
+      <input type="text" class="setting-input" id="tmdbKey" placeholder="Paste your TMDB API key here">
+      <div class="setting-help">Free from themoviedb.org. Needed for automatic poster lookup.</div>
+    </div>
+    <button class="btn btn-outline" id="saveTmdbBtn">Save Key</button>
+    <button class="btn btn-outline" id="fetchPostersBtn">Fetch All Missing Posters</button>
+    <button class="btn btn-outline" id="seedBtn">Seed Sheet with Current Data</button>
+    <button class="btn btn-outline" id="manageOptionsBtn">Manage Dropdown Options</button>
+    <button class="btn btn-outline" id="exportBtn">Export CSV</button>
+    <div style="text-align:center;margin-top:20px;font-size:0.7rem;color:var(--text-dim)">Shelf Life <span id="settingsVersion"></span></div>
+  </div>
+</div>
+
+<!-- FILTER PANEL -->
+<div class="modal-overlay" id="filterOverlay">
+  <div class="modal" id="filterModal">
+    <div class="modal-title">
+      <span>Filters</span>
+      <button class="modal-close" id="filterClose">&times;</button>
+    </div>
+    
+    <div class="filter-section">
+      <div class="filter-section-label">Format</div>
+      <div class="check-grid" id="filterFormats"></div>
+    </div>
+    
+    <div class="filter-section">
+      <div class="filter-section-label">Type</div>
+      <div class="check-grid" id="filterTypes"></div>
+    </div>
+    
+    <div class="filter-section">
+      <div class="filter-section-label">Status</div>
+      <div class="check-grid" id="filterStatuses"></div>
+    </div>
+    
+    <div class="filter-section">
+      <div class="filter-section-label">Vendor</div>
+      <div class="check-grid" id="filterVendors"></div>
+    </div>
+    
+    <div class="filter-section">
+      <div class="filter-section-label">Universe</div>
+      <div class="check-grid" id="filterUniverses"></div>
+    </div>
+    
+    <div class="filter-section">
+      <div class="filter-section-label">Genre</div>
+      <div class="check-grid" id="filterGenres"></div>
+    </div>
+    
+    <div class="filter-section">
+      <div class="filter-section-label">Show Blanks</div>
+      <div class="check-grid" id="filterBlanks">
+        <label class="check-item"><input type="checkbox" value="poster">No Poster</label>
+        <label class="check-item"><input type="checkbox" value="cog">No Cost</label>
+        <label class="check-item"><input type="checkbox" value="market">No Market</label>
+        <label class="check-item"><input type="checkbox" value="type">No Type</label>
+        <label class="check-item"><input type="checkbox" value="status">No Status</label>
+        <label class="check-item"><input type="checkbox" value="genre">No Genre</label>
+      </div>
+    </div>
+    
+    <div class="btn-row">
+      <button class="btn btn-outline" id="filterClear">Clear All</button>
+      <button class="btn" id="filterApply">Show Results</button>
+    </div>
+  </div>
+</div>
+
+<!-- MANAGE OPTIONS MODAL -->
+<div class="modal-overlay" id="manageOverlay">
+  <div class="modal" id="manageModal">
+    <div class="modal-title">
+      <span>Manage Options</span>
+      <button class="modal-close" id="manageClose">&times;</button>
+    </div>
+    <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:16px">Add or remove dropdown options. Changes apply immediately.</p>
+    
+    <div class="manage-tabs" id="manageTabs">
+      <button class="manage-tab active" data-cat="formats">Formats</button>
+      <button class="manage-tab" data-cat="vendors">Vendors</button>
+      <button class="manage-tab" data-cat="types">Types</button>
+      <button class="manage-tab" data-cat="statuses">Statuses</button>
+      <button class="manage-tab" data-cat="universes">Universes</button>
+      <button class="manage-tab" data-cat="genres">Genres</button>
+    </div>
+    
+    <div id="manageList" class="manage-list"></div>
+    
+    <div class="manage-add-row">
+      <input type="text" class="field-input" id="manageAddInput" placeholder="Add new option...">
+      <button class="btn" id="manageAddBtn" style="width:auto;padding:10px 16px">Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- WATCH NEXT MODAL -->
+<div class="modal-overlay" id="watchNextOverlay">
+  <div class="modal" id="watchNextModal">
+    <div class="modal-title">
+      <span>Watch Next</span>
+      <button class="modal-close" id="watchNextClose">&times;</button>
+    </div>
+    
+    <div id="watchNextSetup">
+      <p style="font-size:0.85rem;color:var(--text-dim);margin-bottom:16px">Pick genres you're in the mood for, or leave blank for any. We'll find something you haven't watched recently.</p>
+      
+      <div class="field">
+        <label class="field-label">Mood Filter (optional)</label>
+        <div class="check-grid" id="watchGenres"></div>
+      </div>
+      
+      <div class="field">
+        <label class="field-label">Type</label>
+        <div class="check-grid" id="watchTypes">
+          <label class="check-item"><input type="checkbox" value="Movie" checked>Movie</label>
+          <label class="check-item"><input type="checkbox" value="Series">Series</label>
+          <label class="check-item"><input type="checkbox" value="Documentary">Documentary</label>
+        </div>
+      </div>
+      
+      <button class="btn" id="watchNextSpin">Pick Something</button>
+    </div>
+    
+    <div id="watchNextResult" style="display:none">
+      <div class="wn-card">
+        <div class="wn-poster" id="wnPoster"></div>
+        <div class="wn-info">
+          <div class="wn-title" id="wnTitle"></div>
+          <div class="wn-meta" id="wnMeta"></div>
+          <div class="wn-genres" id="wnGenres"></div>
+        </div>
+      </div>
+      <div class="wn-reason" id="wnReason"></div>
+      <div class="btn-row" style="margin-top:16px">
+        <button class="btn btn-outline" id="watchNextRespin">Try Again</button>
+        <button class="btn" id="watchNextMark">Mark as Watched</button>
+      </div>
+      <div class="field" style="margin-top:8px">
+        <label class="field-label">Watched on</label>
+        <input type="date" class="field-input" id="watchNextDate">
+      </div>
+      <button class="btn btn-outline" id="watchNextBack" style="margin-top:8px">Change Filters</button>
+    </div>
+  </div>
+</div>
+
+<!-- POSTER MODAL -->
+<div class="confirm-overlay" id="posterOverlay">
+  <div class="poster-modal">
+    <div class="poster-modal-title">
+      <span id="posterModalTitle">Edit Poster</span>
+      <button class="modal-close" id="posterClose">&times;</button>
+    </div>
+    <div class="poster-preview" id="posterPreview">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+    </div>
+    <button class="btn btn-outline" id="posterSearchBtn" style="margin-bottom:8px">Search TMDB</button>
+    <div id="posterSearchResults" class="poster-search-results" style="display:none"></div>
+    <div class="field" style="margin-top:8px">
+      <label class="field-label">Or paste image URL</label>
+      <input type="url" class="field-input" id="posterCustomUrl" placeholder="https://...">
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-outline" id="posterRemove">Remove</button>
+      <button class="btn" id="posterSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM DIALOG -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <p id="confirmMsg">Are you sure?</p>
+    <div class="btn-row">
+      <button class="btn btn-outline" id="confirmNo">Cancel</button>
+      <button class="btn btn-danger" id="confirmYes">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ==========================================
+//  SHELF LIFE — v0.7.0 (Universe + Updated data)
+const APP_VERSION = 'v0.7.0';
+// ==========================================
+
+const SEED_DATA = [{"id":"e1169767","title":"1776","formats":["DVD"],"cog":0.0,"market":14.85,"acquisitionDate":null,"vendor":"Gift","type":null,"status":"Unwatched","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"fa68ba97","title":"2001 A Space Oddysey","formats":["DVD"],"cog":3.49,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Sci-Fi","Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"95e3fcfb","title":"28 Days Later (28 Weeks Later)","formats":["Blu-ray"],"cog":10.0,"market":40.0,"acquisitionDate":null,"vendor":"Bull Moose","type":"Movie","status":"Keep","genres":["Zombie"],"universe":null,"lastWatched":null,"poster":null},{"id":"17cf58c8","title":"A Midsummer Night's Dream","formats":["Blu-ray"],"cog":3.0,"market":5.5,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","type":"Movie","status":"Unwatched","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"06b4372b","title":"A Quiet Place [Pt 1 & Pt 2]","formats":["Blu-ray"],"cog":10.6,"market":8.59,"acquisitionDate":"2021-11-19","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Creature","Post-Apocalypse"],"universe":null,"lastWatched":null,"poster":null},{"id":"a8e1d5a0","title":"A Scanner Darkly","formats":[],"cog":13.04,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","type":"Movie","status":"Keep","genres":["Cyber-Thriller","Dystopia","Sci-Fi"],"universe":null,"lastWatched":null,"poster":null},{"id":"0b1676c8","title":"Alien Quadrilogy [Alien, Aliens, Alien 3, Alien Resurrection]","formats":["Blu-ray"],"cog":15.0,"market":27.68,"acquisitionDate":null,"vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Extra-Terrestrial","Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"742ce6ab","title":"American Psycho","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Used Book Superstore","type":"Movie","status":"Sell/donate","genres":["Psychological Thriller","Slasher"],"universe":null,"lastWatched":null,"poster":null},{"id":"2691a07f","title":"American Psycho","formats":["Blu-ray"],"cog":8.49,"market":null,"acquisitionDate":"2021-08-18","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Psychological Thriller","Slasher"],"universe":null,"lastWatched":null,"poster":null},{"id":"0dfc1a92","title":"Angel [S1]","formats":["DVD"],"cog":null,"market":9.0,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Drama","Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"514055e1","title":"Angel [S2]","formats":["DVD"],"cog":null,"market":10.0,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Drama","Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"7d70d25f","title":"Annabelle Creation","formats":["DVD"],"cog":null,"market":3.85,"acquisitionDate":null,"vendor":"Used Book Superstore","type":"Movie","status":"Unwatched","genres":["Possession"],"universe":null,"lastWatched":null,"poster":null},{"id":"9b2d3d00","title":"Ant-Man","formats":["4k","Blu-ray","DVD","Google"],"cog":null,"market":5.52,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Super Powered"],"universe":"Marvel","lastWatched":null,"poster":null},{"id":"4d40c1c4","title":"Aquaman","formats":["Blu-ray","Google"],"cog":15.0,"market":5.0,"acquisitionDate":"2019-04-19","vendor":"Target","type":"Movie","status":"Keep","genres":["Super Powered"],"universe":"DC","lastWatched":null,"poster":null},{"id":"4ca8d1d5","title":"Armageddon","formats":["DVD"],"cog":2.99,"market":4.26,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Disaster","Space"],"universe":null,"lastWatched":"May 20, 2026","poster":null},{"id":"72cd71f0","title":"Arrested Development [S2]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Dysfunctional Family","Sitcom"],"universe":null,"lastWatched":null,"poster":null},{"id":"088160f3","title":"Arrested Development [S3]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Dysfunctional Family","Sitcom"],"universe":null,"lastWatched":null,"poster":null},{"id":"7ded9732","title":"Arrival","formats":["Google"],"cog":19.99,"market":null,"acquisitionDate":"2017-03-14","vendor":"Google","type":"Movie","status":"Keep","genres":["Extra-Terrestrial","Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"a7791798","title":"Avatar the Last Airbender","formats":["DVD"],"cog":25.29,"market":21.72,"acquisitionDate":"2019-09-02","vendor":"Bull Moose","type":"Series","status":"Keep","genres":["Fantasy"],"universe":null,"lastWatched":null,"poster":null},{"id":"78bc60be","title":"Avengers: Age of Ultron","formats":["3D","Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["AI","Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"f863f50e","title":"Avengers: Endgame","formats":["4k","Blu-ray","DVD","Google","Vudu"],"cog":13.8,"market":null,"acquisitionDate":"2021-11-15","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Super Powered","Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"35fae4a7","title":"Back to the Future Trilogy","formats":["Blu-ray"],"cog":16.05,"market":12.49,"acquisitionDate":"2025-03-29","vendor":"Walmart","type":"Movie","status":"Keep","genres":["Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"bb5b14ce","title":"Basic Instinct","formats":["DVD"],"cog":2.49,"market":4.78,"acquisitionDate":"2024-11-10","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Crime","Femme Fatale","Mystery","Psychological","Thriller"],"universe":null,"lastWatched":null,"poster":null},{"id":"91d871e5","title":"Batman Returns","formats":["DVD"],"cog":2.5,"market":6.79,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":"DC","lastWatched":null,"poster":null},{"id":"2e92fc70","title":"Battlestar Galactica [s2]","formats":["Blu-ray"],"cog":7.96,"market":null,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":["Sci-Fi","Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"43fcd7db","title":"Beetlejuice","formats":["Blu-ray"],"cog":4.0,"market":null,"acquisitionDate":"2017-06-24","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Ghoul","Paranormal"],"universe":null,"lastWatched":null,"poster":null},{"id":"1b57b1b5","title":"Best In Show","formats":["DVD"],"cog":2.99,"market":6.88,"acquisitionDate":"2025-09-20","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Comedy","Mockumentary"],"universe":null,"lastWatched":null,"poster":null},{"id":"07997449","title":"Bill & Ted's Excellent Adventure","formats":["DVD"],"cog":5.99,"market":8.99,"acquisitionDate":"2023-11-11","vendor":"Stacia","type":"Movie","status":"Keep","genres":["Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"c5f6d371","title":"Birds of Prey and the Fantabulous Emancipation of One Harley Quinn","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"f785eac3","title":"Black Panther","formats":["Blu-ray","Google"],"cog":23.0,"market":null,"acquisitionDate":"2018-05-16","vendor":"Target","type":"Movie","status":"Keep","genres":["Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"dfdc940f","title":"Black Widow","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Assassin","Spy","Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"b32e07a0","title":"Blade","formats":["Blu-ray"],"cog":7.43,"market":null,"acquisitionDate":"2021-11-15","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Super Powered","Vampire"],"universe":"Marvel","lastWatched":null,"poster":null},{"id":"6c4bee0b","title":"Blade Runner","formats":["Blu-ray"],"cog":5.3,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["AI","Dystopia"],"universe":null,"lastWatched":null,"poster":null},{"id":"40bef418","title":"Book of Life, The","formats":["Google"],"cog":0.0,"market":0.0,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Afterlife","Love Triangle","Musical"],"universe":null,"lastWatched":null,"poster":null},{"id":"0ad3ab6f","title":"Buffy the Vampire Slayer [S1]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"e918c487","title":"Buffy the Vampire Slayer [S2]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"a8d55b10","title":"Buffy the Vampire Slayer [S3]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"1d0405d5","title":"Buffy the Vampire Slayer [S4]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"252938e4","title":"Burlesque","formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2024-11-10","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"d0ffa08e","title":"Cabin in the Woods, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Bull Moose","type":"Movie","status":"Keep","genres":["Creature"],"universe":null,"lastWatched":null,"poster":null},{"id":"1429f333","title":"Captain America Civil War","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"0c396d46","title":"Captain Marvel","formats":["4k","Blu-ray","DVD","Google","Vudu"],"cog":13.8,"market":null,"acquisitionDate":"2021-11-15","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Space","Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"e888469e","title":"Casablanca","formats":["Blu-ray"],"cog":4.99,"market":6.99,"acquisitionDate":"2024-10-05","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"6690b514","title":"Charlie's Angels [2019]","formats":["Google"],"cog":19.99,"market":null,"acquisitionDate":"2020-09-01","vendor":"Google","type":"Movie","status":"Keep","genres":["Secret Agent"],"universe":null,"lastWatched":null,"poster":null},{"id":"d3a738fd","title":"Clash of the Titans","formats":["DVD"],"cog":2.49,"market":6.79,"acquisitionDate":"2023-06-09","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Mythology"],"universe":null,"lastWatched":null,"poster":null},{"id":"3d23261c","title":"Code Geass Lelouch of the Rebellion","formats":["DVD"],"cog":20.0,"market":24.47,"acquisitionDate":null,"vendor":"Convention","type":"Series","status":"Keep","genres":["Mecha","Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"a928b388","title":"Code Geass Lelouch of the Rebellion R2","formats":["Blu-ray"],"cog":29.74,"market":25.97,"acquisitionDate":"2020-09-22","vendor":"Best Buy","type":"Series","status":"Keep","genres":["Mecha","Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"cff9cb68","title":"Conjuring, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"534155b9","title":"Constantine","formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2024-11-10","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":"DC","lastWatched":null,"poster":null},{"id":"631f9f7d","title":"Contact","formats":[],"cog":6.0,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","type":"Movie","status":"Keep","genres":["Extra-Terrestrial","Sci-Fi"],"universe":null,"lastWatched":null,"poster":null},{"id":"0c33ec72","title":"Crawl","formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2024-10-05","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"d5878d99","title":"Cutie Honey","formats":["DVD"],"cog":0.0,"market":12.85,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Magical Girl"],"universe":null,"lastWatched":null,"poster":null},{"id":"90cc9162","title":"Dark Knight, The","formats":["Blu-ray"],"cog":1.89,"market":null,"acquisitionDate":"2023-08-28","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":"DC","lastWatched":null,"poster":null},{"id":"baeb1079","title":"Dark Water","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Unwatched","genres":["Horror"],"universe":null,"lastWatched":null,"poster":null},{"id":"c401dd40","title":"Dawn of the Planet of the Apes","formats":["Google"],"cog":8.49,"market":null,"acquisitionDate":"2017-07-16","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Dystopia"],"universe":null,"lastWatched":null,"poster":null},{"id":"8553a997","title":"Day After Tomorrow, The","formats":["DVD"],"cog":1.99,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Disaster"],"universe":null,"lastWatched":null,"poster":null},{"id":"562d1631","title":"Daybreakers","formats":["DVD"],"cog":3.99,"market":null,"acquisitionDate":"2024-10-03","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Sci-Fi","Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"29e51d97","title":"Dead Like Me","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Fantasy"],"universe":null,"lastWatched":null,"poster":null},{"id":"e37ea234","title":"Dead Zone, The","formats":["DVD"],"cog":3.99,"market":null,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"5c092237","title":"Deadpool","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"d190c428","title":"Deadpool 2","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"8baece9e","title":"Descent, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Horror"],"universe":null,"lastWatched":null,"poster":null},{"id":"45ea3bf3","title":"Devil Wears Prada, The","formats":["Blu-ray"],"cog":5.3,"market":null,"acquisitionDate":"2019-04-28","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Career"],"universe":null,"lastWatched":null,"poster":null},{"id":"0b65dd4a","title":"Devil's Advocate, The","formats":["DVD"],"cog":1.99,"market":null,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Supernatural"],"universe":null,"lastWatched":null,"poster":null},{"id":"c7d744c5","title":"Dirty Dancing","formats":["Blu-ray","DVD","Google"],"cog":4.99,"market":null,"acquisitionDate":"2023-06-09","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Dance","Romance"],"universe":null,"lastWatched":null,"poster":null},{"id":"defafb7f","title":"Doctor Strange","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"c145c4a6","title":"Doom Generation, The","formats":["Blu-ray"],"cog":7.99,"market":null,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","type":null,"status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"596d143c","title":"Dr. Who [S10]","formats":["Google"],"cog":19.99,"market":null,"acquisitionDate":"2020-05-03","vendor":"Google","type":"Series","status":"Keep","genres":["Extra-Terrestrial","Space","Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"89bd1fe0","title":"Dr. Who [S11]","formats":["Google"],"cog":28.99,"market":null,"acquisitionDate":"2020-05-19","vendor":"Google","type":"Series","status":"Keep","genres":["Extra-Terrestrial","Space","Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"0970ae26","title":"Dragonball Z [S1]","formats":["DVD"],"cog":6.36,"market":null,"acquisitionDate":"2022-11-12","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":["Fighting"],"universe":null,"lastWatched":null,"poster":null},{"id":"dbed4e46","title":"Dredd","formats":["Blu-ray","Google"],"cog":6.67,"market":null,"acquisitionDate":"2019-11-05","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Dystopia"],"universe":null,"lastWatched":null,"poster":null},{"id":"6a0820dc","title":"Dune [2021]","formats":["Blu-ray"],"cog":15.0,"market":null,"acquisitionDate":"2023-07-22","vendor":"Target","type":"Movie","status":"Keep","genres":["Sci-Fi","Space Fantasy"],"universe":null,"lastWatched":null,"poster":null},{"id":"bf17d30d","title":"Edward Scissorhands","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Christmas"],"universe":null,"lastWatched":null,"poster":null},{"id":"e688ab84","title":"Face/Off","formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Action","Sci-Fi"],"universe":null,"lastWatched":null,"poster":null},{"id":"4a837167","title":"Fantastic Beasts and Where to Find Them","formats":["Google"],"cog":19.99,"market":null,"acquisitionDate":"2017-03-30","vendor":"Google","type":"Movie","status":"Keep","genres":["Magic"],"universe":null,"lastWatched":null,"poster":null},{"id":"f7dc42d7","title":"Fargo","formats":["DVD"],"cog":3.49,"market":null,"acquisitionDate":"2024-11-10","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Dark Comedy"],"universe":null,"lastWatched":null,"poster":null},{"id":"c5459957","title":"Fifth Element, The","formats":["Blu-ray"],"cog":6.99,"market":null,"acquisitionDate":"2021-10-05","vendor":"Target","type":"Movie","status":"Keep","genres":["Cyberpunk","Extra-Terrestrial","Futuristic","Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"4a718c1e","title":"Fight Club","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"6b027f62","title":"Firefly","formats":[],"cog":10.0,"market":null,"acquisitionDate":"2025-02-01","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"8c6a04c1","title":"Flatliners [1990]","formats":["Blu-ray"],"cog":4.24,"market":9.98,"acquisitionDate":"2021-02-18","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Supernatural"],"universe":null,"lastWatched":null,"poster":null},{"id":"05766402","title":"Frequency","formats":["DVD"],"cog":1.99,"market":4.78,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Time Bridge"],"universe":null,"lastWatched":null,"poster":null},{"id":"5f5ae8ea","title":"Frozen","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Animated"],"universe":null,"lastWatched":null,"poster":null},{"id":"7efcf598","title":"Full Metal Jacket","formats":["DVD"],"cog":2.99,"market":null,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"0bdb88c6","title":"Galaxy Quest","formats":["DVD"],"cog":3.49,"market":5.68,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Comedy","Extra-Terrestrial","Sci-Fi","Space"],"universe":null,"lastWatched":"May 17, 2026","poster":null},{"id":"a0df9419","title":"Get Out","formats":["Blu-ray","Google"],"cog":6.97,"market":null,"acquisitionDate":"2017-11-21","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Sci-Fi"],"universe":null,"lastWatched":null,"poster":null},{"id":"5f927cd4","title":"Ghostbusters","formats":["DVD"],"cog":3.49,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Ghosts","Supernatural"],"universe":null,"lastWatched":null,"poster":null},{"id":"033451d1","title":"Ghostbusters Answer the Call","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Comedy","Paranormal"],"universe":null,"lastWatched":null,"poster":null},{"id":"e72ab6a4","title":"Girls Rule Collection (Mean Girls, Clueless, She's The Man)","formats":["DVD"],"cog":5.01,"market":7.25,"acquisitionDate":"2022-09-20","vendor":"Target","type":"Movie","status":"Keep","genres":["Coming-Of-Age"],"universe":null,"lastWatched":null,"poster":null},{"id":"68279226","title":"Golden Girls, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":"2022-12-25","vendor":"Gift","type":"Series","status":"Keep","genres":["Comedy","Drama","Sitcom"],"universe":null,"lastWatched":null,"poster":null},{"id":"3de188c4","title":"Grease","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Musical"],"universe":null,"lastWatched":null,"poster":null},{"id":"380e2e89","title":"Great Wall, The","formats":["Blu-ray"],"cog":5.0,"market":null,"acquisitionDate":"2017-11-21","vendor":"OfferUp","type":"Movie","status":"Keep","genres":["Fantasy","Historical"],"universe":null,"lastWatched":null,"poster":null},{"id":"bb3c36f7","title":"Gremlins","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Christmas"],"universe":null,"lastWatched":null,"poster":null},{"id":"9a324af1","title":"Groundhog Day","formats":[],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Comedy","Time Repeat"],"universe":null,"lastWatched":null,"poster":null},{"id":"c5cc4270","title":"Grudge, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Horror","Paranormal"],"universe":null,"lastWatched":null,"poster":null},{"id":"5b7facdc","title":"Guardians of the Galaxy","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"18b29365","title":"Hackers","formats":[],"cog":15.99,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","type":"Movie","status":"Keep","genres":["Cyber-Thriller"],"universe":null,"lastWatched":null,"poster":null},{"id":"7cce359c","title":"Happiest Season","formats":["Blu-ray"],"cog":null,"market":35.0,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Christmas","Romance"],"universe":null,"lastWatched":null,"poster":null},{"id":"e715d8dc","title":"Hard Candy","formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2025-09-20","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Psychological Thriller"],"universe":null,"lastWatched":null,"poster":null},{"id":"7d1df2af","title":"Hereditary","formats":["Blu-ray","DVD"],"cog":5.3,"market":null,"acquisitionDate":"2020-09-22","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Paranormal","Possession"],"universe":null,"lastWatched":null,"poster":null},{"id":"f9d196eb","title":"Hitchhiker's Guide to the Galaxy, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"41ec0f90","title":"Hocus Pocus","formats":["Blu-ray","Google"],"cog":9.0,"market":null,"acquisitionDate":"2021-10-05","vendor":"Target","type":"Movie","status":"Keep","genres":["Halloween"],"universe":null,"lastWatched":null,"poster":null},{"id":"43379d5d","title":"How To Train Your Dragon","formats":["Blu-ray","Google"],"cog":11.5,"market":null,"acquisitionDate":"2017-08-18","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Fantasy"],"universe":null,"lastWatched":null,"poster":null},{"id":"a9ca9485","title":"How To Train Your Dragon 2","formats":["Blu-ray","Google"],"cog":11.5,"market":null,"acquisitionDate":"2017-08-18","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Fantasy"],"universe":null,"lastWatched":null,"poster":null},{"id":"ec6c7b3d","title":"Howl's Moving Castle","formats":["Blu-ray"],"cog":14.96,"market":null,"acquisitionDate":"2025-03-29","vendor":"Walmart","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"d26704a9","title":"Hunger Games, The","formats":["Blu-ray"],"cog":5.0,"market":null,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","type":"Movie","status":"Sell/donate","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"1d758e76","title":"Hunger Games, The [5-movies]","formats":["Blu-ray","DVD"],"cog":29.96,"market":null,"acquisitionDate":"2025-03-26","vendor":"Walmart","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"6005ce72","title":"Hunger Games: Catching Fire","formats":["Blu-ray","DVD"],"cog":4.99,"market":null,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","type":"Movie","status":"Sell/donate","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"b17f7099","title":"Ice Age","formats":["Google"],"cog":0.0,"market":null,"acquisitionDate":null,"vendor":"Google","type":"Movie","status":"Keep","genres":["Animated"],"universe":null,"lastWatched":null,"poster":null},{"id":"dee9fc05","title":"Inside Out","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"be7effc8","title":"Insidious","formats":["Blu-ray"],"cog":4.99,"market":null,"acquisitionDate":null,"vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"8ea27c69","title":"Interview With the Vampire","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Google","type":"Movie","status":"Keep","genres":["Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"5698b9d0","title":"Invisible Man, The","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Sci-Fi","Thriller"],"universe":null,"lastWatched":null,"poster":null},{"id":"f44b5b21","title":"Island, The","formats":["DVD"],"cog":2.5,"market":4.17,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Dystopia","Sci-Fi"],"universe":null,"lastWatched":null,"poster":null},{"id":"980673d2","title":"It's Always Sunny in Philadelphia A Very Sunny Christmas","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Christmas"],"universe":null,"lastWatched":null,"poster":null},{"id":"574c4913","title":"John Wick 4","formats":["Blu-ray"],"cog":12.99,"market":null,"acquisitionDate":"2025-03-26","vendor":"Walmart","type":"Movie","status":"Keep","genres":["Assassin","Retribution"],"universe":null,"lastWatched":null,"poster":null},{"id":"8edfc274","title":"John Wick Chapters 1-3 (Parabellum)","formats":["Blu-ray","DVD","Google"],"cog":24.45,"market":10.99,"acquisitionDate":"2017-03-10","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Assassin","Retribution"],"universe":null,"lastWatched":null,"poster":null},{"id":"9df06013","title":"Joker","formats":["Blu-ray","DVD","Google"],"cog":0.0,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Sell/donate","genres":[],"universe":"DC","lastWatched":null,"poster":null},{"id":"608c5097","title":"Jumanji: The Next Level","formats":["Blu-ray","DVD","Google"],"cog":11.68,"market":null,"acquisitionDate":"2021-08-18","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Jungle Adventure"],"universe":null,"lastWatched":null,"poster":null},{"id":"c0d239aa","title":"Jumanji: Welcome to the Jungle","formats":["Blu-ray","Google"],"cog":15.0,"market":null,"acquisitionDate":"2018-05-08","vendor":"Target","type":"Movie","status":"Keep","genres":["Jungle Adventure"],"universe":null,"lastWatched":null,"poster":null},{"id":"f0e0279b","title":"Kill Bill Volume 1","formats":["Blu-ray"],"cog":7.43,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Retribution"],"universe":null,"lastWatched":null,"poster":null},{"id":"194bee9c","title":"Kill Bill Volume 2","formats":["Blu-ray"],"cog":7.43,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Retribution"],"universe":null,"lastWatched":null,"poster":null},{"id":"e77cc815","title":"Kindergarten Cop","formats":["DVD"],"cog":2.99,"market":6.0,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Comedy"],"universe":null,"lastWatched":null,"poster":null},{"id":"f00713b1","title":"Knives Out","formats":["Blu-ray","Google"],"cog":7.5,"market":10.93,"acquisitionDate":"2022-09-20","vendor":"Target","type":"Movie","status":"Keep","genres":["Murder Mystery"],"universe":null,"lastWatched":null,"poster":null},{"id":"2463beec","title":"Labyrinth","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Target","type":null,"status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"1019105a","title":"Last Action Hero","formats":["Google"],"cog":12.99,"market":null,"acquisitionDate":"2023-01-09","vendor":"Google","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"e7782aa6","title":"Lion King, The","formats":["DVD"],"cog":4.24,"market":6.79,"acquisitionDate":"2022-11-20","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Animated"],"universe":null,"lastWatched":null,"poster":null},{"id":"2eef45d3","title":"Logan's Run","formats":[],"cog":6.0,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"ae114dc7","title":"Love and Monsters","formats":["Blu-ray"],"cog":6.36,"market":null,"acquisitionDate":"2021-11-19","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Creature","Post-Apocalypse"],"universe":null,"lastWatched":null,"poster":null},{"id":"4786e2c7","title":"Mad Max: Beyond Thunderdrome","formats":["Blu-ray"],"cog":5.3,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","type":"Movie","status":"Unwatched","genres":["Dystopia","Post-Apocalypse"],"universe":"Mad Max","lastWatched":null,"poster":null},{"id":"25d24b39","title":"Mamma Mia","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":"2023-09-09","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Musical"],"universe":null,"lastWatched":null,"poster":null},{"id":"a0ea02dc","title":"Man of Steel","formats":["Blu-ray","Google"],"cog":3.0,"market":null,"acquisitionDate":"2021-12-05","vendor":"OfferUp","type":"Movie","status":"Keep","genres":["Extra-Terrestrial","Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"06efea39","title":"Martian, The","formats":["Blu-ray"],"cog":3.0,"market":null,"acquisitionDate":"2021-12-05","vendor":"OfferUp","type":"Movie","status":"Keep","genres":["Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"98e482d5","title":"Marvel's Avengers","formats":["Blu-ray","DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"6c342789","title":"Matrix Triple Feature (The Matrix, The Matrix Reloaded, The Matrix Revolutions)","formats":["Blu-ray"],"cog":null,"market":10.3,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Robot Uprising"],"universe":null,"lastWatched":null,"poster":null},{"id":"4c488694","title":"Meg 2: The Trench","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Unwatched","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"31535b8d","title":"Meg, The","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"51f68a09","title":"Mega Shark vs Giant Octopus","formats":["Blu-ray"],"cog":2.99,"market":7.95,"acquisitionDate":"2023-06-09","vendor":"Used Book Superstore","type":"Movie","status":"Unwatched","genres":["Kaiju","Shark"],"universe":null,"lastWatched":null,"poster":null},{"id":"e3a95775","title":"Melancholy of Haruhi Suzumiya 1 + 2, The","formats":["Blu-ray"],"cog":21.24,"market":26.24,"acquisitionDate":"2025-03-26","vendor":"Walmart","type":"Series","status":"Keep","genres":["Fantasy","School Life","Sci-Fi","Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"7668ca9a","title":"Memento","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"7a8376f8","title":"Memoirs of a Geisha","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Historical"],"universe":null,"lastWatched":null,"poster":null},{"id":"181e8aff","title":"Men in Black Trilogy (MIB)","formats":["Blu-ray"],"cog":14.39,"market":12.0,"acquisitionDate":"2025-03-29","vendor":"Walmart","type":"Movie","status":"Keep","genres":["Extra-Terrestrial","Sci-Fi","Time Travel"],"universe":null,"lastWatched":"May 22, 2026","poster":null},{"id":"97f1d8f1","title":"Midsommar","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"b2b66507","title":"Minority Report","formats":["DVD"],"cog":2.5,"market":null,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"2160b4b4","title":"Misery","formats":["DVD"],"cog":3.99,"market":null,"acquisitionDate":"2022-07-28","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"98c4195f","title":"Mr. Robot","formats":[],"cog":44.99,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","type":"Movie","status":"Keep","genres":["Cyber-Thriller"],"universe":null,"lastWatched":null,"poster":null},{"id":"4356fd70","title":"My Days of Mercy","formats":["Google"],"cog":7.99,"market":null,"acquisitionDate":"2020-11-01","vendor":"Google","type":"Movie","status":"Keep","genres":["Sapphic"],"universe":null,"lastWatched":null,"poster":null},{"id":"294fdd48","title":"My Hime","formats":["DVD"],"cog":0.0,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Series","status":"Keep","genres":["Magical Girl"],"universe":null,"lastWatched":null,"poster":null},{"id":"12d21063","title":"My Z Hime My Otome","formats":["Blu-ray"],"cog":47.8,"market":null,"acquisitionDate":"2020-09-17","vendor":"Best Buy","type":"Series","status":"Keep","genres":["Magical Girl"],"universe":null,"lastWatched":null,"poster":null},{"id":"261af2c4","title":"Neverending Story, The","formats":["Blu-ray"],"cog":6.59,"market":null,"acquisitionDate":"2021-10-05","vendor":"Target","type":"Movie","status":"Keep","genres":["Fantasy"],"universe":null,"lastWatched":null,"poster":null},{"id":"11337922","title":"Nightmare Before Christmas, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Christmas"],"universe":null,"lastWatched":null,"poster":null},{"id":"576c628e","title":"Nine Inch Nails Broken","formats":["VHS"],"cog":null,"market":90.0,"acquisitionDate":null,"vendor":"Stacia","type":null,"status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"9631636d","title":"Office Space","formats":["Blu-ray"],"cog":6.36,"market":null,"acquisitionDate":"2017-10-04","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Career","Comedy"],"universe":null,"lastWatched":null,"poster":null},{"id":"ee6cc7f2","title":"Pacific Rim","formats":["Blu-ray"],"cog":10.0,"market":null,"acquisitionDate":"2017-08-11","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Kaiju","Mecha"],"universe":null,"lastWatched":null,"poster":null},{"id":"941d439e","title":"Pacific Rim Uprising","formats":["Google"],"cog":6.36,"market":null,"acquisitionDate":"2021-02-18","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Kaiju","Mecha"],"universe":null,"lastWatched":null,"poster":null},{"id":"33ed4430","title":"Pee-Wee's Big Adventure","formats":["DVD"],"cog":2.99,"market":null,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"db0b4914","title":"Pinky Violence Collection, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":null,"status":"Unwatched","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"7dd7560d","title":"Pitch Perfect","formats":["DVD"],"cog":2.49,"market":6.0,"acquisitionDate":"2023-11-12","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Comedy","Musical"],"universe":null,"lastWatched":null,"poster":null},{"id":"984d13e1","title":"Planet Earth","formats":["Blu-ray"],"cog":9.99,"market":null,"acquisitionDate":"2024-10-05","vendor":"Used Book Superstore","type":"Documentary","status":"Keep","genres":["Nature Documentary"],"universe":null,"lastWatched":null,"poster":null},{"id":"b75343ab","title":"Planet Earth II","formats":["Google"],"cog":19.99,"market":null,"acquisitionDate":"2017-03-18","vendor":"Google","type":"Documentary","status":"Keep","genres":["Nature Documentary"],"universe":null,"lastWatched":null,"poster":null},{"id":"4cbb4715","title":"Pokemon Detective Pikachu","formats":["Blu-ray"],"cog":7.5,"market":null,"acquisitionDate":"2021-10-05","vendor":"Target","type":"Movie","status":"Keep","genres":["Monster Battle"],"universe":null,"lastWatched":null,"poster":null},{"id":"17b34514","title":"Pokemon The First Movie, Pokemon The Movie 2000, Pokemon 3 The Movie","formats":["Blu-ray"],"cog":14.88,"market":null,"acquisitionDate":"2021-12-19","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Monster Battle"],"universe":null,"lastWatched":null,"poster":null},{"id":"abb30e5c","title":"Postman, The","formats":[],"cog":12.46,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","type":"Movie","status":"Keep","genres":["Dystopia"],"universe":null,"lastWatched":null,"poster":null},{"id":"1654a90b","title":"Power Rangers","formats":["Blu-ray"],"cog":4.0,"market":6.0,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Sentai"],"universe":null,"lastWatched":null,"poster":null},{"id":"ee60409f","title":"Predestination","formats":["Google"],"cog":12.99,"market":null,"acquisitionDate":"2017-02-21","vendor":"Google","type":"Movie","status":"Keep","genres":["Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"633039c6","title":"Prestige, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Sci-Fi"],"universe":null,"lastWatched":null,"poster":null},{"id":"69a1cdfb","title":"Pretty In Pink","formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2023-08-08","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Coming-Of-Age"],"universe":null,"lastWatched":null,"poster":null},{"id":"d4205bcf","title":"Princess Bride, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"9118ba8a","title":"Prometheus","formats":["Blu-ray"],"cog":4.99,"market":null,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"dbf8444d","title":"Pulp Fiction","formats":["Google"],"cog":0.0,"market":null,"acquisitionDate":null,"vendor":"Google","type":"Movie","status":"Sell/donate","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"1c88c238","title":"Punisher, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Retribution"],"universe":null,"lastWatched":null,"poster":null},{"id":"b586d1be","title":"Purge, The","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"25495f0e","title":"Raw","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"e7167d81","title":"Ready Player One","formats":["Blu-ray","Google"],"cog":26.55,"market":null,"acquisitionDate":"2018-09-06","vendor":"Target","type":"Movie","status":"Keep","genres":["Dystopia","Virtual Reality"],"universe":null,"lastWatched":null,"poster":null},{"id":"903bab6e","title":"Red Dawn","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["War"],"universe":null,"lastWatched":null,"poster":null},{"id":"69cb2594","title":"Red Dragon","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"89625e28","title":"Rememory","formats":["Google"],"cog":0.0,"market":null,"acquisitionDate":null,"vendor":"Google","type":"Movie","status":"Unwatched","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"9a5204db","title":"Repo! The Genetic Opera","formats":["Blu-ray","Google"],"cog":8.49,"market":null,"acquisitionDate":"2020-09-22","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Dystopia","Musical"],"universe":null,"lastWatched":null,"poster":null},{"id":"e93504e1","title":"Reservoir Dogs","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"047ff525","title":"Ring, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"a7ff25d8","title":"Rise of the Planet of the Apes","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Unwatched","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"29146268","title":"Road Warrior, The","formats":["Blu-ray"],"cog":6.36,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Dystopia","Post-Apocalypse"],"universe":"Mad Max","lastWatched":null,"poster":null},{"id":"ffdc7b19","title":"Robin Hood Men in Tights","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Comedy","Satire"],"universe":null,"lastWatched":null,"poster":null},{"id":"a51efc68","title":"Rock of Ages","formats":["Blu-ray"],"cog":3.99,"market":null,"acquisitionDate":"2023-06-09","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Musical"],"universe":null,"lastWatched":null,"poster":null},{"id":"8134df29","title":"Rock, The","formats":["DVD"],"cog":2.99,"market":null,"acquisitionDate":"2025-09-20","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Action"],"universe":null,"lastWatched":null,"poster":null},{"id":"b54652cf","title":"Rogue One A Star Wars Story","formats":["Blu-ray","Google"],"cog":28.92,"market":null,"acquisitionDate":"2017-06-24","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"a5957322","title":"Running Man, The","formats":["Blu-ray"],"cog":19.11,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Dystopia"],"universe":null,"lastWatched":null,"poster":null},{"id":"806f9301","title":"Salem's Lot","formats":["Blu-ray"],"cog":10.0,"market":null,"acquisitionDate":"2017-10-08","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"9d0fc001","title":"Saving Face","formats":["DVD"],"cog":null,"market":14.99,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Romance","Sapphic"],"universe":null,"lastWatched":null,"poster":null},{"id":"3c496703","title":"Schitts Creek","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Series","status":"Keep","genres":["Comedy"],"universe":null,"lastWatched":null,"poster":null},{"id":"e586c66a","title":"Scream","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Slasher"],"universe":null,"lastWatched":null,"poster":null},{"id":"a0767aa3","title":"Secret World of Alex Mack, The","formats":["DVD"],"cog":23.15,"market":null,"acquisitionDate":"2023-09-08","vendor":"eBay","type":"Series","status":"Keep","genres":["Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"0b0cb3d4","title":"Serenity","formats":["DVD"],"cog":2.99,"market":6.45,"acquisitionDate":"2023-06-01","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"6a79d89a","title":"Series 7 The Contenders","formats":["DVD"],"cog":null,"market":20.0,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Battle Royale"],"universe":null,"lastWatched":null,"poster":null},{"id":"a1dddb1e","title":"Shining, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"4045f00d","title":"Slither","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Creature"],"universe":null,"lastWatched":null,"poster":null},{"id":"49fbe2c1","title":"Snow White & the Huntsman","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":null,"status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"1f3771be","title":"Snowpiercer","formats":["Blu-ray","Google"],"cog":12.99,"market":null,"acquisitionDate":"2017-04-23","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Dystopia","Post-Apocalypse"],"universe":null,"lastWatched":null,"poster":null},{"id":"8e0a61ed","title":"Sound of Music, The","formats":["DVD"],"cog":0.99,"market":6.0,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":["Historical","Musical"],"universe":null,"lastWatched":null,"poster":null},{"id":"52e94103","title":"Spider-Man Far From Home","formats":["Google"],"cog":12.99,"market":null,"acquisitionDate":"2021-04-21","vendor":"Google","type":"Movie","status":"Keep","genres":["Marvel"],"universe":null,"lastWatched":null,"poster":null},{"id":"6672f4d2","title":"Spider-Man Homecoming","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":null,"status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"8a0cdf66","title":"Spider-Man Into the Spider-Verse","formats":["Blu-ray","DVD","Google"],"cog":11.68,"market":null,"acquisitionDate":"2021-08-18","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Marvel","Multi-Verse"],"universe":null,"lastWatched":null,"poster":null},{"id":"0333b849","title":"Star Trek Beyond","formats":[],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":null,"status":"Keep","genres":["Star Trek"],"universe":null,"lastWatched":null,"poster":null},{"id":"1e3b7d27","title":"Star Wars IV A New Hope","formats":[],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":null,"status":"Keep","genres":["Star Wars"],"universe":null,"lastWatched":null,"poster":null},{"id":"c8cc392e","title":"Star Wars V The Empire Strikes Back","formats":[],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":null,"status":"Keep","genres":["Star Wars"],"universe":null,"lastWatched":null,"poster":null},{"id":"74a77350","title":"Star Wars VI Return of the Jedi","formats":[],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":null,"status":"Keep","genres":["Star Wars"],"universe":null,"lastWatched":null,"poster":null},{"id":"f7dd7be9","title":"Stardust","formats":["DVD"],"cog":2.99,"market":null,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Fantasy"],"universe":null,"lastWatched":null,"poster":null},{"id":"26ea031a","title":"Supernatural [S1]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Series","status":"Keep","genres":["Supernatural"],"universe":null,"lastWatched":null,"poster":null},{"id":"c79a8305","title":"Supernatural [S2]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Series","status":"Keep","genres":["Supernatural"],"universe":null,"lastWatched":null,"poster":null},{"id":"04ab4999","title":"Supernatural [S3]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Series","status":"Keep","genres":["Supernatural"],"universe":null,"lastWatched":null,"poster":null},{"id":"ce325cc4","title":"Sushi Girl","formats":["Blu-ray"],"cog":4.99,"market":null,"acquisitionDate":"2024-10-05","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Crime","Mystery","Revenge"],"universe":null,"lastWatched":"May 23, 2026","poster":null},{"id":"2beac57a","title":"Talk To Me","formats":["4k","Blu-ray","Vudu"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Horror"],"universe":null,"lastWatched":null,"poster":null},{"id":"7499295d","title":"Teenage Mutant Ninja Turtles","formats":["DVD"],"cog":2.95,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"3e154e07","title":"Teenage Mutant Ninja Turtles Mutant Mayhem","formats":["Google"],"cog":9.99,"market":null,"acquisitionDate":"2023-10-12","vendor":"Google","type":"Movie","status":"Keep","genres":["TMNT"],"universe":null,"lastWatched":null,"poster":null},{"id":"b9b4b445","title":"Tenet","formats":["Google"],"cog":0.0,"market":null,"acquisitionDate":null,"vendor":"Google","type":"Movie","status":"Keep","genres":["Time Distortion"],"universe":null,"lastWatched":null,"poster":null},{"id":"21a2a022","title":"Time Machine, The","formats":["DVD","Google"],"cog":1.99,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"788aae3f","title":"Tomb Raider [2018]","formats":["Blu-ray"],"cog":8.08,"market":null,"acquisitionDate":"2024-10-11","vendor":"eBay","type":"Movie","status":"Sell/donate","genres":["Adventure","Game Adaptation"],"universe":null,"lastWatched":null,"poster":null},{"id":"04c55329","title":"Torchwood [s1]","formats":["DVD"],"cog":8.0,"market":null,"acquisitionDate":"2025-02-01","vendor":"Used Book Superstore","type":"Series","status":"Sell/donate","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"acb79dad","title":"Torchwood [s2]","formats":["DVD"],"cog":8.0,"market":null,"acquisitionDate":"2025-02-01","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"07839cba","title":"Total Recall [1990]","formats":["Blu-ray","Google"],"cog":10.61,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Augmented Reality","Extra-Terrestrial","Spy"],"universe":null,"lastWatched":null,"poster":null},{"id":"e24b0dab","title":"Total Recall [1990]","formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2023-07-31","vendor":"Used Book Superstore","type":"Movie","status":"Sell/donate","genres":["Augmented Reality","Extra-Terrestrial","Spy"],"universe":null,"lastWatched":null,"poster":null},{"id":"59aa42f6","title":"Train To Busan","formats":["Google"],"cog":0.99,"market":null,"acquisitionDate":"2017-03-17","vendor":"Google","type":"Movie","status":"Keep","genres":["Zombie"],"universe":null,"lastWatched":null,"poster":null},{"id":"b6f46d22","title":"True Blood [s1]","formats":["Blu-ray"],"cog":6.96,"market":null,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"0cad822c","title":"True Blood [s2]","formats":["Blu-ray"],"cog":9.0,"market":null,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"1d095148","title":"True Blood [s3]","formats":["Blu-ray"],"cog":7.99,"market":null,"acquisitionDate":"2024-10-05","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":["Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"3c6814e6","title":"Twilight","formats":["Google"],"cog":5.0,"market":null,"acquisitionDate":"2017-02-11","vendor":"Google","type":"Movie","status":"Keep","genres":["Romance","Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"58813e94","title":"Twilight Breaking Dawn","formats":["Google"],"cog":5.0,"market":null,"acquisitionDate":"2017-02-11","vendor":"Google","type":"Movie","status":"Keep","genres":["Romance","Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"c0515bbc","title":"Twilight Eclipse","formats":["Google"],"cog":5.0,"market":null,"acquisitionDate":"2017-02-11","vendor":"Google","type":"Movie","status":"Keep","genres":["Romance","Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"82138e2e","title":"Twilight New Moon","formats":["Google"],"cog":5.0,"market":null,"acquisitionDate":"2017-02-11","vendor":"Google","type":"Movie","status":"Keep","genres":["Romance","Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"92d0bbbe","title":"Twister","formats":[],"cog":6.0,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"9608bf13","title":"Under the Christmas Tree","formats":["Prime"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Amazon","type":"Movie","status":"Keep","genres":["Christmas","Sapphic"],"universe":null,"lastWatched":null,"poster":null},{"id":"a5747352","title":"Universe, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Documentary","status":"Keep","genres":["Documentary"],"universe":null,"lastWatched":null,"poster":null},{"id":"1a8cf8e6","title":"V for Vendetta","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Retribution"],"universe":null,"lastWatched":null,"poster":null},{"id":"21db8d7f","title":"Valerian and the City of a Thousand Planets","formats":["Blu-ray"],"cog":5.3,"market":null,"acquisitionDate":"2020-09-22","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Extra-Terrestrial","Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"ae3f4dcc","title":"Venom","formats":["Blu-ray","DVD","Google"],"cog":6.36,"market":null,"acquisitionDate":"2021-11-15","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Extra-Terrestrial","Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"fb9549d5","title":"Violent Night","formats":["Google"],"cog":23.94,"market":null,"acquisitionDate":"2022-12-24","vendor":"Google","type":"Movie","status":"Keep","genres":["Christmas","Thriller"],"universe":null,"lastWatched":null,"poster":null},{"id":"75c5e1a5","title":"Warcraft","formats":["Blu-ray","Google"],"cog":5.0,"market":null,"acquisitionDate":"2019-11-05","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Fantasy","Game Adaptation"],"universe":null,"lastWatched":null,"poster":null},{"id":"f2efd42d","title":"Watchmen","formats":["Blu-ray","Google"],"cog":25.49,"market":null,"acquisitionDate":"2020-02-29","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"33827d23","title":"Waterworld","formats":["Blu-ray"],"cog":5.0,"market":null,"acquisitionDate":"2025-02-01","vendor":"Used Book Superstore","type":"Movie","status":null,"genres":["Post-Apocalypse"],"universe":null,"lastWatched":null,"poster":null},{"id":"736d542c","title":"What Keeps You Alive","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Google","type":"Movie","status":"Keep","genres":["Sapphic"],"universe":null,"lastWatched":null,"poster":null},{"id":"0470818e","title":"Whip It","formats":["Blu-ray"],"cog":null,"market":8.0,"acquisitionDate":null,"vendor":"Bull Moose","type":"Movie","status":"Keep","genres":["Sport"],"universe":null,"lastWatched":null,"poster":null},{"id":"eca42b33","title":"Wonder Woman","formats":["Blu-ray","Google"],"cog":25.04,"market":null,"acquisitionDate":"2017-10-08","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Divine","Super Powered"],"universe":"DC","lastWatched":null,"poster":null},{"id":"4c96a01f","title":"Zoolander","formats":["Google"],"cog":14.99,"market":null,"acquisitionDate":"2023-05-05","vendor":"Google","type":"Movie","status":"Keep","genres":["Comedy","Secret Agent"],"universe":null,"lastWatched":null,"poster":null}];
+const DEFAULT_OPTIONS = {"formats":["3D","4k","Blu-ray","DVD","Google","Prime","VHS","Vudu"],"vendors":["Amazon","Best Buy","Bull Moose","Convention","Gift","Google","Gruv","OfferUp","Stacia","Target","Used Book Superstore","Walmart","eBay"],"types":["Documentary","Movie","Series"],"statuses":["Keep","Sell/donate","Unwatched"],"genres":["AI","Action","Adventure","Afterlife","Animated","Assassin","Augmented Reality","Battle Royale","Career","Christmas","Comedy","Coming-Of-Age","Creature","Crime","Cyber-Thriller","Cyberpunk","Dance","Dark Comedy","Disaster","Divine","Documentary","Drama","Dysfunctional Family","Dystopia","Extra-Terrestrial","Fantasy","Femme Fatale","Fighting","Futuristic","Game Adaptation","Ghosts","Ghoul","Halloween","Historical","Horror","Jungle Adventure","Kaiju","Love Triangle","Magic","Magical Girl","Marvel","Mecha","Mockumentary","Monster Battle","Multi-Verse","Murder Mystery","Musical","Mystery","Mythology","Nature Documentary","Paranormal","Possession","Post-Apocalypse","Psychological","Psychological Thriller","Retribution","Revenge","Robot Uprising","Romance","Sapphic","Satire","School Life","Sci-Fi","Secret Agent","Sentai","Shark","Sitcom","Slasher","Space","Space Fantasy","Sport","Spy","Star Trek","Star Wars","Super Powered","Supernatural","TMNT","Thriller","Time Bridge","Time Distortion","Time Repeat","Time Travel","Vampire","Virtual Reality","War","Zombie"],"universes":["DC","Mad Max","Marvel"]};
+
+// --- State ---
+let films = [];
+let filteredFilms = [];
+let sortMode = 'alpha-asc';
+let sheetsUrl = localStorage.getItem('shelflife_sheets_url') || '';
+let tmdbKey = localStorage.getItem('shelflife_tmdb_key') || '';
+let editingId = null; // null = adding, string = editing
+let isConnected = false;
+let activeFilters = { formats: [], types: [], statuses: [], vendors: [], genres: [], universes: [], blanks: [] };
+
+// Dropdown options (base + user-added)
+let options = {
+  formats: [...DEFAULT_OPTIONS.formats],
+  vendors: [...DEFAULT_OPTIONS.vendors],
+  types: [...DEFAULT_OPTIONS.types],
+  statuses: [...DEFAULT_OPTIONS.statuses],
+  genres: [...DEFAULT_OPTIONS.genres],
+  universes: [...(DEFAULT_OPTIONS.universes || [])]
+};
+
+// Load user-added options from localStorage
+function loadCustomOptions() {
+  try {
+    const saved = localStorage.getItem('shelflife_options');
+    if (saved) {
+      const custom = JSON.parse(saved);
+      for (const key in custom) {
+        if (options[key]) {
+          custom[key].forEach(v => {
+            if (!options[key].includes(v)) options[key].push(v);
+          });
+          options[key].sort();
+        }
+      }
+    }
+  } catch(e) {}
+  
+  // Apply removals
+  try {
+    const removed = JSON.parse(localStorage.getItem('shelflife_removed_options') || '{}');
+    for (const key in removed) {
+      if (options[key]) {
+        options[key] = options[key].filter(v => !removed[key].includes(v));
+      }
+    }
+  } catch(e) {}
+}
+
+function saveCustomOption(category, value) {
+  try {
+    const saved = JSON.parse(localStorage.getItem('shelflife_options') || '{}');
+    if (!saved[category]) saved[category] = [];
+    if (!saved[category].includes(value)) {
+      saved[category].push(value);
+      localStorage.setItem('shelflife_options', JSON.stringify(saved));
+    }
+  } catch(e) {}
+  
+  // Remove from removed list if it was there
+  try {
+    const removed = JSON.parse(localStorage.getItem('shelflife_removed_options') || '{}');
+    if (removed[category]) {
+      removed[category] = removed[category].filter(v => v !== value);
+      localStorage.setItem('shelflife_removed_options', JSON.stringify(removed));
+    }
+  } catch(e) {}
+}
+
+// --- Init ---
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('headerVersion').textContent = APP_VERSION;
+  loadCustomOptions();
+  loadData();
+  setupSearch();
+  setupSort();
+  setupFilters();
+  setupSettings();
+  setupCardInteractions();
+  setupForm();
+  setupPosterModal();
+  setupWatchNext();
+  setupManageOptions();
+});
+
+// --- Data Loading ---
+async function loadData() {
+  if (sheetsUrl) {
+    try {
+      document.getElementById('syncBtn').classList.add('syncing');
+      const res = await fetch(sheetsUrl);
+      if (!res.ok) throw new Error('Fetch failed');
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      films = data;
+      isConnected = true;
+      setConnected(true);
+    } catch (e) {
+      console.warn('Sheets fetch failed:', e);
+      films = [...SEED_DATA];
+      isConnected = false;
+      setConnected(false);
+    } finally {
+      document.getElementById('syncBtn').classList.remove('syncing');
+    }
+  } else {
+    films = [...SEED_DATA];
+    isConnected = false;
+    setConnected(false);
+  }
+  
+  // Merge any new options from data
+  films.forEach(f => {
+    (f.formats || []).forEach(v => { if (v && !options.formats.includes(v)) options.formats.push(v); });
+    if (f.vendor && !options.vendors.includes(f.vendor)) options.vendors.push(f.vendor);
+    if (f.type && !options.types.includes(f.type)) options.types.push(f.type);
+    if (f.status && !options.statuses.includes(f.status)) options.statuses.push(f.status);
+    (f.genres || []).forEach(v => { if (v && !options.genres.includes(v)) options.genres.push(v); });
+    if (f.universe && !options.universes.includes(f.universe)) options.universes.push(f.universe);
+  });
+  
+  applyFilters();
+}
+
+function setConnected(connected) {
+  document.getElementById('connDot').className = 'conn-dot ' + (connected ? 'connected' : 'disconnected');
+  document.getElementById('connText').textContent = connected 
+    ? 'Connected to Google Sheets' 
+    : (sheetsUrl ? 'Connection failed' : 'Using local data');
+}
+
+// --- API Calls ---
+async function apiCall(action, payload) {
+  if (!sheetsUrl) {
+    toast('Connect Google Sheets first', 'error');
+    return null;
+  }
+  try {
+    const res = await fetch(sheetsUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action, ...payload })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    return data;
+  } catch (e) {
+    console.error('API error:', e);
+    toast('Sync failed: ' + e.message, 'error');
+    return null;
+  }
+}
+
+// --- Search ---
+function setupSearch() {
+  const input = document.getElementById('searchInput');
+  const clear = document.getElementById('searchClear');
+  input.addEventListener('input', () => {
+    clear.classList.toggle('show', input.value.length > 0);
+    applyFilters();
+  });
+  clear.addEventListener('click', () => {
+    input.value = '';
+    clear.classList.remove('show');
+    input.focus();
+    applyFilters();
+  });
+}
+
+// --- Sort ---
+function setupSort() {
+  document.getElementById('sortSelect').addEventListener('change', (e) => {
+    sortMode = e.target.value;
+    applyFilters();
+  });
+}
+// Sort label handled by select dropdown
+
+// --- Filters ---
+function setupFilters() {
+  // Open/close filter panel
+  document.getElementById('filterBtn').addEventListener('click', () => {
+    buildFilterPanel();
+    document.getElementById('filterOverlay').classList.add('open');
+  });
+  document.getElementById('filterClose').addEventListener('click', () => {
+    document.getElementById('filterOverlay').classList.remove('open');
+  });
+  document.getElementById('filterOverlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('filterOverlay')) {
+      document.getElementById('filterOverlay').classList.remove('open');
+    }
+  });
+  
+  // Apply button
+  document.getElementById('filterApply').addEventListener('click', () => {
+    readFilterPanel();
+    document.getElementById('filterOverlay').classList.remove('open');
+    applyFilters();
+    renderActiveFilters();
+  });
+  
+  // Clear button
+  document.getElementById('filterClear').addEventListener('click', () => {
+    activeFilters = { formats: [], types: [], statuses: [], vendors: [], genres: [], universes: [], blanks: [] };
+    buildFilterPanel();
+  });
+}
+
+function buildFilterPanel() {
+  buildFilterChecks('filterFormats', options.formats, activeFilters.formats);
+  buildFilterChecks('filterTypes', options.types, activeFilters.types);
+  buildFilterChecks('filterStatuses', options.statuses, activeFilters.statuses);
+  buildFilterChecks('filterVendors', options.vendors, activeFilters.vendors);
+  buildFilterChecks('filterUniverses', options.universes || [], activeFilters.universes);
+  buildFilterChecks('filterGenres', options.genres, activeFilters.genres);
+  // Blanks are static HTML, just restore checked state
+  document.querySelectorAll('#filterBlanks input').forEach(cb => {
+    cb.checked = activeFilters.blanks.includes(cb.value);
+  });
+}
+
+function buildFilterChecks(containerId, opts, selected) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = opts.map(val =>
+    '<label class="check-item"><input type="checkbox" value="' + escHTML(val) + '"' + 
+    (selected.includes(val) ? ' checked' : '') + '>' + escHTML(val) + '</label>'
+  ).join('');
+}
+
+function readFilterPanel() {
+  activeFilters.formats = getCheckedIn('filterFormats');
+  activeFilters.types = getCheckedIn('filterTypes');
+  activeFilters.statuses = getCheckedIn('filterStatuses');
+  activeFilters.vendors = getCheckedIn('filterVendors');
+  activeFilters.universes = getCheckedIn('filterUniverses');
+  activeFilters.genres = getCheckedIn('filterGenres');
+  activeFilters.blanks = getCheckedIn('filterBlanks');
+}
+
+function getCheckedIn(containerId) {
+  return Array.from(document.querySelectorAll('#' + containerId + ' input:checked')).map(cb => cb.value);
+}
+
+function getFilterCount() {
+  return activeFilters.formats.length + activeFilters.types.length + 
+    activeFilters.statuses.length + activeFilters.vendors.length + 
+    activeFilters.genres.length + activeFilters.universes.length + activeFilters.blanks.length;
+}
+
+function renderActiveFilters() {
+  const bar = document.getElementById('activeFilters');
+  const count = getFilterCount();
+  const badge = document.getElementById('filterBadge');
+  
+  // Update badge
+  if (count > 0) {
+    badge.textContent = count;
+    badge.classList.add('show');
+    document.getElementById('filterBtn').classList.add('active');
+  } else {
+    badge.classList.remove('show');
+    document.getElementById('filterBtn').classList.remove('active');
+  }
+  
+  if (count === 0) {
+    bar.classList.remove('show');
+    bar.innerHTML = '';
+    return;
+  }
+  
+  let chips = '';
+  const addChips = (category, label, values) => {
+    values.forEach(v => {
+      chips += '<span class="active-filter-chip" data-category="' + category + '" data-value="' + escHTML(v) + '">' + 
+        label + ': ' + escHTML(v) + ' <span class="x">&times;</span></span>';
+    });
+  };
+  
+  addChips('formats', 'Format', activeFilters.formats);
+  addChips('types', 'Type', activeFilters.types);
+  addChips('statuses', 'Status', activeFilters.statuses);
+  addChips('vendors', 'Vendor', activeFilters.vendors);
+  addChips('genres', 'Genre', activeFilters.genres);
+  addChips('universes', 'Universe', activeFilters.universes);
+  addChips('blanks', 'Show', activeFilters.blanks);
+  
+  chips += '<span class="clear-all-chip" id="clearAllFilters">Clear all</span>';
+  
+  bar.innerHTML = chips;
+  bar.classList.add('show');
+  
+  // Chip click handlers
+  bar.querySelectorAll('.active-filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const cat = chip.dataset.category;
+      const val = chip.dataset.value;
+      activeFilters[cat] = activeFilters[cat].filter(v => v !== val);
+      applyFilters();
+      renderActiveFilters();
+    });
+  });
+  
+  document.getElementById('clearAllFilters').addEventListener('click', () => {
+    activeFilters = { formats: [], types: [], statuses: [], vendors: [], genres: [], universes: [], blanks: [] };
+    applyFilters();
+    renderActiveFilters();
+  });
+}
+
+// --- Filter matching ---
+function filmMatchesFilters(f) {
+  // Format filter: film must have at least one of the selected formats
+  if (activeFilters.formats.length > 0) {
+    if (!(f.formats || []).some(fmt => activeFilters.formats.includes(fmt))) return false;
+  }
+  // Type filter
+  if (activeFilters.types.length > 0) {
+    if (!f.type || !activeFilters.types.includes(f.type)) return false;
+  }
+  // Status filter
+  if (activeFilters.statuses.length > 0) {
+    if (!f.status || !activeFilters.statuses.includes(f.status)) return false;
+  }
+  // Vendor filter
+  if (activeFilters.vendors.length > 0) {
+    if (!f.vendor || !activeFilters.vendors.includes(f.vendor)) return false;
+  }
+  // Universe filter
+  if (activeFilters.universes.length > 0) {
+    if (!f.universe || !activeFilters.universes.includes(f.universe)) return false;
+  }
+  // Genre filter: film must have at least one of the selected genres
+  if (activeFilters.genres.length > 0) {
+    if (!(f.genres || []).some(g => activeFilters.genres.includes(g))) return false;
+  }
+  // Blanks filter: show ONLY items missing the selected fields
+  if (activeFilters.blanks.length > 0) {
+    const matchesAnyBlank = activeFilters.blanks.some(field => {
+      switch (field) {
+        case 'poster': return !f.poster;
+        case 'cog': return f.cog == null;
+        case 'market': return f.market == null;
+        case 'type': return !f.type;
+        case 'status': return !f.status;
+        case 'genre': return !f.genres || f.genres.length === 0;
+        default: return false;
+      }
+    });
+    if (!matchesAnyBlank) return false;
+  }
+  return true;
+}
+
+// --- Filter & Render ---
+function applyFilters() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  filteredFilms = films.filter(f => {
+    if (query && !f.title.toLowerCase().includes(query)) return false;
+    if (!filmMatchesFilters(f)) return false;
+    return true;
+  });
+  
+  // Determine which field is being sorted by value
+  const valueField = sortMode.startsWith('cog') ? 'cog' : sortMode.startsWith('market') ? 'market' : null;
+  
+  if (valueField) {
+    // Split into known and unknown
+    const known = filteredFilms.filter(f => f[valueField] != null);
+    const unknown = filteredFilms.filter(f => f[valueField] == null);
+    
+    // Sort known by value
+    const desc = sortMode.endsWith('-desc');
+    known.sort((a, b) => desc ? (b[valueField] - a[valueField]) : (a[valueField] - b[valueField]));
+    
+    // Sort unknown alphabetically
+    unknown.sort((a, b) => a.title.localeCompare(b.title));
+    
+    filteredFilms = known;
+    filteredFilms._unknowns = unknown;
+  } else {
+    filteredFilms.sort((a, b) => {
+      if (sortMode === 'alpha-desc') return b.title.localeCompare(a.title);
+      return a.title.localeCompare(b.title);
+    });
+    filteredFilms._unknowns = null;
+  }
+  
+  updateStats();
+  renderCards();
+  document.getElementById('sortSelect').value = sortMode;
+}
+
+function updateStats() {
+  const totalCog = films.reduce((s, f) => s + (f.cog || 0), 0);
+  const totalMarket = films.reduce((s, f) => s + (f.market || 0), 0);
+  const gain = totalMarket - totalCog;
+  document.getElementById('statTitles').textContent = films.length;
+  document.getElementById('statCog').textContent = '$' + totalCog.toFixed(0);
+  document.getElementById('statMarket').textContent = '$' + totalMarket.toFixed(0);
+  const gainEl = document.getElementById('statGain');
+  gainEl.textContent = (gain >= 0 ? '+$' : '-$') + Math.abs(gain).toFixed(0);
+  gainEl.className = 'stat-value ' + (gain >= 0 ? 'positive' : 'negative');
+  const showing = filteredFilms.length + (filteredFilms._unknowns ? filteredFilms._unknowns.length : 0);
+  document.getElementById('resultCount').textContent = 
+    showing === films.length ? showing + ' titles' : showing + ' of ' + films.length;
+}
+
+function renderCards() {
+  const container = document.getElementById('cardList');
+  const allCount = filteredFilms.length + (filteredFilms._unknowns ? filteredFilms._unknowns.length : 0);
+  
+  if (allCount === 0) {
+    container.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>No titles found</p><small>Try a different search</small></div>';
+    return;
+  }
+  
+  let html = filteredFilms.map(f => cardHTML(f)).join('');
+  
+  // Add divider and unknown section if sorting by value
+  if (filteredFilms._unknowns && filteredFilms._unknowns.length > 0) {
+    const unknownLabel = sortMode.startsWith('cog') ? 'Unknown Cost' : 'Unknown Market';
+    html += '<div class="section-divider">' + unknownLabel + ' (' + filteredFilms._unknowns.length + ')</div>';
+    html += filteredFilms._unknowns.map(f => cardHTML(f)).join('');
+  }
+  
+  container.innerHTML = html;
+}
+
+// Physical vs Digital classification
+const PHYSICAL_FORMATS = new Set(['4k','blu-ray','dvd','vhs','laserdisc','hd dvd','uhd']);
+function isPhysical(fmt) { return PHYSICAL_FORMATS.has(fmt.toLowerCase()); }
+
+function cardHTML(f) {
+  // Bucket formats into Physical / Digital for collapsed view
+  const fmts = f.formats || [];
+  const hasPhysical = fmts.some(isPhysical);
+  const hasDigital = fmts.some(fmt => !isPhysical(fmt));
+  let bucketHtml = '';
+  if (hasPhysical) bucketHtml += '<span class="format-badge fmt-physical">Physical</span>';
+  if (hasDigital) bucketHtml += '<span class="format-badge fmt-digital">Digital</span>';
+  
+  // Detailed format badges for expanded view
+  const detailFormats = fmts.map(fmt => {
+    let cls = 'format-badge';
+    const fl = fmt.toLowerCase();
+    if (fl === '4k') cls += ' fmt-4k';
+    else if (fl === 'blu-ray') cls += ' fmt-bluray';
+    else if (fl === 'dvd') cls += ' fmt-dvd';
+    else if (fl === 'vhs') cls += ' fmt-vhs';
+    else cls += ' fmt-digital';
+    return '<span class="' + cls + '">' + fmt + '</span>';
+  }).join('');
+  
+  let statusHtml = '';
+  if (f.status) {
+    const sl = f.status.toLowerCase();
+    let cls = 'status-tag';
+    if (sl === 'keep') cls += ' keep';
+    else if (sl === 'unwatched') cls += ' unwatched';
+    else if (sl.includes('sell')) cls += ' sell';
+    statusHtml = '<span class="' + cls + '">' + f.status + '</span>';
+  }
+  
+  let universeHtml = '';
+  if (f.universe) {
+    universeHtml = '<span class="meta-tag universe-tag">' + f.universe + '</span>';
+  }
+  
+  let typeHtml = '';
+  if (f.type) {
+    let cls = 'meta-tag';
+    const tl = f.type.toLowerCase();
+    if (tl === 'movie') cls += ' type-movie';
+    else if (tl === 'series') cls += ' type-series';
+    else if (tl === 'documentary') cls += ' type-documentary';
+    typeHtml = '<span class="' + cls + '">' + f.type + '</span>';
+  }
+  
+  const genres = (f.genres || []).map(g => '<span class="genre-chip">' + g + '</span>').join('');
+  const cogStr = f.cog != null ? '$' + f.cog.toFixed(2) : 'Unknown';
+  const marketStr = f.market != null ? '$' + f.market.toFixed(2) : 'Unknown';
+  const dateStr = f.acquisitionDate || '\u2014';
+  const vendorStr = f.vendor || '\u2014';
+  
+  const posterPlaceholder = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+  const thumbHtml = f.poster 
+    ? '<img src="' + escHTML(f.poster) + '" alt="" loading="lazy">' 
+    : posterPlaceholder;
+  const detailPosterHtml = f.poster 
+    ? '<img src="' + escHTML(f.poster) + '" alt="" loading="lazy">' 
+    : posterPlaceholder;
+  
+  const cogBrief = f.cog != null ? '$' + f.cog.toFixed(2) : '\u2014';
+  const marketBrief = f.market != null ? '$' + f.market.toFixed(2) : '\u2014';
+  const priceHtml = '<div class="card-prices">' +
+    '<span class="price-label">Cost</span> ' + cogBrief +
+    '<span class="price-sep">/</span>' +
+    '<span class="price-label">Mkt</span> ' + marketBrief +
+    '</div>';
+  
+  return '<div class="film-card" data-id="' + f.id + '">' +
+    '<div class="card-main">' +
+      '<div class="card-poster">' + thumbHtml + '</div>' +
+      '<div class="card-info">' +
+        '<div class="card-title-row">' +
+          '<div class="card-title">' + escHTML(f.title) + '</div>' +
+          '<div class="card-format">' + bucketHtml + '</div>' +
+        '</div>' +
+        '<div class="card-meta">' + typeHtml + universeHtml + statusHtml + '</div>' +
+    priceHtml +
+      '</div>' +
+    '</div>' +
+    '<div class="card-details">' +
+      '<div class="detail-poster-row">' +
+        '<div class="detail-poster poster-edit-btn" data-id="' + f.id + '">' + detailPosterHtml + '</div>' +
+        '<div style="flex:1">' +
+          '<div class="detail-item" style="margin-bottom:10px"><div class="detail-label">Formats</div><div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">' + detailFormats + '</div></div>' +
+          '<div class="detail-grid">' +
+            '<div class="detail-item"><div class="detail-label">Cost</div><div class="detail-value">' + cogStr + '</div></div>' +
+            '<div class="detail-item"><div class="detail-label">Market</div><div class="detail-value">' + marketStr + '</div></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="detail-grid">' +
+        '<div class="detail-item"><div class="detail-label">Acquired</div><div class="detail-value">' + dateStr + '</div></div>' +
+        '<div class="detail-item"><div class="detail-label">Vendor</div><div class="detail-value">' + escHTML(vendorStr) + '</div></div>' +
+      '</div>' +
+      (genres ? '<div class="genre-list">' + genres + '</div>' : '') +
+      '<div class="card-actions">' +
+        '<button class="card-action-btn edit-btn" data-id="' + f.id + '">Edit</button>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function escHTML(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+// --- Card Interactions ---
+function setupCardInteractions() {
+  document.getElementById('cardList').addEventListener('click', (e) => {
+    // Poster edit button
+    const posterBtn = e.target.closest('.poster-edit-btn');
+    if (posterBtn) {
+      e.stopPropagation();
+      openPosterModal(posterBtn.dataset.id);
+      return;
+    }
+    // Edit button
+    const editBtn = e.target.closest('.edit-btn');
+    if (editBtn) {
+      e.stopPropagation();
+      openEditForm(editBtn.dataset.id);
+      return;
+    }
+    // Card expand
+    const card = e.target.closest('.film-card');
+    if (card) card.classList.toggle('expanded');
+  });
+}
+
+// --- Form ---
+function setupForm() {
+  // Add button
+  document.getElementById('addBtn').addEventListener('click', () => openAddForm());
+  
+  // Close
+  document.getElementById('formClose').addEventListener('click', closeForm);
+  document.getElementById('formOverlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('formOverlay')) closeForm();
+  });
+  
+  // Save
+  document.getElementById('formSave').addEventListener('click', saveForm);
+  
+  // Delete
+  document.getElementById('formDelete').addEventListener('click', () => {
+    showConfirm('Delete this film permanently?', async () => {
+      await deleteFilm(editingId);
+      closeForm();
+    });
+  });
+  
+  // Add-option buttons for each category
+  setupAddOption('Format', 'formats');
+  setupAddOption('Vendor', 'vendors');
+  setupAddOption('Universe', 'universes');
+  setupAddOption('Type', 'types');
+  setupAddOption('Status', 'statuses');
+  setupAddOption('Genre', 'genres');
+}
+
+function setupAddOption(name, category) {
+  const wrap = document.getElementById('add' + name + 'Wrap');
+  const input = document.getElementById('add' + name + 'Input');
+  const btn = document.getElementById('add' + name + 'Confirm');
+  
+  btn.addEventListener('click', () => {
+    const val = input.value.trim();
+    if (!val) return;
+    
+    // Title case
+    const formatted = val.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+    
+    if (!options[category].includes(formatted)) {
+      options[category].push(formatted);
+      options[category].sort();
+      saveCustomOption(category, formatted);
+    }
+    
+    input.value = '';
+    wrap.classList.remove('open');
+    
+    // Rebuild the relevant control
+    if (category === 'formats') buildFormatChecks();
+    else if (category === 'genres') buildGenreChecks();
+    else if (category === 'vendors') buildSelect('fVendor', options.vendors, 'Vendor');
+    else if (category === 'types') buildSelect('fType', options.types, 'Type');
+    else if (category === 'statuses') buildSelect('fStatus', options.statuses, 'Status');
+    
+    // Auto-select the new option
+    if (category === 'formats' || category === 'genres') {
+      const cb = document.querySelector('#f' + capitalize(category) + ' input[value="' + formatted + '"]');
+      if (cb) cb.checked = true;
+    } else {
+      const sel = document.getElementById('f' + capitalize(category === 'vendors' ? 'vendor' : category === 'types' ? 'type' : 'status'));
+      if (sel) sel.value = formatted;
+    }
+  });
+  
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); btn.click(); }
+  });
+}
+
+function capitalize(s) {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function openAddForm() {
+  editingId = null;
+  document.getElementById('formTitle').textContent = 'Add Film';
+  document.getElementById('formDelete').style.display = 'none';
+  clearForm();
+  buildFormOptions();
+  document.getElementById('formOverlay').classList.add('open');
+}
+
+function openEditForm(id) {
+  const film = films.find(f => f.id === id);
+  if (!film) return;
+  
+  editingId = id;
+  document.getElementById('formTitle').textContent = 'Edit Film';
+  document.getElementById('formDelete').style.display = 'block';
+  
+  clearForm();
+  buildFormOptions();
+  
+  // Populate
+  document.getElementById('fTitle').value = film.title || '';
+  document.getElementById('fCog').value = film.cog != null ? film.cog : '';
+  document.getElementById('fMarket').value = film.market != null ? film.market : '';
+  document.getElementById('fAcqDate').value = film.acquisitionDate || '';
+  document.getElementById('fWatched').value = film.lastWatched || '';
+  document.getElementById('fVendor').value = film.vendor || '';
+  document.getElementById('fType').value = film.type || '';
+  document.getElementById('fUniverse').value = film.universe || '';
+  document.getElementById('fStatus').value = film.status || '';
+  
+  // Check formats
+  (film.formats || []).forEach(fmt => {
+    const cb = document.querySelector('#fFormats input[value="' + CSS.escape(fmt) + '"]');
+    if (cb) cb.checked = true;
+  });
+  
+  // Check genres
+  (film.genres || []).forEach(g => {
+    const cb = document.querySelector('#fGenres input[value="' + CSS.escape(g) + '"]');
+    if (cb) cb.checked = true;
+  });
+  
+  document.getElementById('formOverlay').classList.add('open');
+}
+
+function clearForm() {
+  document.getElementById('fTitle').value = '';
+  document.getElementById('fCog').value = '';
+  document.getElementById('fMarket').value = '';
+  document.getElementById('fAcqDate').value = '';
+  document.getElementById('fWatched').value = '';
+  // Hide all inline add areas
+  document.querySelectorAll('.inline-add').forEach(el => el.classList.remove('open'));
+}
+
+function closeForm() {
+  document.getElementById('formOverlay').classList.remove('open');
+  editingId = null;
+}
+
+function buildFormOptions() {
+  buildFormatChecks();
+  buildGenreChecks();
+  buildSelect('fVendor', options.vendors, 'Vendor');
+  buildSelect('fUniverse', options.universes || [], 'Universe');
+  buildSelect('fType', options.types, 'Type');
+  buildSelect('fStatus', options.statuses, 'Status');
+}
+
+function buildFormatChecks() {
+  const container = document.getElementById('fFormats');
+  container.innerHTML = options.formats.map(fmt =>
+    '<label class="check-item"><input type="checkbox" value="' + escHTML(fmt) + '">' + escHTML(fmt) + '</label>'
+  ).join('') + '<button class="add-option-btn" data-toggle="addFormatWrap">+ New</button>';
+}
+
+function buildGenreChecks() {
+  const container = document.getElementById('fGenres');
+  container.innerHTML = options.genres.map(g =>
+    '<label class="check-item"><input type="checkbox" value="' + escHTML(g) + '">' + escHTML(g) + '</label>'
+  ).join('') + '<button class="add-option-btn" data-toggle="addGenreWrap">+ New</button>';
+}
+
+// Delegate clicks for dynamic "Add New" buttons
+document.addEventListener('click', (e) => {
+  const toggler = e.target.closest('[data-toggle]');
+  if (toggler) {
+    const targetId = toggler.getAttribute('data-toggle');
+    const wrap = document.getElementById(targetId);
+    if (wrap) { wrap.classList.toggle('open'); wrap.querySelector('input').focus(); }
+  }
+});
+
+function buildSelect(id, opts, label) {
+  const sel = document.getElementById(id);
+  const current = sel.value;
+  const wrapId = 'add' + label + 'Wrap';
+  sel.innerHTML = '<option value="">Select...</option>' +
+    opts.map(o => '<option value="' + escHTML(o) + '">' + escHTML(o) + '</option>').join('') +
+    '<option value="__add__">+ Add new...</option>';
+  sel.value = current;
+  
+  // Handle "add new" selection
+  sel.onchange = function() {
+    if (this.value === '__add__') {
+      this.value = '';
+      document.getElementById(wrapId).classList.add('open');
+      document.getElementById(wrapId).querySelector('input').focus();
+    }
+  };
+}
+
+async function saveForm() {
+  const title = document.getElementById('fTitle').value.trim();
+  if (!title) {
+    toast('Title is required', 'error');
+    return;
+  }
+  
+  const film = {
+    id: editingId || Math.random().toString(36).substring(2, 10),
+    title: title,
+    formats: getCheckedValues('fFormats'),
+    cog: document.getElementById('fCog').value ? parseFloat(document.getElementById('fCog').value) : null,
+    market: document.getElementById('fMarket').value ? parseFloat(document.getElementById('fMarket').value) : null,
+    acquisitionDate: document.getElementById('fAcqDate').value || null,
+    vendor: document.getElementById('fVendor').value || null,
+    type: document.getElementById('fType').value || null,
+    universe: document.getElementById('fUniverse').value || null,
+    status: document.getElementById('fStatus').value || null,
+    genres: getCheckedValues('fGenres'),
+    lastWatched: document.getElementById('fWatched').value || null,
+    poster: null
+  };
+  
+  // Preserve poster if editing
+  if (editingId) {
+    const existing = films.find(f => f.id === editingId);
+    if (existing) {
+      film.poster = existing.poster;
+    }
+  }
+  
+  const saveBtn = document.getElementById('formSave');
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Saving...';
+  
+  if (isConnected) {
+    const action = editingId ? 'update' : 'add';
+    const result = await apiCall(action, { film });
+    if (!result) {
+      saveBtn.disabled = false;
+      saveBtn.textContent = 'Save Film';
+      return;
+    }
+  }
+  
+  // Update local data
+  if (editingId) {
+    const idx = films.findIndex(f => f.id === editingId);
+    if (idx !== -1) films[idx] = film;
+  } else {
+    films.push(film);
+  }
+  
+  const isAdding = !editingId;
+  
+  saveBtn.disabled = false;
+  saveBtn.textContent = 'Save Film';
+  
+  closeForm();
+  applyFilters();
+  toast(isAdding ? 'Film added' : 'Film updated', 'success');
+  
+  // For new films, auto-fetch poster and open modal to confirm
+  if (isAdding && tmdbKey) {
+    const results = await searchTMDB(film.title, film.type, true);
+    if (results.length > 0) {
+      film.poster = results[0].poster;
+      if (isConnected) {
+        await apiCall('update', { film });
+      }
+      applyFilters();
+    }
+    // Open poster modal so user can confirm or change
+    openPosterModal(film.id);
+  }
+}
+
+async function deleteFilm(id) {
+  if (isConnected) {
+    const result = await apiCall('delete', { id });
+    if (!result) return;
+  }
+  films = films.filter(f => f.id !== id);
+  applyFilters();
+  toast('Film deleted', 'success');
+}
+
+function getCheckedValues(containerId) {
+  return Array.from(document.querySelectorAll('#' + containerId + ' input:checked'))
+    .map(cb => cb.value);
+}
+
+// --- Manage Options (Admin) ---
+let manageCategory = 'formats';
+
+function setupManageOptions() {
+  const overlay = document.getElementById('manageOverlay');
+  
+  document.getElementById('manageOptionsBtn').addEventListener('click', () => {
+    document.getElementById('settingsOverlay').classList.remove('open');
+    manageCategory = 'formats';
+    renderManagePanel();
+    overlay.classList.add('open');
+  });
+  
+  document.getElementById('manageClose').addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+  
+  // Tab clicks
+  document.getElementById('manageTabs').addEventListener('click', (e) => {
+    const tab = e.target.closest('.manage-tab');
+    if (!tab) return;
+    manageCategory = tab.dataset.cat;
+    document.querySelectorAll('.manage-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    renderManageList();
+  });
+  
+  // Add option
+  document.getElementById('manageAddBtn').addEventListener('click', addManagedOption);
+  document.getElementById('manageAddInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); addManagedOption(); }
+  });
+}
+
+function addManagedOption() {
+  const input = document.getElementById('manageAddInput');
+  const raw = input.value.trim();
+  if (!raw) return;
+  
+  const formatted = raw.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+  
+  if (options[manageCategory].includes(formatted)) {
+    toast('Already exists', 'error');
+    return;
+  }
+  
+  options[manageCategory].push(formatted);
+  options[manageCategory].sort();
+  saveCustomOption(manageCategory, formatted);
+  input.value = '';
+  renderManageList();
+  toast(formatted + ' added', 'success');
+}
+
+function renderManagePanel() {
+  document.querySelectorAll('.manage-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.cat === manageCategory);
+  });
+  renderManageList();
+}
+
+function renderManageList() {
+  const container = document.getElementById('manageList');
+  const items = options[manageCategory] || [];
+  
+  // Count how many films use each option
+  const usageCounts = {};
+  items.forEach(item => {
+    let count = 0;
+    films.forEach(f => {
+      if (manageCategory === 'formats') {
+        if ((f.formats || []).includes(item)) count++;
+      } else if (manageCategory === 'genres') {
+        if ((f.genres || []).includes(item)) count++;
+      } else if (manageCategory === 'vendors') {
+        if (f.vendor === item) count++;
+      } else if (manageCategory === 'types') {
+        if (f.type === item) count++;
+      } else if (manageCategory === 'statuses') {
+        if (f.status === item) count++;
+      } else if (manageCategory === 'universes') {
+        if (f.universe === item) count++;
+      }
+    });
+    usageCounts[item] = count;
+  });
+  
+  if (items.length === 0) {
+    container.innerHTML = '<div style="text-align:center;color:var(--text-dim);padding:20px;font-size:0.85rem">No options yet</div>';
+    return;
+  }
+  
+  container.innerHTML = items.map(item => {
+    const count = usageCounts[item] || 0;
+    const useLabel = count > 0 ? '<span class="in-use">(' + count + ' titles)</span>' : '';
+    return '<div class="manage-item">' +
+      '<span>' + escHTML(item) + useLabel + '</span>' +
+      '<button class="manage-item-delete" data-value="' + escHTML(item) + '" data-count="' + count + '" title="Remove">&times;</button>' +
+    '</div>';
+  }).join('');
+  
+  // Delete handlers
+  container.querySelectorAll('.manage-item-delete').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const val = btn.dataset.value;
+      const count = parseInt(btn.dataset.count);
+      
+      if (count > 0) {
+        showConfirm('"' + val + '" is used by ' + count + ' title' + (count > 1 ? 's' : '') + '. Remove it anyway? (Existing titles will not be changed.)', () => {
+          removeOption(val);
+        });
+      } else {
+        removeOption(val);
+      }
+    });
+  });
+}
+
+function removeOption(val) {
+  options[manageCategory] = options[manageCategory].filter(v => v !== val);
+  
+  // Remove from custom saved options
+  try {
+    const saved = JSON.parse(localStorage.getItem('shelflife_options') || '{}');
+    if (saved[manageCategory]) {
+      saved[manageCategory] = saved[manageCategory].filter(v => v !== val);
+      localStorage.setItem('shelflife_options', JSON.stringify(saved));
+    }
+  } catch(e) {}
+  
+  // Track removed defaults so they stay removed on reload
+  try {
+    const removed = JSON.parse(localStorage.getItem('shelflife_removed_options') || '{}');
+    if (!removed[manageCategory]) removed[manageCategory] = [];
+    if (!removed[manageCategory].includes(val)) removed[manageCategory].push(val);
+    localStorage.setItem('shelflife_removed_options', JSON.stringify(removed));
+  } catch(e) {}
+  
+  renderManageList();
+  toast(val + ' removed', 'success');
+}
+
+
+// --- Watch Next ---
+let watchNextPool = [];
+let watchNextShown = new Set();
+
+function setupWatchNext() {
+  const overlay = document.getElementById('watchNextOverlay');
+  
+  document.getElementById('watchNextBtn').addEventListener('click', () => {
+    watchNextShown.clear();
+    buildWatchGenres();
+    showWatchSetup();
+    overlay.classList.add('open');
+  });
+  
+  document.getElementById('watchNextClose').addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+  
+  document.getElementById('watchNextSpin').addEventListener('click', pickWatchNext);
+  document.getElementById('watchNextRespin').addEventListener('click', pickWatchNext);
+  document.getElementById('watchNextBack').addEventListener('click', showWatchSetup);
+  
+  document.getElementById('watchNextMark').addEventListener('click', async () => {
+    const id = document.getElementById('watchNextMark').dataset.id;
+    const film = films.find(f => f.id === id);
+    if (!film) return;
+    
+    const watchDate = document.getElementById('watchNextDate').value || new Date().toISOString().slice(0, 10);
+    
+    film.lastWatched = watchDate;
+    
+    if (isConnected) {
+      await apiCall('update', { film });
+    }
+    
+    applyFilters();
+    toast('Marked as watched today', 'success');
+    overlay.classList.remove('open');
+  });
+}
+
+function buildWatchGenres() {
+  const container = document.getElementById('watchGenres');
+  container.innerHTML = options.genres.map(g =>
+    '<label class="check-item"><input type="checkbox" value="' + escHTML(g) + '">' + escHTML(g) + '</label>'
+  ).join('');
+}
+
+function showWatchSetup() {
+  document.getElementById('watchNextSetup').style.display = 'block';
+  document.getElementById('watchNextResult').style.display = 'none';
+}
+
+function pickWatchNext() {
+  // Read selected genres
+  const selectedGenres = Array.from(document.querySelectorAll('#watchGenres input:checked')).map(cb => cb.value);
+  const selectedTypes = Array.from(document.querySelectorAll('#watchTypes input:checked')).map(cb => cb.value);
+  
+  // Build candidate pool
+  let candidates = films.filter(f => {
+    // Type filter
+    if (selectedTypes.length > 0 && f.type && !selectedTypes.includes(f.type)) return false;
+    // Genre filter
+    if (selectedGenres.length > 0) {
+      if (!(f.genres || []).some(g => selectedGenres.includes(g))) return false;
+    }
+    // Exclude already shown this session
+    if (watchNextShown.has(f.id)) return false;
+    return true;
+  });
+  
+  if (candidates.length === 0) {
+    // Reset shown pool and try again
+    watchNextShown.clear();
+    candidates = films.filter(f => {
+      if (selectedTypes.length > 0 && f.type && !selectedTypes.includes(f.type)) return false;
+      if (selectedGenres.length > 0) {
+        if (!(f.genres || []).some(g => selectedGenres.includes(g))) return false;
+      }
+      return true;
+    });
+  }
+  
+  if (candidates.length === 0) {
+    toast('No titles match those filters', 'error');
+    return;
+  }
+  
+  // Weight: never watched = 10, older watched = 5, recent watched = 1
+  const now = Date.now();
+  const weighted = candidates.map(f => {
+    let weight = 10; // default: never watched
+    if (f.lastWatched) {
+      const daysSince = (now - new Date(f.lastWatched).getTime()) / (1000 * 60 * 60 * 24);
+      if (daysSince > 180) weight = 8;
+      else if (daysSince > 90) weight = 5;
+      else if (daysSince > 30) weight = 3;
+      else weight = 1;
+    }
+    // Bonus for unwatched status
+    if (f.status && f.status.toLowerCase() === 'unwatched') weight += 5;
+    return { film: f, weight };
+  });
+  
+  // Weighted random selection
+  const totalWeight = weighted.reduce((s, w) => s + w.weight, 0);
+  let roll = Math.random() * totalWeight;
+  let pick = weighted[0].film;
+  for (const w of weighted) {
+    roll -= w.weight;
+    if (roll <= 0) { pick = w.film; break; }
+  }
+  
+  watchNextShown.add(pick.id);
+  showWatchResult(pick);
+}
+
+function showWatchResult(film) {
+  document.getElementById('watchNextSetup').style.display = 'none';
+  document.getElementById('watchNextResult').style.display = 'block';
+  
+  // Poster
+  const posterEl = document.getElementById('wnPoster');
+  if (film.poster) {
+    posterEl.innerHTML = '<img src="' + escHTML(film.poster) + '" alt="" loading="lazy">';
+  } else {
+    posterEl.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+  }
+  
+  // Title
+  document.getElementById('wnTitle').textContent = film.title;
+  
+  // Meta
+  let metaParts = [];
+  if (film.type) metaParts.push(film.type);
+  if (film.formats && film.formats.length) metaParts.push(film.formats.join(', '));
+  if (film.status) metaParts.push(film.status);
+  document.getElementById('wnMeta').textContent = metaParts.join(' \u00b7 ');
+  
+  // Genres
+  document.getElementById('wnGenres').innerHTML = (film.genres || []).map(g =>
+    '<span class="genre-chip">' + g + '</span>'
+  ).join('');
+  
+  // Reason
+  let reason = '';
+  if (!film.lastWatched) {
+    reason = "You've never watched this one! Time to fix that.";
+  } else {
+    const days = Math.floor((Date.now() - new Date(film.lastWatched).getTime()) / (1000 * 60 * 60 * 24));
+    if (days > 365) reason = "It's been over a year since you last watched this. Due for a rewatch.";
+    else if (days > 180) reason = "Last watched about " + Math.floor(days / 30) + " months ago. Could be time.";
+    else if (days > 90) reason = "Watched a few months back, but enough time has passed.";
+    else reason = "Watched " + days + " days ago, but it made the cut.";
+  }
+  document.getElementById('wnReason').textContent = reason;
+  
+  // Store ID for mark as watched
+  document.getElementById('watchNextMark').dataset.id = film.id;
+  document.getElementById('watchNextDate').value = '';
+}
+
+// --- Posters & TMDB ---
+let posterEditId = null;
+let posterSelectedUrl = null;
+
+function openPosterModal(id) {
+  const film = films.find(f => f.id === id);
+  if (!film) return;
+  posterEditId = id;
+  posterSelectedUrl = film.poster || null;
+  
+  document.getElementById('posterModalTitle').textContent = film.title;
+  document.getElementById('posterCustomUrl').value = film.poster || '';
+  document.getElementById('posterSearchResults').style.display = 'none';
+  document.getElementById('posterSearchResults').innerHTML = '';
+  updatePosterPreview(film.poster);
+  
+  document.getElementById('posterOverlay').classList.add('open');
+}
+
+function updatePosterPreview(url) {
+  const preview = document.getElementById('posterPreview');
+  if (url) {
+    preview.innerHTML = '<img src="' + escHTML(url) + '" alt="">';
+  } else {
+    preview.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+  }
+}
+
+async function searchTMDB(title, type, silent) {
+  if (!tmdbKey) {
+    if (!silent) toast('Add your TMDB API key in Settings first', 'error');
+    return [];
+  }
+  const primary = (type && type.toLowerCase() === 'series') ? 'tv' : 'movie';
+  const fallback = primary === 'tv' ? 'movie' : 'tv';
+  
+  for (const endpoint of [primary, fallback]) {
+    const url = 'https://api.themoviedb.org/3/search/' + endpoint + '?api_key=' + encodeURIComponent(tmdbKey) + '&query=' + encodeURIComponent(title);
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('TMDB API error');
+      const data = await res.json();
+      const results = (data.results || []).filter(r => r.poster_path).slice(0, 6).map(r => ({
+        title: r.title || r.name,
+        year: (r.release_date || r.first_air_date || '').slice(0, 4),
+        poster: 'https://image.tmdb.org/t/p/w300' + r.poster_path
+      }));
+      if (results.length > 0) return results;
+    } catch (e) {
+      console.error('TMDB search failed:', e);
+    }
+  }
+  if (!silent) toast('No TMDB results for "' + title + '"', 'error');
+  return [];
+}
+
+function setupPosterModal() {
+  const overlay = document.getElementById('posterOverlay');
+  
+  document.getElementById('posterClose').addEventListener('click', () => {
+    overlay.classList.remove('open');
+  });
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+  
+  // Search TMDB
+  document.getElementById('posterSearchBtn').addEventListener('click', async () => {
+    const film = films.find(f => f.id === posterEditId);
+    if (!film) return;
+    const btn = document.getElementById('posterSearchBtn');
+    btn.disabled = true;
+    btn.textContent = 'Searching...';
+    const results = await searchTMDB(film.title, film.type);
+    btn.disabled = false;
+    btn.textContent = 'Search TMDB';
+    
+    const container = document.getElementById('posterSearchResults');
+    if (results.length === 0) {
+      container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-dim);font-size:0.8rem;padding:8px">No results found</div>';
+      container.style.display = 'grid';
+      return;
+    }
+    container.innerHTML = results.map(r =>
+      '<div class="poster-option" data-url="' + escHTML(r.poster) + '" title="' + escHTML(r.title + (r.year ? ' (' + r.year + ')' : '')) + '">' +
+        '<img src="' + escHTML(r.poster) + '" alt="" loading="lazy">' +
+      '</div>'
+    ).join('');
+    container.style.display = 'grid';
+    
+    // Click to select
+    container.querySelectorAll('.poster-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        container.querySelectorAll('.poster-option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        posterSelectedUrl = opt.dataset.url;
+        document.getElementById('posterCustomUrl').value = opt.dataset.url;
+        updatePosterPreview(opt.dataset.url);
+      });
+    });
+  });
+  
+  // Custom URL preview
+  document.getElementById('posterCustomUrl').addEventListener('input', (e) => {
+    const url = e.target.value.trim();
+    if (url) {
+      posterSelectedUrl = url;
+      updatePosterPreview(url);
+    }
+  });
+  
+  // Save
+  document.getElementById('posterSave').addEventListener('click', async () => {
+    const url = document.getElementById('posterCustomUrl').value.trim() || posterSelectedUrl;
+    const film = films.find(f => f.id === posterEditId);
+    if (!film) return;
+    
+    film.poster = url || null;
+    
+    // Sync to Sheets if connected
+    if (isConnected) {
+      await apiCall('update', { film });
+    }
+    
+    applyFilters();
+    overlay.classList.remove('open');
+    toast('Poster updated', 'success');
+  });
+  
+  // Remove
+  document.getElementById('posterRemove').addEventListener('click', async () => {
+    const film = films.find(f => f.id === posterEditId);
+    if (!film) return;
+    
+    film.poster = null;
+    
+    if (isConnected) {
+      await apiCall('update', { film });
+    }
+    
+    applyFilters();
+    overlay.classList.remove('open');
+    toast('Poster removed', 'success');
+  });
+}
+
+async function fetchAllMissingPosters() {
+  if (!tmdbKey) {
+    toast('Add your TMDB API key in Settings first', 'error');
+    return;
+  }
+  
+  const missing = films.filter(f => !f.poster);
+  if (missing.length === 0) {
+    toast('All titles already have posters', 'success');
+    return;
+  }
+  
+  const btn = document.getElementById('fetchPostersBtn');
+  let fetched = 0;
+  let failed = 0;
+  
+  for (let i = 0; i < missing.length; i++) {
+    const f = missing[i];
+    btn.textContent = 'Fetching ' + (i + 1) + '/' + missing.length + '...';
+    btn.disabled = true;
+    
+    const results = await searchTMDB(f.title, f.type, true);
+    if (results.length > 0) {
+      f.poster = results[0].poster;
+      fetched++;
+    } else {
+      failed++;
+    }
+    
+    // Small delay to avoid hitting TMDB rate limits
+    await new Promise(r => setTimeout(r, 250));
+  }
+  
+  // Sync all to Sheets if connected
+  if (isConnected && fetched > 0) {
+    btn.textContent = 'Syncing to Sheet...';
+    await apiCall('seed', { films });
+  }
+  
+  btn.disabled = false;
+  btn.textContent = 'Fetch All Missing Posters';
+  applyFilters();
+  toast('Fetched ' + fetched + ' posters' + (failed ? ', ' + failed + ' not found' : ''), fetched > 0 ? 'success' : 'error');
+}
+
+// --- Settings ---
+function setupSettings() {
+  const overlay = document.getElementById('settingsOverlay');
+  const urlInput = document.getElementById('sheetsUrl');
+  
+  document.getElementById('settingsBtn').addEventListener('click', () => {
+    overlay.classList.add('open');
+    urlInput.value = sheetsUrl;
+    document.getElementById('tmdbKey').value = tmdbKey;
+    document.getElementById('settingsVersion').textContent = APP_VERSION;
+  });
+  document.getElementById('settingsClose').addEventListener('click', () => overlay.classList.remove('open'));
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+  
+  // Sync button
+  document.getElementById('syncBtn').addEventListener('click', () => {
+    if (!sheetsUrl) {
+      toast('Set up Google Sheets in Settings first', 'error');
+      return;
+    }
+    loadData().then(() => toast('Synced', 'success'));
+  });
+  
+  // Connect
+  document.getElementById('connectBtn').addEventListener('click', async () => {
+    const url = urlInput.value.trim();
+    if (!url) {
+      sheetsUrl = '';
+      localStorage.removeItem('shelflife_sheets_url');
+      films = [...SEED_DATA];
+      isConnected = false;
+      setConnected(false);
+      applyFilters();
+      toast('Disconnected', 'success');
+      return;
+    }
+    sheetsUrl = url;
+    localStorage.setItem('shelflife_sheets_url', url);
+    await loadData();
+    if (isConnected) {
+      toast('Connected!', 'success');
+      overlay.classList.remove('open');
+    }
+  });
+  
+  // Seed
+  document.getElementById('seedBtn').addEventListener('click', async () => {
+    if (!sheetsUrl) {
+      toast('Connect to Google Sheets first', 'error');
+      return;
+    }
+    showConfirm('This will replace all data in your Sheet with the current ' + films.length + ' titles. Continue?', async () => {
+      const btn = document.getElementById('seedBtn');
+      btn.disabled = true;
+      btn.textContent = 'Seeding...';
+      const result = await apiCall('seed', { films });
+      btn.disabled = false;
+      btn.textContent = 'Seed Sheet with Current Data';
+      if (result) toast('Sheet seeded with ' + films.length + ' titles', 'success');
+    });
+  });
+  
+  // TMDB key
+  document.getElementById('saveTmdbBtn').addEventListener('click', () => {
+    const key = document.getElementById('tmdbKey').value.trim();
+    tmdbKey = key;
+    if (key) {
+      localStorage.setItem('shelflife_tmdb_key', key);
+      toast('TMDB key saved', 'success');
+    } else {
+      localStorage.removeItem('shelflife_tmdb_key');
+      toast('TMDB key removed', 'success');
+    }
+  });
+  
+  // Fetch all posters
+  document.getElementById('fetchPostersBtn').addEventListener('click', fetchAllMissingPosters);
+  
+  // Export
+  document.getElementById('exportBtn').addEventListener('click', exportCSV);
+}
+
+// --- CSV Export ---
+function exportCSV() {
+  const headers = ['Title','Genre','Universe','Format/System','CoG','Market','Acquisition Date','Vendor','Type','Status','Last Watched'];
+  const rows = films.map(f => [
+    f.title, (f.genres||[]).join(', '), f.universe||'', (f.formats||[]).join(', '),
+    f.cog != null ? f.cog.toFixed(2) : '', f.market != null ? f.market.toFixed(2) : '',
+    f.acquisitionDate||'', f.vendor||'', f.type||'', f.status||'',
+    f.lastWatched||''
+  ]);
+  const csv = [headers,...rows].map(r => r.map(c => {
+    const s = String(c);
+    return s.includes(',') || s.includes('"') ? '"'+s.replace(/"/g,'""')+'"' : s;
+  }).join(',')).join('\n');
+  
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'shelf_life_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
+// --- Toast ---
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (type ? ' ' + type : '');
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => el.className = 'toast', 2500);
+}
+
+// --- Confirm Dialog ---
+function showConfirm(msg, onYes) {
+  const overlay = document.getElementById('confirmOverlay');
+  document.getElementById('confirmMsg').textContent = msg;
+  overlay.classList.add('open');
+  
+  const yesBtn = document.getElementById('confirmYes');
+  const noBtn = document.getElementById('confirmNo');
+  
+  const cleanup = () => {
+    overlay.classList.remove('open');
+    yesBtn.onclick = null;
+    noBtn.onclick = null;
+  };
+  
+  yesBtn.onclick = () => { cleanup(); onYes(); };
+  noBtn.onclick = cleanup;
+}
+</script>
+</body>
+</html>
