@@ -207,6 +207,7 @@ body{
 .meta-tag.type-movie{color:#a78bfa}
 .meta-tag.type-series{color:#34d399}
 .meta-tag.type-documentary{color:#fbbf24}
+.meta-tag.year-tag{color:var(--text-dim);font-size:0.65rem}
 .status-tag{font-size:0.7rem;padding:2px 8px;border-radius:20px}
 .status-tag.keep{background:#166534;color:#4ade80}
 .status-tag.unwatched{background:#713f12;color:#fbbf24}
@@ -267,6 +268,26 @@ body{
 .poster-search-results{
   display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
   margin:12px 0;max-height:200px;overflow-y:auto;
+}
+.github-poster-hint{
+  margin-top:12px;padding:12px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;
+}
+.github-hint-label{
+  font-size:0.7rem;color:var(--text-dim);text-transform:uppercase;
+  letter-spacing:0.06em;margin-bottom:6px;
+}
+.github-hint-filename{
+  font-family:monospace;font-size:0.85rem;color:var(--accent);
+  margin-bottom:8px;word-break:break-all;
+}
+.github-hint-note{
+  font-size:0.72rem;color:var(--text-dim);margin-top:6px;line-height:1.4;
+}
+.github-hint-note code{
+  background:var(--bg);padding:1px 5px;border-radius:3px;
+  color:var(--text);font-size:0.75rem;
 }
 .poster-option{
   border-radius:4px;overflow:hidden;cursor:pointer;
@@ -345,6 +366,73 @@ body{
   font-size:0.8rem;cursor:pointer;font-family:inherit;
 }
 .add-option-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Multi-select dropdown */
+.multi-select{position:relative}
+.multi-select-trigger{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--bg);border:1px solid var(--border);
+  padding:8px 12px;border-radius:8px;cursor:pointer;
+  min-height:42px;gap:8px;transition:border-color 0.15s;
+}
+.multi-select-trigger:hover{border-color:var(--accent)}
+.multi-select.open .multi-select-trigger{border-color:var(--accent);border-radius:8px 8px 0 0}
+.multi-select-tags{display:flex;flex-wrap:wrap;gap:4px;flex:1}
+.multi-select-placeholder{color:var(--text-dim);font-size:0.85rem}
+.multi-select-tag{
+  display:flex;align-items:center;gap:3px;
+  background:var(--surface2);border:1px solid var(--border);
+  padding:2px 8px;border-radius:14px;font-size:0.75rem;
+  color:var(--text);white-space:nowrap;
+}
+.multi-select-tag .remove-tag{
+  cursor:pointer;color:var(--text-dim);font-weight:700;
+  font-size:0.85rem;line-height:1;margin-left:2px;
+}
+.multi-select-tag .remove-tag:hover{color:var(--red)}
+.multi-select-dropdown{
+  display:none;position:absolute;top:100%;left:0;right:0;
+  background:var(--bg);border:1px solid var(--accent);border-top:none;
+  border-radius:0 0 8px 8px;max-height:200px;overflow-y:auto;
+  z-index:10;
+}
+.multi-select.open .multi-select-dropdown{display:block}
+.multi-select-option{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 12px;cursor:pointer;font-size:0.85rem;
+  color:var(--text-dim);transition:all 0.1s;
+  border-bottom:1px solid var(--border);
+}
+.multi-select-option:last-child{border-bottom:none}
+.multi-select-option:hover{background:var(--surface2)}
+.multi-select-option.selected{color:var(--accent);font-weight:600}
+.multi-select-option .check-mark{
+  width:16px;height:16px;border:1px solid var(--border);
+  border-radius:3px;display:grid;place-items:center;flex-shrink:0;
+  font-size:0.7rem;
+}
+.multi-select-option.selected .check-mark{
+  background:var(--accent);border-color:var(--accent);color:var(--bg);
+}
+.multi-select-search{
+  position:sticky;top:0;z-index:1;
+  padding:8px;background:var(--bg);
+  border-bottom:1px solid var(--border);
+}
+.multi-select-search input{
+  width:100%;background:var(--surface2);border:1px solid var(--border);
+  color:var(--text);padding:6px 10px;border-radius:6px;
+  font-family:inherit;font-size:0.85rem;outline:none;
+}
+.multi-select-search input:focus{border-color:var(--accent)}
+.multi-select-none{
+  padding:10px 12px;font-size:0.8rem;color:var(--text-dim);text-align:center;
+}
+.multi-select-option-add{
+  padding:10px 12px;cursor:pointer;font-size:0.85rem;
+  color:var(--accent);border-top:1px solid var(--border);
+}
+.multi-select-option-add:hover{background:var(--surface2)}
 
 /* Inline add */
 .inline-add{display:none;gap:6px;margin-top:8px;align-items:center}
@@ -463,6 +551,20 @@ body{
 .manage-item .in-use{font-size:0.65rem;color:var(--text-dim);margin-left:8px}
 .manage-add-row{display:flex;gap:8px;align-items:center}
 .manage-add-row .field-input{flex:1}
+
+/* Watched field toggle */
+.watched-field{display:flex;flex-direction:column;gap:0}
+.watched-toggle{
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text-dim);padding:8px 12px;border-radius:8px;
+  font-family:inherit;font-size:0.85rem;cursor:pointer;
+  text-align:left;transition:all 0.15s;
+}
+.watched-toggle.active{
+  background:var(--accent-glow);color:var(--accent);
+  border-color:#d4a84344;
+}
+.watched-toggle.active::before{content:"✓ ";}
 
 .wn-card{
   background:var(--bg);border:1px solid var(--border);
@@ -583,8 +685,19 @@ body{
       </div>
       
       <div class="field">
+        <label class="field-label">Release Year / Season</label>
+        <input type="text" class="field-input" id="fYear" placeholder="e.g. 1999 or S1-S4">
+      </div>
+      
+      <div class="field">
         <label class="field-label">Format / System</label>
-        <div class="check-grid" id="fFormats"></div>
+        <div class="multi-select" id="fFormatsSelect">
+          <div class="multi-select-trigger" id="fFormatsTrigger">
+            <div class="multi-select-tags" id="fFormatsTags"><span class="multi-select-placeholder">Select formats...</span></div>
+            <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="multi-select-dropdown" id="fFormatsDropdown"></div>
+        </div>
         <div class="inline-add" id="addFormatWrap">
           <input type="text" placeholder="New format" id="addFormatInput">
           <button id="addFormatConfirm">Add</button>
@@ -609,7 +722,10 @@ body{
         </div>
         <div class="field">
           <label class="field-label">Last Watched</label>
-          <input type="date" class="field-input" id="fWatched">
+          <div class="watched-field">
+            <button type="button" class="watched-toggle" id="fWatchedToggle">Mark as Unwatched</button>
+            <input type="date" class="field-input" id="fWatched" style="margin-top:6px">
+          </div>
         </div>
       </div>
       
@@ -652,7 +768,13 @@ body{
       
       <div class="field">
         <label class="field-label">Genre</label>
-        <div class="check-grid" id="fGenres"></div>
+        <div class="multi-select" id="fGenresSelect">
+          <div class="multi-select-trigger" id="fGenresTrigger">
+            <div class="multi-select-tags" id="fGenresTags"><span class="multi-select-placeholder">Select genres...</span></div>
+            <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="multi-select-dropdown" id="fGenresDropdown"></div>
+        </div>
         <div class="inline-add" id="addGenreWrap">
           <input type="text" placeholder="New genre" id="addGenreInput">
           <button id="addGenreConfirm">Add</button>
@@ -688,6 +810,12 @@ body{
       <div class="setting-help">Free from themoviedb.org. Needed for automatic poster lookup.</div>
     </div>
     <button class="btn btn-outline" id="saveTmdbBtn">Save Key</button>
+    <div class="setting-group" style="margin-top:16px">
+      <label class="setting-label">GitHub Posters Folder URL</label>
+      <input type="text" class="setting-input" id="githubPostersInput" placeholder="https://yourusername.github.io/shelf-life/posters">
+      <div class="setting-help">Where your scanned cover JPGs are hosted. Upload files to the <code style="background:var(--bg);padding:1px 4px;border-radius:3px">/posters/</code> folder in your GitHub repo.</div>
+    </div>
+    <button class="btn btn-outline" id="saveGithubPostersBtn">Save Posters URL</button>
     <button class="btn btn-outline" id="fetchPostersBtn">Fetch All Missing Posters</button>
     <button class="btn btn-outline" id="seedBtn">Seed Sheet with Current Data</button>
     <button class="btn btn-outline" id="manageOptionsBtn">Manage Dropdown Options</button>
@@ -706,7 +834,13 @@ body{
     
     <div class="filter-section">
       <div class="filter-section-label">Format</div>
-      <div class="check-grid" id="filterFormats"></div>
+      <div class="multi-select" id="filterFormatsSelect">
+        <div class="multi-select-trigger" id="filterFormatsTrigger">
+          <div class="multi-select-tags" id="filterFormatsTags"><span class="multi-select-placeholder">Any format...</span></div>
+          <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="multi-select-dropdown" id="filterFormatsDropdown"></div>
+      </div>
     </div>
     
     <div class="filter-section">
@@ -731,7 +865,13 @@ body{
     
     <div class="filter-section">
       <div class="filter-section-label">Genre</div>
-      <div class="check-grid" id="filterGenres"></div>
+      <div class="multi-select" id="filterGenresSelect">
+        <div class="multi-select-trigger" id="filterGenresTrigger">
+          <div class="multi-select-tags" id="filterGenresTags"><span class="multi-select-placeholder">Any genre...</span></div>
+          <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="multi-select-dropdown" id="filterGenresDropdown"></div>
+      </div>
     </div>
     
     <div class="filter-section">
@@ -793,7 +933,13 @@ body{
       
       <div class="field">
         <label class="field-label">Mood Filter (optional)</label>
-        <div class="check-grid" id="watchGenres"></div>
+      <div class="multi-select" id="watchGenresSelect">
+        <div class="multi-select-trigger" id="watchGenresTrigger">
+          <div class="multi-select-tags" id="watchGenresTags"><span class="multi-select-placeholder">Any genre (optional)...</span></div>
+          <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="multi-select-dropdown" id="watchGenresDropdown"></div>
+      </div>
       </div>
       
       <div class="field">
@@ -841,11 +987,23 @@ body{
     <div class="poster-preview" id="posterPreview">
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
     </div>
-    <button class="btn btn-outline" id="posterSearchBtn" style="margin-bottom:8px">Search TMDB</button>
+    <div class="field" style="margin-bottom:8px">
+      <label class="field-label">Search title</label>
+      <div style="display:flex;gap:6px">
+        <input type="text" class="field-input" id="posterSearchTitle" placeholder="Edit title if needed...">
+        <button class="btn" id="posterSearchBtn" style="width:auto;padding:10px 14px;white-space:nowrap">Search TMDB</button>
+      </div>
+    </div>
     <div id="posterSearchResults" class="poster-search-results" style="display:none"></div>
-    <div class="field" style="margin-top:8px">
-      <label class="field-label">Or paste image URL</label>
-      <input type="url" class="field-input" id="posterCustomUrl" placeholder="https://...">
+    <div class="field" style="margin-top:4px">
+      <label class="field-label">Or paste any image URL (imgur, your scans, etc.)</label>
+      <input type="url" class="field-input" id="posterCustomUrl" placeholder="https://i.imgur.com/...">
+    </div>
+    <div class="github-poster-hint" id="githubPosterHint">
+      <div class="github-hint-label">Your scanned covers</div>
+      <div class="github-hint-filename" id="githubFilename"></div>
+      <button class="btn btn-outline" id="checkGithubBtn">Check My Posters Folder</button>
+      <div class="github-hint-note">Upload as this filename to your GitHub <code>/posters/</code> folder</div>
     </div>
     <div class="btn-row">
       <button class="btn btn-outline" id="posterRemove">Remove</button>
@@ -870,12 +1028,12 @@ body{
 
 <script>
 // ==========================================
-//  SHELF LIFE — v0.7.1 (Fix empty seed bug)
-const APP_VERSION = 'v0.7.1';
+//  SHELF LIFE — v0.8.3 (Fix JS date string format)
+const APP_VERSION = 'v0.8.3';
 // ==========================================
 
-const SEED_DATA = [{"id":"e1169767","title":"1776","formats":["DVD"],"cog":0.0,"market":14.85,"acquisitionDate":null,"vendor":"Gift","type":null,"status":"Unwatched","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"fa68ba97","title":"2001 A Space Oddysey","formats":["DVD"],"cog":3.49,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Sci-Fi","Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"95e3fcfb","title":"28 Days Later (28 Weeks Later)","formats":["Blu-ray"],"cog":10.0,"market":40.0,"acquisitionDate":null,"vendor":"Bull Moose","type":"Movie","status":"Keep","genres":["Zombie"],"universe":null,"lastWatched":null,"poster":null},{"id":"17cf58c8","title":"A Midsummer Night's Dream","formats":["Blu-ray"],"cog":3.0,"market":5.5,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","type":"Movie","status":"Unwatched","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"06b4372b","title":"A Quiet Place [Pt 1 & Pt 2]","formats":["Blu-ray"],"cog":10.6,"market":8.59,"acquisitionDate":"2021-11-19","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Creature","Post-Apocalypse"],"universe":null,"lastWatched":null,"poster":null},{"id":"a8e1d5a0","title":"A Scanner Darkly","formats":[],"cog":13.04,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","type":"Movie","status":"Keep","genres":["Cyber-Thriller","Dystopia","Sci-Fi"],"universe":null,"lastWatched":null,"poster":null},{"id":"0b1676c8","title":"Alien Quadrilogy [Alien, Aliens, Alien 3, Alien Resurrection]","formats":["Blu-ray"],"cog":15.0,"market":27.68,"acquisitionDate":null,"vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Extra-Terrestrial","Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"742ce6ab","title":"American Psycho","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Used Book Superstore","type":"Movie","status":"Sell/donate","genres":["Psychological Thriller","Slasher"],"universe":null,"lastWatched":null,"poster":null},{"id":"2691a07f","title":"American Psycho","formats":["Blu-ray"],"cog":8.49,"market":null,"acquisitionDate":"2021-08-18","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Psychological Thriller","Slasher"],"universe":null,"lastWatched":null,"poster":null},{"id":"0dfc1a92","title":"Angel [S1]","formats":["DVD"],"cog":null,"market":9.0,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Drama","Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"514055e1","title":"Angel [S2]","formats":["DVD"],"cog":null,"market":10.0,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Drama","Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"7d70d25f","title":"Annabelle Creation","formats":["DVD"],"cog":null,"market":3.85,"acquisitionDate":null,"vendor":"Used Book Superstore","type":"Movie","status":"Unwatched","genres":["Possession"],"universe":null,"lastWatched":null,"poster":null},{"id":"9b2d3d00","title":"Ant-Man","formats":["4k","Blu-ray","DVD","Google"],"cog":null,"market":5.52,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Super Powered"],"universe":"Marvel","lastWatched":null,"poster":null},{"id":"4d40c1c4","title":"Aquaman","formats":["Blu-ray","Google"],"cog":15.0,"market":5.0,"acquisitionDate":"2019-04-19","vendor":"Target","type":"Movie","status":"Keep","genres":["Super Powered"],"universe":"DC","lastWatched":null,"poster":null},{"id":"4ca8d1d5","title":"Armageddon","formats":["DVD"],"cog":2.99,"market":4.26,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Disaster","Space"],"universe":null,"lastWatched":"May 20, 2026","poster":null},{"id":"72cd71f0","title":"Arrested Development [S2]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Dysfunctional Family","Sitcom"],"universe":null,"lastWatched":null,"poster":null},{"id":"088160f3","title":"Arrested Development [S3]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Dysfunctional Family","Sitcom"],"universe":null,"lastWatched":null,"poster":null},{"id":"7ded9732","title":"Arrival","formats":["Google"],"cog":19.99,"market":null,"acquisitionDate":"2017-03-14","vendor":"Google","type":"Movie","status":"Keep","genres":["Extra-Terrestrial","Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"a7791798","title":"Avatar the Last Airbender","formats":["DVD"],"cog":25.29,"market":21.72,"acquisitionDate":"2019-09-02","vendor":"Bull Moose","type":"Series","status":"Keep","genres":["Fantasy"],"universe":null,"lastWatched":null,"poster":null},{"id":"78bc60be","title":"Avengers: Age of Ultron","formats":["3D","Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["AI","Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"f863f50e","title":"Avengers: Endgame","formats":["4k","Blu-ray","DVD","Google","Vudu"],"cog":13.8,"market":null,"acquisitionDate":"2021-11-15","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Super Powered","Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"35fae4a7","title":"Back to the Future Trilogy","formats":["Blu-ray"],"cog":16.05,"market":12.49,"acquisitionDate":"2025-03-29","vendor":"Walmart","type":"Movie","status":"Keep","genres":["Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"bb5b14ce","title":"Basic Instinct","formats":["DVD"],"cog":2.49,"market":4.78,"acquisitionDate":"2024-11-10","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Crime","Femme Fatale","Mystery","Psychological","Thriller"],"universe":null,"lastWatched":null,"poster":null},{"id":"91d871e5","title":"Batman Returns","formats":["DVD"],"cog":2.5,"market":6.79,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":"DC","lastWatched":null,"poster":null},{"id":"2e92fc70","title":"Battlestar Galactica [s2]","formats":["Blu-ray"],"cog":7.96,"market":null,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":["Sci-Fi","Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"43fcd7db","title":"Beetlejuice","formats":["Blu-ray"],"cog":4.0,"market":null,"acquisitionDate":"2017-06-24","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Ghoul","Paranormal"],"universe":null,"lastWatched":null,"poster":null},{"id":"1b57b1b5","title":"Best In Show","formats":["DVD"],"cog":2.99,"market":6.88,"acquisitionDate":"2025-09-20","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Comedy","Mockumentary"],"universe":null,"lastWatched":null,"poster":null},{"id":"07997449","title":"Bill & Ted's Excellent Adventure","formats":["DVD"],"cog":5.99,"market":8.99,"acquisitionDate":"2023-11-11","vendor":"Stacia","type":"Movie","status":"Keep","genres":["Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"c5f6d371","title":"Birds of Prey and the Fantabulous Emancipation of One Harley Quinn","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"f785eac3","title":"Black Panther","formats":["Blu-ray","Google"],"cog":23.0,"market":null,"acquisitionDate":"2018-05-16","vendor":"Target","type":"Movie","status":"Keep","genres":["Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"dfdc940f","title":"Black Widow","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Assassin","Spy","Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"b32e07a0","title":"Blade","formats":["Blu-ray"],"cog":7.43,"market":null,"acquisitionDate":"2021-11-15","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Super Powered","Vampire"],"universe":"Marvel","lastWatched":null,"poster":null},{"id":"6c4bee0b","title":"Blade Runner","formats":["Blu-ray"],"cog":5.3,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["AI","Dystopia"],"universe":null,"lastWatched":null,"poster":null},{"id":"40bef418","title":"Book of Life, The","formats":["Google"],"cog":0.0,"market":0.0,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Afterlife","Love Triangle","Musical"],"universe":null,"lastWatched":null,"poster":null},{"id":"0ad3ab6f","title":"Buffy the Vampire Slayer [S1]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"e918c487","title":"Buffy the Vampire Slayer [S2]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"a8d55b10","title":"Buffy the Vampire Slayer [S3]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"1d0405d5","title":"Buffy the Vampire Slayer [S4]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"252938e4","title":"Burlesque","formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2024-11-10","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"d0ffa08e","title":"Cabin in the Woods, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Bull Moose","type":"Movie","status":"Keep","genres":["Creature"],"universe":null,"lastWatched":null,"poster":null},{"id":"1429f333","title":"Captain America Civil War","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"0c396d46","title":"Captain Marvel","formats":["4k","Blu-ray","DVD","Google","Vudu"],"cog":13.8,"market":null,"acquisitionDate":"2021-11-15","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Space","Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"e888469e","title":"Casablanca","formats":["Blu-ray"],"cog":4.99,"market":6.99,"acquisitionDate":"2024-10-05","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"6690b514","title":"Charlie's Angels [2019]","formats":["Google"],"cog":19.99,"market":null,"acquisitionDate":"2020-09-01","vendor":"Google","type":"Movie","status":"Keep","genres":["Secret Agent"],"universe":null,"lastWatched":null,"poster":null},{"id":"d3a738fd","title":"Clash of the Titans","formats":["DVD"],"cog":2.49,"market":6.79,"acquisitionDate":"2023-06-09","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Mythology"],"universe":null,"lastWatched":null,"poster":null},{"id":"3d23261c","title":"Code Geass Lelouch of the Rebellion","formats":["DVD"],"cog":20.0,"market":24.47,"acquisitionDate":null,"vendor":"Convention","type":"Series","status":"Keep","genres":["Mecha","Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"a928b388","title":"Code Geass Lelouch of the Rebellion R2","formats":["Blu-ray"],"cog":29.74,"market":25.97,"acquisitionDate":"2020-09-22","vendor":"Best Buy","type":"Series","status":"Keep","genres":["Mecha","Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"cff9cb68","title":"Conjuring, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"534155b9","title":"Constantine","formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2024-11-10","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":"DC","lastWatched":null,"poster":null},{"id":"631f9f7d","title":"Contact","formats":[],"cog":6.0,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","type":"Movie","status":"Keep","genres":["Extra-Terrestrial","Sci-Fi"],"universe":null,"lastWatched":null,"poster":null},{"id":"0c33ec72","title":"Crawl","formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2024-10-05","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"d5878d99","title":"Cutie Honey","formats":["DVD"],"cog":0.0,"market":12.85,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Magical Girl"],"universe":null,"lastWatched":null,"poster":null},{"id":"90cc9162","title":"Dark Knight, The","formats":["Blu-ray"],"cog":1.89,"market":null,"acquisitionDate":"2023-08-28","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":"DC","lastWatched":null,"poster":null},{"id":"baeb1079","title":"Dark Water","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Unwatched","genres":["Horror"],"universe":null,"lastWatched":null,"poster":null},{"id":"c401dd40","title":"Dawn of the Planet of the Apes","formats":["Google"],"cog":8.49,"market":null,"acquisitionDate":"2017-07-16","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Dystopia"],"universe":null,"lastWatched":null,"poster":null},{"id":"8553a997","title":"Day After Tomorrow, The","formats":["DVD"],"cog":1.99,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Disaster"],"universe":null,"lastWatched":null,"poster":null},{"id":"562d1631","title":"Daybreakers","formats":["DVD"],"cog":3.99,"market":null,"acquisitionDate":"2024-10-03","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Sci-Fi","Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"29e51d97","title":"Dead Like Me","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Series","status":"Keep","genres":["Fantasy"],"universe":null,"lastWatched":null,"poster":null},{"id":"e37ea234","title":"Dead Zone, The","formats":["DVD"],"cog":3.99,"market":null,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"5c092237","title":"Deadpool","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"d190c428","title":"Deadpool 2","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"8baece9e","title":"Descent, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Horror"],"universe":null,"lastWatched":null,"poster":null},{"id":"45ea3bf3","title":"Devil Wears Prada, The","formats":["Blu-ray"],"cog":5.3,"market":null,"acquisitionDate":"2019-04-28","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Career"],"universe":null,"lastWatched":null,"poster":null},{"id":"0b65dd4a","title":"Devil's Advocate, The","formats":["DVD"],"cog":1.99,"market":null,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Supernatural"],"universe":null,"lastWatched":null,"poster":null},{"id":"c7d744c5","title":"Dirty Dancing","formats":["Blu-ray","DVD","Google"],"cog":4.99,"market":null,"acquisitionDate":"2023-06-09","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Dance","Romance"],"universe":null,"lastWatched":null,"poster":null},{"id":"defafb7f","title":"Doctor Strange","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"c145c4a6","title":"Doom Generation, The","formats":["Blu-ray"],"cog":7.99,"market":null,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","type":null,"status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"596d143c","title":"Dr. Who [S10]","formats":["Google"],"cog":19.99,"market":null,"acquisitionDate":"2020-05-03","vendor":"Google","type":"Series","status":"Keep","genres":["Extra-Terrestrial","Space","Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"89bd1fe0","title":"Dr. Who [S11]","formats":["Google"],"cog":28.99,"market":null,"acquisitionDate":"2020-05-19","vendor":"Google","type":"Series","status":"Keep","genres":["Extra-Terrestrial","Space","Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"0970ae26","title":"Dragonball Z [S1]","formats":["DVD"],"cog":6.36,"market":null,"acquisitionDate":"2022-11-12","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":["Fighting"],"universe":null,"lastWatched":null,"poster":null},{"id":"dbed4e46","title":"Dredd","formats":["Blu-ray","Google"],"cog":6.67,"market":null,"acquisitionDate":"2019-11-05","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Dystopia"],"universe":null,"lastWatched":null,"poster":null},{"id":"6a0820dc","title":"Dune [2021]","formats":["Blu-ray"],"cog":15.0,"market":null,"acquisitionDate":"2023-07-22","vendor":"Target","type":"Movie","status":"Keep","genres":["Sci-Fi","Space Fantasy"],"universe":null,"lastWatched":null,"poster":null},{"id":"bf17d30d","title":"Edward Scissorhands","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Christmas"],"universe":null,"lastWatched":null,"poster":null},{"id":"e688ab84","title":"Face/Off","formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Action","Sci-Fi"],"universe":null,"lastWatched":null,"poster":null},{"id":"4a837167","title":"Fantastic Beasts and Where to Find Them","formats":["Google"],"cog":19.99,"market":null,"acquisitionDate":"2017-03-30","vendor":"Google","type":"Movie","status":"Keep","genres":["Magic"],"universe":null,"lastWatched":null,"poster":null},{"id":"f7dc42d7","title":"Fargo","formats":["DVD"],"cog":3.49,"market":null,"acquisitionDate":"2024-11-10","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Dark Comedy"],"universe":null,"lastWatched":null,"poster":null},{"id":"c5459957","title":"Fifth Element, The","formats":["Blu-ray"],"cog":6.99,"market":null,"acquisitionDate":"2021-10-05","vendor":"Target","type":"Movie","status":"Keep","genres":["Cyberpunk","Extra-Terrestrial","Futuristic","Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"4a718c1e","title":"Fight Club","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"6b027f62","title":"Firefly","formats":[],"cog":10.0,"market":null,"acquisitionDate":"2025-02-01","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"8c6a04c1","title":"Flatliners [1990]","formats":["Blu-ray"],"cog":4.24,"market":9.98,"acquisitionDate":"2021-02-18","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Supernatural"],"universe":null,"lastWatched":null,"poster":null},{"id":"05766402","title":"Frequency","formats":["DVD"],"cog":1.99,"market":4.78,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Time Bridge"],"universe":null,"lastWatched":null,"poster":null},{"id":"5f5ae8ea","title":"Frozen","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Animated"],"universe":null,"lastWatched":null,"poster":null},{"id":"7efcf598","title":"Full Metal Jacket","formats":["DVD"],"cog":2.99,"market":null,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"0bdb88c6","title":"Galaxy Quest","formats":["DVD"],"cog":3.49,"market":5.68,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Comedy","Extra-Terrestrial","Sci-Fi","Space"],"universe":null,"lastWatched":"May 17, 2026","poster":null},{"id":"a0df9419","title":"Get Out","formats":["Blu-ray","Google"],"cog":6.97,"market":null,"acquisitionDate":"2017-11-21","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Sci-Fi"],"universe":null,"lastWatched":null,"poster":null},{"id":"5f927cd4","title":"Ghostbusters","formats":["DVD"],"cog":3.49,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Ghosts","Supernatural"],"universe":null,"lastWatched":null,"poster":null},{"id":"033451d1","title":"Ghostbusters Answer the Call","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Comedy","Paranormal"],"universe":null,"lastWatched":null,"poster":null},{"id":"e72ab6a4","title":"Girls Rule Collection (Mean Girls, Clueless, She's The Man)","formats":["DVD"],"cog":5.01,"market":7.25,"acquisitionDate":"2022-09-20","vendor":"Target","type":"Movie","status":"Keep","genres":["Coming-Of-Age"],"universe":null,"lastWatched":null,"poster":null},{"id":"68279226","title":"Golden Girls, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":"2022-12-25","vendor":"Gift","type":"Series","status":"Keep","genres":["Comedy","Drama","Sitcom"],"universe":null,"lastWatched":null,"poster":null},{"id":"3de188c4","title":"Grease","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Musical"],"universe":null,"lastWatched":null,"poster":null},{"id":"380e2e89","title":"Great Wall, The","formats":["Blu-ray"],"cog":5.0,"market":null,"acquisitionDate":"2017-11-21","vendor":"OfferUp","type":"Movie","status":"Keep","genres":["Fantasy","Historical"],"universe":null,"lastWatched":null,"poster":null},{"id":"bb3c36f7","title":"Gremlins","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Christmas"],"universe":null,"lastWatched":null,"poster":null},{"id":"9a324af1","title":"Groundhog Day","formats":[],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Comedy","Time Repeat"],"universe":null,"lastWatched":null,"poster":null},{"id":"c5cc4270","title":"Grudge, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Horror","Paranormal"],"universe":null,"lastWatched":null,"poster":null},{"id":"5b7facdc","title":"Guardians of the Galaxy","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"18b29365","title":"Hackers","formats":[],"cog":15.99,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","type":"Movie","status":"Keep","genres":["Cyber-Thriller"],"universe":null,"lastWatched":null,"poster":null},{"id":"7cce359c","title":"Happiest Season","formats":["Blu-ray"],"cog":null,"market":35.0,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Christmas","Romance"],"universe":null,"lastWatched":null,"poster":null},{"id":"e715d8dc","title":"Hard Candy","formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2025-09-20","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Psychological Thriller"],"universe":null,"lastWatched":null,"poster":null},{"id":"7d1df2af","title":"Hereditary","formats":["Blu-ray","DVD"],"cog":5.3,"market":null,"acquisitionDate":"2020-09-22","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Paranormal","Possession"],"universe":null,"lastWatched":null,"poster":null},{"id":"f9d196eb","title":"Hitchhiker's Guide to the Galaxy, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"41ec0f90","title":"Hocus Pocus","formats":["Blu-ray","Google"],"cog":9.0,"market":null,"acquisitionDate":"2021-10-05","vendor":"Target","type":"Movie","status":"Keep","genres":["Halloween"],"universe":null,"lastWatched":null,"poster":null},{"id":"43379d5d","title":"How To Train Your Dragon","formats":["Blu-ray","Google"],"cog":11.5,"market":null,"acquisitionDate":"2017-08-18","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Fantasy"],"universe":null,"lastWatched":null,"poster":null},{"id":"a9ca9485","title":"How To Train Your Dragon 2","formats":["Blu-ray","Google"],"cog":11.5,"market":null,"acquisitionDate":"2017-08-18","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Fantasy"],"universe":null,"lastWatched":null,"poster":null},{"id":"ec6c7b3d","title":"Howl's Moving Castle","formats":["Blu-ray"],"cog":14.96,"market":null,"acquisitionDate":"2025-03-29","vendor":"Walmart","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"d26704a9","title":"Hunger Games, The","formats":["Blu-ray"],"cog":5.0,"market":null,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","type":"Movie","status":"Sell/donate","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"1d758e76","title":"Hunger Games, The [5-movies]","formats":["Blu-ray","DVD"],"cog":29.96,"market":null,"acquisitionDate":"2025-03-26","vendor":"Walmart","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"6005ce72","title":"Hunger Games: Catching Fire","formats":["Blu-ray","DVD"],"cog":4.99,"market":null,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","type":"Movie","status":"Sell/donate","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"b17f7099","title":"Ice Age","formats":["Google"],"cog":0.0,"market":null,"acquisitionDate":null,"vendor":"Google","type":"Movie","status":"Keep","genres":["Animated"],"universe":null,"lastWatched":null,"poster":null},{"id":"dee9fc05","title":"Inside Out","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"be7effc8","title":"Insidious","formats":["Blu-ray"],"cog":4.99,"market":null,"acquisitionDate":null,"vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"8ea27c69","title":"Interview With the Vampire","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Google","type":"Movie","status":"Keep","genres":["Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"5698b9d0","title":"Invisible Man, The","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Sci-Fi","Thriller"],"universe":null,"lastWatched":null,"poster":null},{"id":"f44b5b21","title":"Island, The","formats":["DVD"],"cog":2.5,"market":4.17,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Dystopia","Sci-Fi"],"universe":null,"lastWatched":null,"poster":null},{"id":"980673d2","title":"It's Always Sunny in Philadelphia A Very Sunny Christmas","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Christmas"],"universe":null,"lastWatched":null,"poster":null},{"id":"574c4913","title":"John Wick 4","formats":["Blu-ray"],"cog":12.99,"market":null,"acquisitionDate":"2025-03-26","vendor":"Walmart","type":"Movie","status":"Keep","genres":["Assassin","Retribution"],"universe":null,"lastWatched":null,"poster":null},{"id":"8edfc274","title":"John Wick Chapters 1-3 (Parabellum)","formats":["Blu-ray","DVD","Google"],"cog":24.45,"market":10.99,"acquisitionDate":"2017-03-10","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Assassin","Retribution"],"universe":null,"lastWatched":null,"poster":null},{"id":"9df06013","title":"Joker","formats":["Blu-ray","DVD","Google"],"cog":0.0,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Sell/donate","genres":[],"universe":"DC","lastWatched":null,"poster":null},{"id":"608c5097","title":"Jumanji: The Next Level","formats":["Blu-ray","DVD","Google"],"cog":11.68,"market":null,"acquisitionDate":"2021-08-18","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Jungle Adventure"],"universe":null,"lastWatched":null,"poster":null},{"id":"c0d239aa","title":"Jumanji: Welcome to the Jungle","formats":["Blu-ray","Google"],"cog":15.0,"market":null,"acquisitionDate":"2018-05-08","vendor":"Target","type":"Movie","status":"Keep","genres":["Jungle Adventure"],"universe":null,"lastWatched":null,"poster":null},{"id":"f0e0279b","title":"Kill Bill Volume 1","formats":["Blu-ray"],"cog":7.43,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Retribution"],"universe":null,"lastWatched":null,"poster":null},{"id":"194bee9c","title":"Kill Bill Volume 2","formats":["Blu-ray"],"cog":7.43,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Retribution"],"universe":null,"lastWatched":null,"poster":null},{"id":"e77cc815","title":"Kindergarten Cop","formats":["DVD"],"cog":2.99,"market":6.0,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Comedy"],"universe":null,"lastWatched":null,"poster":null},{"id":"f00713b1","title":"Knives Out","formats":["Blu-ray","Google"],"cog":7.5,"market":10.93,"acquisitionDate":"2022-09-20","vendor":"Target","type":"Movie","status":"Keep","genres":["Murder Mystery"],"universe":null,"lastWatched":null,"poster":null},{"id":"2463beec","title":"Labyrinth","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Target","type":null,"status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"1019105a","title":"Last Action Hero","formats":["Google"],"cog":12.99,"market":null,"acquisitionDate":"2023-01-09","vendor":"Google","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"e7782aa6","title":"Lion King, The","formats":["DVD"],"cog":4.24,"market":6.79,"acquisitionDate":"2022-11-20","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Animated"],"universe":null,"lastWatched":null,"poster":null},{"id":"2eef45d3","title":"Logan's Run","formats":[],"cog":6.0,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"ae114dc7","title":"Love and Monsters","formats":["Blu-ray"],"cog":6.36,"market":null,"acquisitionDate":"2021-11-19","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Creature","Post-Apocalypse"],"universe":null,"lastWatched":null,"poster":null},{"id":"4786e2c7","title":"Mad Max: Beyond Thunderdrome","formats":["Blu-ray"],"cog":5.3,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","type":"Movie","status":"Unwatched","genres":["Dystopia","Post-Apocalypse"],"universe":"Mad Max","lastWatched":null,"poster":null},{"id":"25d24b39","title":"Mamma Mia","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":"2023-09-09","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Musical"],"universe":null,"lastWatched":null,"poster":null},{"id":"a0ea02dc","title":"Man of Steel","formats":["Blu-ray","Google"],"cog":3.0,"market":null,"acquisitionDate":"2021-12-05","vendor":"OfferUp","type":"Movie","status":"Keep","genres":["Extra-Terrestrial","Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"06efea39","title":"Martian, The","formats":["Blu-ray"],"cog":3.0,"market":null,"acquisitionDate":"2021-12-05","vendor":"OfferUp","type":"Movie","status":"Keep","genres":["Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"98e482d5","title":"Marvel's Avengers","formats":["Blu-ray","DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"6c342789","title":"Matrix Triple Feature (The Matrix, The Matrix Reloaded, The Matrix Revolutions)","formats":["Blu-ray"],"cog":null,"market":10.3,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Robot Uprising"],"universe":null,"lastWatched":null,"poster":null},{"id":"4c488694","title":"Meg 2: The Trench","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Unwatched","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"31535b8d","title":"Meg, The","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"51f68a09","title":"Mega Shark vs Giant Octopus","formats":["Blu-ray"],"cog":2.99,"market":7.95,"acquisitionDate":"2023-06-09","vendor":"Used Book Superstore","type":"Movie","status":"Unwatched","genres":["Kaiju","Shark"],"universe":null,"lastWatched":null,"poster":null},{"id":"e3a95775","title":"Melancholy of Haruhi Suzumiya 1 + 2, The","formats":["Blu-ray"],"cog":21.24,"market":26.24,"acquisitionDate":"2025-03-26","vendor":"Walmart","type":"Series","status":"Keep","genres":["Fantasy","School Life","Sci-Fi","Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"7668ca9a","title":"Memento","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"7a8376f8","title":"Memoirs of a Geisha","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Historical"],"universe":null,"lastWatched":null,"poster":null},{"id":"181e8aff","title":"Men in Black Trilogy (MIB)","formats":["Blu-ray"],"cog":14.39,"market":12.0,"acquisitionDate":"2025-03-29","vendor":"Walmart","type":"Movie","status":"Keep","genres":["Extra-Terrestrial","Sci-Fi","Time Travel"],"universe":null,"lastWatched":"May 22, 2026","poster":null},{"id":"97f1d8f1","title":"Midsommar","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"b2b66507","title":"Minority Report","formats":["DVD"],"cog":2.5,"market":null,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"2160b4b4","title":"Misery","formats":["DVD"],"cog":3.99,"market":null,"acquisitionDate":"2022-07-28","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"98c4195f","title":"Mr. Robot","formats":[],"cog":44.99,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","type":"Movie","status":"Keep","genres":["Cyber-Thriller"],"universe":null,"lastWatched":null,"poster":null},{"id":"4356fd70","title":"My Days of Mercy","formats":["Google"],"cog":7.99,"market":null,"acquisitionDate":"2020-11-01","vendor":"Google","type":"Movie","status":"Keep","genres":["Sapphic"],"universe":null,"lastWatched":null,"poster":null},{"id":"294fdd48","title":"My Hime","formats":["DVD"],"cog":0.0,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Series","status":"Keep","genres":["Magical Girl"],"universe":null,"lastWatched":null,"poster":null},{"id":"12d21063","title":"My Z Hime My Otome","formats":["Blu-ray"],"cog":47.8,"market":null,"acquisitionDate":"2020-09-17","vendor":"Best Buy","type":"Series","status":"Keep","genres":["Magical Girl"],"universe":null,"lastWatched":null,"poster":null},{"id":"261af2c4","title":"Neverending Story, The","formats":["Blu-ray"],"cog":6.59,"market":null,"acquisitionDate":"2021-10-05","vendor":"Target","type":"Movie","status":"Keep","genres":["Fantasy"],"universe":null,"lastWatched":null,"poster":null},{"id":"11337922","title":"Nightmare Before Christmas, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Christmas"],"universe":null,"lastWatched":null,"poster":null},{"id":"576c628e","title":"Nine Inch Nails Broken","formats":["VHS"],"cog":null,"market":90.0,"acquisitionDate":null,"vendor":"Stacia","type":null,"status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"9631636d","title":"Office Space","formats":["Blu-ray"],"cog":6.36,"market":null,"acquisitionDate":"2017-10-04","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Career","Comedy"],"universe":null,"lastWatched":null,"poster":null},{"id":"ee6cc7f2","title":"Pacific Rim","formats":["Blu-ray"],"cog":10.0,"market":null,"acquisitionDate":"2017-08-11","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Kaiju","Mecha"],"universe":null,"lastWatched":null,"poster":null},{"id":"941d439e","title":"Pacific Rim Uprising","formats":["Google"],"cog":6.36,"market":null,"acquisitionDate":"2021-02-18","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Kaiju","Mecha"],"universe":null,"lastWatched":null,"poster":null},{"id":"33ed4430","title":"Pee-Wee's Big Adventure","formats":["DVD"],"cog":2.99,"market":null,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"db0b4914","title":"Pinky Violence Collection, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":null,"status":"Unwatched","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"7dd7560d","title":"Pitch Perfect","formats":["DVD"],"cog":2.49,"market":6.0,"acquisitionDate":"2023-11-12","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Comedy","Musical"],"universe":null,"lastWatched":null,"poster":null},{"id":"984d13e1","title":"Planet Earth","formats":["Blu-ray"],"cog":9.99,"market":null,"acquisitionDate":"2024-10-05","vendor":"Used Book Superstore","type":"Documentary","status":"Keep","genres":["Nature Documentary"],"universe":null,"lastWatched":null,"poster":null},{"id":"b75343ab","title":"Planet Earth II","formats":["Google"],"cog":19.99,"market":null,"acquisitionDate":"2017-03-18","vendor":"Google","type":"Documentary","status":"Keep","genres":["Nature Documentary"],"universe":null,"lastWatched":null,"poster":null},{"id":"4cbb4715","title":"Pokemon Detective Pikachu","formats":["Blu-ray"],"cog":7.5,"market":null,"acquisitionDate":"2021-10-05","vendor":"Target","type":"Movie","status":"Keep","genres":["Monster Battle"],"universe":null,"lastWatched":null,"poster":null},{"id":"17b34514","title":"Pokemon The First Movie, Pokemon The Movie 2000, Pokemon 3 The Movie","formats":["Blu-ray"],"cog":14.88,"market":null,"acquisitionDate":"2021-12-19","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Monster Battle"],"universe":null,"lastWatched":null,"poster":null},{"id":"abb30e5c","title":"Postman, The","formats":[],"cog":12.46,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","type":"Movie","status":"Keep","genres":["Dystopia"],"universe":null,"lastWatched":null,"poster":null},{"id":"1654a90b","title":"Power Rangers","formats":["Blu-ray"],"cog":4.0,"market":6.0,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Sentai"],"universe":null,"lastWatched":null,"poster":null},{"id":"ee60409f","title":"Predestination","formats":["Google"],"cog":12.99,"market":null,"acquisitionDate":"2017-02-21","vendor":"Google","type":"Movie","status":"Keep","genres":["Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"633039c6","title":"Prestige, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Sci-Fi"],"universe":null,"lastWatched":null,"poster":null},{"id":"69a1cdfb","title":"Pretty In Pink","formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2023-08-08","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Coming-Of-Age"],"universe":null,"lastWatched":null,"poster":null},{"id":"d4205bcf","title":"Princess Bride, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"9118ba8a","title":"Prometheus","formats":["Blu-ray"],"cog":4.99,"market":null,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"dbf8444d","title":"Pulp Fiction","formats":["Google"],"cog":0.0,"market":null,"acquisitionDate":null,"vendor":"Google","type":"Movie","status":"Sell/donate","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"1c88c238","title":"Punisher, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Retribution"],"universe":null,"lastWatched":null,"poster":null},{"id":"b586d1be","title":"Purge, The","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"25495f0e","title":"Raw","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"e7167d81","title":"Ready Player One","formats":["Blu-ray","Google"],"cog":26.55,"market":null,"acquisitionDate":"2018-09-06","vendor":"Target","type":"Movie","status":"Keep","genres":["Dystopia","Virtual Reality"],"universe":null,"lastWatched":null,"poster":null},{"id":"903bab6e","title":"Red Dawn","formats":["Blu-ray","Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["War"],"universe":null,"lastWatched":null,"poster":null},{"id":"69cb2594","title":"Red Dragon","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"89625e28","title":"Rememory","formats":["Google"],"cog":0.0,"market":null,"acquisitionDate":null,"vendor":"Google","type":"Movie","status":"Unwatched","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"9a5204db","title":"Repo! The Genetic Opera","formats":["Blu-ray","Google"],"cog":8.49,"market":null,"acquisitionDate":"2020-09-22","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Dystopia","Musical"],"universe":null,"lastWatched":null,"poster":null},{"id":"e93504e1","title":"Reservoir Dogs","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"047ff525","title":"Ring, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"a7ff25d8","title":"Rise of the Planet of the Apes","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Unwatched","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"29146268","title":"Road Warrior, The","formats":["Blu-ray"],"cog":6.36,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Dystopia","Post-Apocalypse"],"universe":"Mad Max","lastWatched":null,"poster":null},{"id":"ffdc7b19","title":"Robin Hood Men in Tights","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Comedy","Satire"],"universe":null,"lastWatched":null,"poster":null},{"id":"a51efc68","title":"Rock of Ages","formats":["Blu-ray"],"cog":3.99,"market":null,"acquisitionDate":"2023-06-09","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Musical"],"universe":null,"lastWatched":null,"poster":null},{"id":"8134df29","title":"Rock, The","formats":["DVD"],"cog":2.99,"market":null,"acquisitionDate":"2025-09-20","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Action"],"universe":null,"lastWatched":null,"poster":null},{"id":"b54652cf","title":"Rogue One A Star Wars Story","formats":["Blu-ray","Google"],"cog":28.92,"market":null,"acquisitionDate":"2017-06-24","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"a5957322","title":"Running Man, The","formats":["Blu-ray"],"cog":19.11,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Dystopia"],"universe":null,"lastWatched":null,"poster":null},{"id":"806f9301","title":"Salem's Lot","formats":["Blu-ray"],"cog":10.0,"market":null,"acquisitionDate":"2017-10-08","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"9d0fc001","title":"Saving Face","formats":["DVD"],"cog":null,"market":14.99,"acquisitionDate":null,"vendor":"Gift","type":"Movie","status":"Keep","genres":["Romance","Sapphic"],"universe":null,"lastWatched":null,"poster":null},{"id":"3c496703","title":"Schitts Creek","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","type":"Series","status":"Keep","genres":["Comedy"],"universe":null,"lastWatched":null,"poster":null},{"id":"e586c66a","title":"Scream","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Slasher"],"universe":null,"lastWatched":null,"poster":null},{"id":"a0767aa3","title":"Secret World of Alex Mack, The","formats":["DVD"],"cog":23.15,"market":null,"acquisitionDate":"2023-09-08","vendor":"eBay","type":"Series","status":"Keep","genres":["Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"0b0cb3d4","title":"Serenity","formats":["DVD"],"cog":2.99,"market":6.45,"acquisitionDate":"2023-06-01","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"6a79d89a","title":"Series 7 The Contenders","formats":["DVD"],"cog":null,"market":20.0,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Battle Royale"],"universe":null,"lastWatched":null,"poster":null},{"id":"a1dddb1e","title":"Shining, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"4045f00d","title":"Slither","formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Creature"],"universe":null,"lastWatched":null,"poster":null},{"id":"49fbe2c1","title":"Snow White & the Huntsman","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":null,"status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"1f3771be","title":"Snowpiercer","formats":["Blu-ray","Google"],"cog":12.99,"market":null,"acquisitionDate":"2017-04-23","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Dystopia","Post-Apocalypse"],"universe":null,"lastWatched":null,"poster":null},{"id":"8e0a61ed","title":"Sound of Music, The","formats":["DVD"],"cog":0.99,"market":6.0,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":["Historical","Musical"],"universe":null,"lastWatched":null,"poster":null},{"id":"52e94103","title":"Spider-Man Far From Home","formats":["Google"],"cog":12.99,"market":null,"acquisitionDate":"2021-04-21","vendor":"Google","type":"Movie","status":"Keep","genres":["Marvel"],"universe":null,"lastWatched":null,"poster":null},{"id":"6672f4d2","title":"Spider-Man Homecoming","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":null,"status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"8a0cdf66","title":"Spider-Man Into the Spider-Verse","formats":["Blu-ray","DVD","Google"],"cog":11.68,"market":null,"acquisitionDate":"2021-08-18","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Marvel","Multi-Verse"],"universe":null,"lastWatched":null,"poster":null},{"id":"0333b849","title":"Star Trek Beyond","formats":[],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":null,"status":"Keep","genres":["Star Trek"],"universe":null,"lastWatched":null,"poster":null},{"id":"1e3b7d27","title":"Star Wars IV A New Hope","formats":[],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":null,"status":"Keep","genres":["Star Wars"],"universe":null,"lastWatched":null,"poster":null},{"id":"c8cc392e","title":"Star Wars V The Empire Strikes Back","formats":[],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":null,"status":"Keep","genres":["Star Wars"],"universe":null,"lastWatched":null,"poster":null},{"id":"74a77350","title":"Star Wars VI Return of the Jedi","formats":[],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":null,"status":"Keep","genres":["Star Wars"],"universe":null,"lastWatched":null,"poster":null},{"id":"f7dd7be9","title":"Stardust","formats":["DVD"],"cog":2.99,"market":null,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Fantasy"],"universe":null,"lastWatched":null,"poster":null},{"id":"26ea031a","title":"Supernatural [S1]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Series","status":"Keep","genres":["Supernatural"],"universe":null,"lastWatched":null,"poster":null},{"id":"c79a8305","title":"Supernatural [S2]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Series","status":"Keep","genres":["Supernatural"],"universe":null,"lastWatched":null,"poster":null},{"id":"04ab4999","title":"Supernatural [S3]","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Series","status":"Keep","genres":["Supernatural"],"universe":null,"lastWatched":null,"poster":null},{"id":"ce325cc4","title":"Sushi Girl","formats":["Blu-ray"],"cog":4.99,"market":null,"acquisitionDate":"2024-10-05","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Crime","Mystery","Revenge"],"universe":null,"lastWatched":"May 23, 2026","poster":null},{"id":"2beac57a","title":"Talk To Me","formats":["4k","Blu-ray","Vudu"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Movie","status":"Keep","genres":["Horror"],"universe":null,"lastWatched":null,"poster":null},{"id":"7499295d","title":"Teenage Mutant Ninja Turtles","formats":["DVD"],"cog":2.95,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"3e154e07","title":"Teenage Mutant Ninja Turtles Mutant Mayhem","formats":["Google"],"cog":9.99,"market":null,"acquisitionDate":"2023-10-12","vendor":"Google","type":"Movie","status":"Keep","genres":["TMNT"],"universe":null,"lastWatched":null,"poster":null},{"id":"b9b4b445","title":"Tenet","formats":["Google"],"cog":0.0,"market":null,"acquisitionDate":null,"vendor":"Google","type":"Movie","status":"Keep","genres":["Time Distortion"],"universe":null,"lastWatched":null,"poster":null},{"id":"21a2a022","title":"Time Machine, The","formats":["DVD","Google"],"cog":1.99,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","type":"Movie","status":"Keep","genres":["Time Travel"],"universe":null,"lastWatched":null,"poster":null},{"id":"788aae3f","title":"Tomb Raider [2018]","formats":["Blu-ray"],"cog":8.08,"market":null,"acquisitionDate":"2024-10-11","vendor":"eBay","type":"Movie","status":"Sell/donate","genres":["Adventure","Game Adaptation"],"universe":null,"lastWatched":null,"poster":null},{"id":"04c55329","title":"Torchwood [s1]","formats":["DVD"],"cog":8.0,"market":null,"acquisitionDate":"2025-02-01","vendor":"Used Book Superstore","type":"Series","status":"Sell/donate","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"acb79dad","title":"Torchwood [s2]","formats":["DVD"],"cog":8.0,"market":null,"acquisitionDate":"2025-02-01","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"07839cba","title":"Total Recall [1990]","formats":["Blu-ray","Google"],"cog":10.61,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Augmented Reality","Extra-Terrestrial","Spy"],"universe":null,"lastWatched":null,"poster":null},{"id":"e24b0dab","title":"Total Recall [1990]","formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2023-07-31","vendor":"Used Book Superstore","type":"Movie","status":"Sell/donate","genres":["Augmented Reality","Extra-Terrestrial","Spy"],"universe":null,"lastWatched":null,"poster":null},{"id":"59aa42f6","title":"Train To Busan","formats":["Google"],"cog":0.99,"market":null,"acquisitionDate":"2017-03-17","vendor":"Google","type":"Movie","status":"Keep","genres":["Zombie"],"universe":null,"lastWatched":null,"poster":null},{"id":"b6f46d22","title":"True Blood [s1]","formats":["Blu-ray"],"cog":6.96,"market":null,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"0cad822c","title":"True Blood [s2]","formats":["Blu-ray"],"cog":9.0,"market":null,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"1d095148","title":"True Blood [s3]","formats":["Blu-ray"],"cog":7.99,"market":null,"acquisitionDate":"2024-10-05","vendor":"Used Book Superstore","type":"Series","status":"Keep","genres":["Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"3c6814e6","title":"Twilight","formats":["Google"],"cog":5.0,"market":null,"acquisitionDate":"2017-02-11","vendor":"Google","type":"Movie","status":"Keep","genres":["Romance","Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"58813e94","title":"Twilight Breaking Dawn","formats":["Google"],"cog":5.0,"market":null,"acquisitionDate":"2017-02-11","vendor":"Google","type":"Movie","status":"Keep","genres":["Romance","Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"c0515bbc","title":"Twilight Eclipse","formats":["Google"],"cog":5.0,"market":null,"acquisitionDate":"2017-02-11","vendor":"Google","type":"Movie","status":"Keep","genres":["Romance","Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"82138e2e","title":"Twilight New Moon","formats":["Google"],"cog":5.0,"market":null,"acquisitionDate":"2017-02-11","vendor":"Google","type":"Movie","status":"Keep","genres":["Romance","Vampire"],"universe":null,"lastWatched":null,"poster":null},{"id":"92d0bbbe","title":"Twister","formats":[],"cog":6.0,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","type":"Movie","status":"Keep","genres":[],"universe":null,"lastWatched":null,"poster":null},{"id":"9608bf13","title":"Under the Christmas Tree","formats":["Prime"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Amazon","type":"Movie","status":"Keep","genres":["Christmas","Sapphic"],"universe":null,"lastWatched":null,"poster":null},{"id":"a5747352","title":"Universe, The","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","type":"Documentary","status":"Keep","genres":["Documentary"],"universe":null,"lastWatched":null,"poster":null},{"id":"1a8cf8e6","title":"V for Vendetta","formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"type":"Movie","status":"Keep","genres":["Retribution"],"universe":null,"lastWatched":null,"poster":null},{"id":"21db8d7f","title":"Valerian and the City of a Thousand Planets","formats":["Blu-ray"],"cog":5.3,"market":null,"acquisitionDate":"2020-09-22","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Extra-Terrestrial","Space"],"universe":null,"lastWatched":null,"poster":null},{"id":"ae3f4dcc","title":"Venom","formats":["Blu-ray","DVD","Google"],"cog":6.36,"market":null,"acquisitionDate":"2021-11-15","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Extra-Terrestrial","Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"fb9549d5","title":"Violent Night","formats":["Google"],"cog":23.94,"market":null,"acquisitionDate":"2022-12-24","vendor":"Google","type":"Movie","status":"Keep","genres":["Christmas","Thriller"],"universe":null,"lastWatched":null,"poster":null},{"id":"75c5e1a5","title":"Warcraft","formats":["Blu-ray","Google"],"cog":5.0,"market":null,"acquisitionDate":"2019-11-05","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Fantasy","Game Adaptation"],"universe":null,"lastWatched":null,"poster":null},{"id":"f2efd42d","title":"Watchmen","formats":["Blu-ray","Google"],"cog":25.49,"market":null,"acquisitionDate":"2020-02-29","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Super Powered"],"universe":null,"lastWatched":null,"poster":null},{"id":"33827d23","title":"Waterworld","formats":["Blu-ray"],"cog":5.0,"market":null,"acquisitionDate":"2025-02-01","vendor":"Used Book Superstore","type":"Movie","status":null,"genres":["Post-Apocalypse"],"universe":null,"lastWatched":null,"poster":null},{"id":"736d542c","title":"What Keeps You Alive","formats":["Google"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Google","type":"Movie","status":"Keep","genres":["Sapphic"],"universe":null,"lastWatched":null,"poster":null},{"id":"0470818e","title":"Whip It","formats":["Blu-ray"],"cog":null,"market":8.0,"acquisitionDate":null,"vendor":"Bull Moose","type":"Movie","status":"Keep","genres":["Sport"],"universe":null,"lastWatched":null,"poster":null},{"id":"eca42b33","title":"Wonder Woman","formats":["Blu-ray","Google"],"cog":25.04,"market":null,"acquisitionDate":"2017-10-08","vendor":"Best Buy","type":"Movie","status":"Keep","genres":["Divine","Super Powered"],"universe":"DC","lastWatched":null,"poster":null},{"id":"4c96a01f","title":"Zoolander","formats":["Google"],"cog":14.99,"market":null,"acquisitionDate":"2023-05-05","vendor":"Google","type":"Movie","status":"Keep","genres":["Comedy","Secret Agent"],"universe":null,"lastWatched":null,"poster":null}];
-const DEFAULT_OPTIONS = {"formats":["3D","4k","Blu-ray","DVD","Google","Prime","VHS","Vudu"],"vendors":["Amazon","Best Buy","Bull Moose","Convention","Gift","Google","Gruv","OfferUp","Stacia","Target","Used Book Superstore","Walmart","eBay"],"types":["Documentary","Movie","Series"],"statuses":["Keep","Sell/donate","Unwatched"],"genres":["AI","Action","Adventure","Afterlife","Animated","Assassin","Augmented Reality","Battle Royale","Career","Christmas","Comedy","Coming-Of-Age","Creature","Crime","Cyber-Thriller","Cyberpunk","Dance","Dark Comedy","Disaster","Divine","Documentary","Drama","Dysfunctional Family","Dystopia","Extra-Terrestrial","Fantasy","Femme Fatale","Fighting","Futuristic","Game Adaptation","Ghosts","Ghoul","Halloween","Historical","Horror","Jungle Adventure","Kaiju","Love Triangle","Magic","Magical Girl","Marvel","Mecha","Mockumentary","Monster Battle","Multi-Verse","Murder Mystery","Musical","Mystery","Mythology","Nature Documentary","Paranormal","Possession","Post-Apocalypse","Psychological","Psychological Thriller","Retribution","Revenge","Robot Uprising","Romance","Sapphic","Satire","School Life","Sci-Fi","Secret Agent","Sentai","Shark","Sitcom","Slasher","Space","Space Fantasy","Sport","Spy","Star Trek","Star Wars","Super Powered","Supernatural","TMNT","Thriller","Time Bridge","Time Distortion","Time Repeat","Time Travel","Vampire","Virtual Reality","War","Zombie"],"universes":["DC","Mad Max","Marvel"]};
+const SEED_DATA = [{"id":"05e6ab7b","title":"10","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.43,"market":7.0,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Sell/donate","type":null,"lastWatched":null,"poster":null},{"id":"27b8ce03","title":"1776","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.0,"market":14.85,"acquisitionDate":null,"vendor":"Gift","status":"Unwatched","type":null,"lastWatched":"unwatched","poster":null},{"id":"663c28f9","title":"2001 A Space Oddysey","year":null,"universe":null,"genres":["Sci-Fi","Space"],"formats":["DVD"],"cog":3.49,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"2ca8edff","title":"28 Days Later (28 Weeks Later)","year":null,"universe":null,"genres":["Zombie"],"formats":["Blu-ray"],"cog":10.0,"market":40.0,"acquisitionDate":null,"vendor":"Bull Moose","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"3a95d8b4","title":"A Midsummer Night's Dream","year":null,"universe":null,"genres":[],"formats":["Blu-ray"],"cog":3.0,"market":5.5,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","status":"Unwatched","type":"Movie","lastWatched":"unwatched","poster":null},{"id":"3f82c409","title":"A Quiet Place 1 & 2","year":null,"universe":null,"genres":["Creature","Post-Apocalypse"],"formats":["Blu-ray"],"cog":10.6,"market":8.59,"acquisitionDate":"2021-11-19","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"35920c95","title":"A Scanner Darkly","year":null,"universe":null,"genres":["Cyber","Dystopia","Sci-Fi"],"formats":[],"cog":13.04,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"32cf4eae","title":"Alien Quadrilogy","year":null,"universe":"Alien","genres":["Extra-Terrestrial","Space"],"formats":["Blu-ray"],"cog":15.0,"market":27.68,"acquisitionDate":null,"vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"82a4f5ec","title":"American Psycho","year":null,"universe":null,"genres":["Psychological","Slasher"],"formats":["Blu-ray"],"cog":8.49,"market":null,"acquisitionDate":"2021-08-18","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"800b19a3","title":"American Psycho","year":null,"universe":null,"genres":["Psychological","Slasher"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Used Book Superstore","status":"Sell/donate","type":"Movie","lastWatched":null,"poster":null},{"id":"bae3311f","title":"Angel","year":"Season 1","universe":"Buffy","genres":["Drama","Vampire"],"formats":["DVD"],"cog":null,"market":9.0,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"a4483624","title":"Angel","year":"Season 2","universe":"Buffy","genres":["Drama","Vampire"],"formats":["DVD"],"cog":null,"market":10.0,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"5e4011d9","title":"Annabelle Creation","year":null,"universe":null,"genres":["Paranormal"],"formats":["DVD"],"cog":null,"market":3.85,"acquisitionDate":null,"vendor":"Used Book Superstore","status":"Unwatched","type":"Movie","lastWatched":"unwatched","poster":null},{"id":"2a584508","title":"Ant-Man","year":null,"universe":"Marvel","genres":["Action","Superpower"],"formats":["DVD","Blu-ray","4K"],"cog":null,"market":5.52,"acquisitionDate":null,"vendor":"Gift","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"f590b03c","title":"Aquaman","year":null,"universe":"DC","genres":["Action","Superpower"],"formats":["Blu-ray"],"cog":15.0,"market":5.0,"acquisitionDate":"2019-04-19","vendor":"Target","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"17704613","title":"Armageddon","year":null,"universe":null,"genres":["Disaster","Drama","Space"],"formats":["DVD"],"cog":2.99,"market":4.26,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":"2026-05-20","poster":null},{"id":"f567a8a3","title":"Arrested Development","year":"Season 2","universe":null,"genres":["Comedy"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"9094cffe","title":"Arrested Development","year":"Season 3","universe":null,"genres":["Comedy"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"015b421f","title":"Avatar the Last Airbender","year":null,"universe":null,"genres":["Adventure","Fantasy","Superpower"],"formats":["DVD"],"cog":25.29,"market":21.72,"acquisitionDate":"2019-09-02","vendor":"Bull Moose","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"38579cd1","title":"Avengers: Age of Ultron","year":null,"universe":"Marvel","genres":["Action","Superpower"],"formats":["Blu-ray","3D"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"2b5d2b54","title":"Avengers: Endgame","year":null,"universe":"Marvel","genres":["Action","Superpower"],"formats":["DVD","Blu-ray","4K"],"cog":13.8,"market":null,"acquisitionDate":"2021-11-15","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"120526a2","title":"Back to the Future Trilogy","year":null,"universe":null,"genres":["Adventure","Sci-Fi","Time Manipulation"],"formats":["Blu-ray"],"cog":16.05,"market":12.49,"acquisitionDate":"2025-03-29","vendor":"Walmart","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"d5d051c6","title":"Basic Instinct","year":null,"universe":null,"genres":["Crime","Psychological","Mystery","Drama"],"formats":["DVD"],"cog":2.49,"market":4.78,"acquisitionDate":"2024-11-10","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"ccbf7e75","title":"Batman Returns","year":null,"universe":"DC","genres":["Action","Crime","Superpower"],"formats":["DVD"],"cog":2.5,"market":6.79,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"b83338c2","title":"Battlestar Galactica","year":"Season 2","universe":null,"genres":["Adventure","Drama","Sci-Fi","Space"],"formats":["Blu-ray"],"cog":7.96,"market":null,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"50ee75ef","title":"Beetlejuice","year":null,"universe":null,"genres":["Comedy","Paranormal"],"formats":["Blu-ray"],"cog":4.0,"market":null,"acquisitionDate":"2017-06-24","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"76b7f836","title":"Best In Show","year":null,"universe":null,"genres":["Comedy"],"formats":["DVD"],"cog":2.99,"market":6.88,"acquisitionDate":"2025-09-20","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"0c5d072c","title":"Bill & Ted's Excellent Adventure","year":null,"universe":null,"genres":["Comedy","Adventure","Time Manipulation"],"formats":["DVD"],"cog":5.99,"market":8.99,"acquisitionDate":"2023-11-11","vendor":"Stacia","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"883b8341","title":"Black Panther","year":null,"universe":"Marvel","genres":["Action","Superpower"],"formats":["Blu-ray"],"cog":23.0,"market":null,"acquisitionDate":"2018-05-16","vendor":"Target","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"331f00d7","title":"Blade","year":null,"universe":"Marvel","genres":["Vampire","Superpower","Action"],"formats":["Blu-ray"],"cog":7.43,"market":null,"acquisitionDate":"2021-11-15","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"d3f985a9","title":"Blade Runner","year":null,"universe":null,"genres":["Dystopia"],"formats":["Blu-ray"],"cog":5.3,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"d5d7006c","title":"Bride of Chucky","year":null,"universe":"Chucky","genres":["Paranormal","Slasher"],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"01b0dda3","title":"Buffy the Vampire Slayer","year":"Season 1","universe":"Buffy","genres":["Action","Vampire"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"200d501b","title":"Buffy the Vampire Slayer","year":"Season 2","universe":"Buffy","genres":["Action","Vampire"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"b0ef4ee7","title":"Buffy the Vampire Slayer","year":"Season 3","universe":"Buffy","genres":["Action","Vampire"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"368ce5b0","title":"Buffy the Vampire Slayer","year":"Season 4","universe":"Buffy","genres":["Action","Vampire"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"e0d505a8","title":"Burlesque","year":null,"universe":null,"genres":["Romance","Musical","Drama"],"formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2024-11-10","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"cdc9f678","title":"Cabin in the Woods, The","year":null,"universe":null,"genres":["Creature","Sci-Fi","Supernatural"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Bull Moose","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"edb7fba1","title":"Captain America Civil War","year":null,"universe":"Marvel","genres":["Action","Superpower"],"formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"a8cd151d","title":"Captain Marvel","year":null,"universe":"Marvel","genres":["Action","Adventure","Superpower"],"formats":["DVD","Blu-ray","4K"],"cog":13.8,"market":null,"acquisitionDate":"2021-11-15","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"aa35f125","title":"Casablanca","year":null,"universe":null,"genres":["Drama","Romance"],"formats":["Blu-ray"],"cog":4.99,"market":6.99,"acquisitionDate":"2024-10-05","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"5613e4ab","title":"Child's Play","year":null,"universe":"Chucky","genres":["Paranormal","Slasher"],"formats":["DVD"],"cog":0.43,"market":8.48,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"02f0ef6b","title":"Clash of the Titans","year":null,"universe":null,"genres":["Mythology"],"formats":["DVD"],"cog":2.49,"market":6.79,"acquisitionDate":"2023-06-09","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"99de7409","title":"Code Geass Lelouch of the Rebellion","year":null,"universe":"Code Geass","genres":["Mecha","Super Powered"],"formats":["DVD"],"cog":20.0,"market":24.47,"acquisitionDate":null,"vendor":"Convention","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"4fff04a0","title":"Code Geass Lelouch of the Rebellion R2","year":null,"universe":"Code Geass","genres":["Mecha","Super Powered"],"formats":["Blu-ray"],"cog":29.74,"market":25.97,"acquisitionDate":"2020-09-22","vendor":"Best Buy","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"300a24e8","title":"Conjuring, The","year":null,"universe":null,"genres":["Paranormal"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"85f0ebf7","title":"Constantine","year":null,"universe":"DC","genres":["Supernatural","Drama"],"formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2024-11-10","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"68a8cb07","title":"Contact","year":null,"universe":null,"genres":["Extra-Terrestrial"],"formats":[],"cog":6.0,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"4e7cc79a","title":"Crawl","year":null,"universe":null,"genres":["Creature"],"formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2024-10-05","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"434e9901","title":"Cutie Honey","year":null,"universe":null,"genres":["Superpower","Action"],"formats":["DVD"],"cog":0.0,"market":12.85,"acquisitionDate":null,"vendor":"Gift","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"d0d9cfef","title":"Dark Knight, The","year":null,"universe":"DC","genres":["Crime","Superpower"],"formats":["Blu-ray"],"cog":1.89,"market":null,"acquisitionDate":"2023-08-28","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"ae908bdd","title":"Dark Water","year":null,"universe":null,"genres":["Supernatural"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Unwatched","type":"Movie","lastWatched":"unwatched","poster":null},{"id":"fa55f711","title":"Day After Tomorrow, The","year":null,"universe":null,"genres":["Disaster"],"formats":["DVD"],"cog":1.99,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"285abce6","title":"Daybreakers","year":null,"universe":null,"genres":["Vampire"],"formats":["DVD"],"cog":3.99,"market":null,"acquisitionDate":"2024-10-03","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"94cb8036","title":"Dead Like Me","year":null,"universe":null,"genres":["Paranormal","Comedy"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"9f580284","title":"Dead Zone, The","year":null,"universe":"Stephen King","genres":[],"formats":["DVD"],"cog":3.99,"market":null,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"f1288b83","title":"Deadpool","year":null,"universe":"Marvel","genres":["Action","Superpower"],"formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"873b154f","title":"Deadpool 2","year":null,"universe":"Marvel","genres":[],"formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"e8f0ed2e","title":"Descent, The","year":null,"universe":null,"genres":["Creature"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"97235f14","title":"Devil Wears Prada, The","year":null,"universe":null,"genres":["Comedy","Drama"],"formats":["Blu-ray"],"cog":5.3,"market":null,"acquisitionDate":"2019-04-28","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"cf9f2815","title":"Devil's Advocate, The","year":null,"universe":null,"genres":["Supernatural","Drama","Psychological"],"formats":["DVD"],"cog":1.99,"market":null,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"b06648fb","title":"Dirty Dancing","year":null,"universe":null,"genres":["Romance"],"formats":["DVD","Blu-ray"],"cog":4.99,"market":null,"acquisitionDate":"2023-06-09","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"51dcc457","title":"Doctor Strange","year":null,"universe":"Marvel","genres":["Superpower"],"formats":["DVD","Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"4e349014","title":"Doom Generation, The","year":null,"universe":null,"genres":[],"formats":["DVD","Blu-ray"],"cog":7.99,"market":null,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"62f0e010","title":"Dragonball Z","year":"Season 1","universe":"Dragonball","genres":["Adventure","Fantasy","Action"],"formats":["DVD"],"cog":6.36,"market":null,"acquisitionDate":"2022-11-12","vendor":"Used Book Superstore","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"a59bc501","title":"Dredd","year":null,"universe":null,"genres":["Crime","Sci-Fi","Dystopia"],"formats":["Blu-ray"],"cog":6.67,"market":null,"acquisitionDate":"2019-11-05","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"824345e8","title":"Dune","year":"2021","universe":null,"genres":["Sci-Fi","Space","Drama","Adventure"],"formats":["Blu-ray"],"cog":15.0,"market":null,"acquisitionDate":"2023-07-22","vendor":"Target","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"b9933a13","title":"Edward Scissorhands","year":null,"universe":null,"genres":["Paranormal","Comedy","Fantasy"],"formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"ab17584a","title":"Face/Off","year":null,"universe":null,"genres":["Action","Sci-Fi"],"formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"0f3ddec5","title":"Fantastic 4","year":null,"universe":"Marvel","genres":["Superpower"],"formats":["DVD"],"cog":0.43,"market":4.62,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"dfcf7f8c","title":"Fantastic 4: Rise of the Silver Surfer","year":null,"universe":"Marvel","genres":["Superpower"],"formats":["DVD"],"cog":0.43,"market":7.19,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"ce28354f","title":"Fargo","year":null,"universe":null,"genres":["Crime","Drama","Comedy"],"formats":["DVD"],"cog":3.49,"market":null,"acquisitionDate":"2024-11-10","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"38044d85","title":"Fifth Element, The","year":null,"universe":null,"genres":["Adventure","Extra-Terrestrial","Fantasy","Sci-Fi"],"formats":["Blu-ray"],"cog":6.99,"market":null,"acquisitionDate":"2021-10-05","vendor":"Target","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"0fdd5053","title":"Fight Club","year":null,"universe":null,"genres":["Drama","Psychological","Crime"],"formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"dbc08065","title":"Firefly","year":null,"universe":"Firefly","genres":["Adventure","Sci-Fi","Space"],"formats":[],"cog":10.0,"market":null,"acquisitionDate":"2025-02-01","vendor":"Used Book Superstore","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"489a4831","title":"Flatliners","year":"1990","universe":null,"genres":["Drama","Supernatural","Psychological"],"formats":["Blu-ray"],"cog":4.24,"market":9.98,"acquisitionDate":"2021-02-18","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"7fa8985e","title":"Frequency","year":null,"universe":null,"genres":["Drama","Time Manipulation"],"formats":["DVD"],"cog":1.99,"market":4.78,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"83cfa784","title":"Frozen","year":null,"universe":null,"genres":["Adventure","Musical","Fantasy"],"formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"2a3a2a26","title":"Full Metal Jacket","year":null,"universe":null,"genres":["Drama","War"],"formats":[],"cog":2.99,"market":null,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"1b7b70bb","title":"Galaxy Quest","year":null,"universe":null,"genres":["Adventure","Comedy","Extra-Terrestrial","Space","Sci-Fi"],"formats":[],"cog":3.49,"market":5.68,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":"2026-05-17","poster":null},{"id":"4850addc","title":"Get Out","year":null,"universe":null,"genres":["Psychological","Sci-Fi"],"formats":["Blu-ray"],"cog":6.97,"market":null,"acquisitionDate":"2017-11-21","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"b9df4d57","title":"Ghostbusters","year":null,"universe":"Ghostbusters","genres":["Comedy","Supernatural"],"formats":["DVD"],"cog":3.49,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"945016f0","title":"Ghostbusters Answer the Call","year":null,"universe":"Ghostbusters","genres":["Comedy","Supernatural"],"formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"7b7a82e3","title":"Girls Rule Collection","year":null,"universe":null,"genres":["Comedy"],"formats":["DVD"],"cog":5.01,"market":7.25,"acquisitionDate":"2022-09-20","vendor":"Target","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"aed78fa7","title":"Golden Girls, The","year":null,"universe":null,"genres":["Comedy","Drama"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":"2022-12-25","vendor":"Gift","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"6844225e","title":"Good Son, The","year":null,"universe":null,"genres":["Psychological"],"formats":["DVD"],"cog":0.43,"market":9.64,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"87c2060d","title":"Grease","year":null,"universe":null,"genres":["Musical","Romance"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"74f4c06a","title":"Great Wall, The","year":null,"universe":null,"genres":["Fantasy","Historical"],"formats":["Blu-ray"],"cog":5.0,"market":null,"acquisitionDate":"2017-11-21","vendor":"OfferUp","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"0d31a4ff","title":"Gremlins","year":null,"universe":null,"genres":["Adventure","Creature"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"80cea3e2","title":"Groundhog Day","year":null,"universe":null,"genres":["Comedy","Time Manipulation"],"formats":[],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"e97fc970","title":"Grudge, The","year":null,"universe":null,"genres":["Paranormal"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"122b3e14","title":"Guardians of the Galaxy","year":null,"universe":"Marvel","genres":["Adventure","Action","Space","Superpower"],"formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"9cc13f6a","title":"Hackers","year":null,"universe":null,"genres":["Cyber"],"formats":[],"cog":15.99,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"1264df0d","title":"Happiest Season","year":null,"universe":null,"genres":["Drama","Romance"],"formats":["Blu-ray"],"cog":null,"market":35.0,"acquisitionDate":null,"vendor":"Gift","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"77664a3a","title":"Hard Candy","year":null,"universe":null,"genres":["Drama","Crime"],"formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2025-09-20","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"d0df6564","title":"Hereditary","year":null,"universe":null,"genres":["Paranormal"],"formats":["DVD","Blu-ray"],"cog":5.3,"market":null,"acquisitionDate":"2020-09-22","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"ae1d82a0","title":"Hitchhiker's Guide to the Galaxy, The","year":null,"universe":null,"genres":["Adventure","Comedy","Space"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"231a3c92","title":"Hocus Pocus","year":null,"universe":null,"genres":["Comedy"],"formats":["Blu-ray"],"cog":9.0,"market":null,"acquisitionDate":"2021-10-05","vendor":"Target","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"2120ba7f","title":"How To Train Your Dragon","year":null,"universe":"How to Train Your Dragon","genres":["Fantasy"],"formats":["Blu-ray"],"cog":11.5,"market":null,"acquisitionDate":"2017-08-18","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"80c94c6d","title":"How To Train Your Dragon 2","year":null,"universe":"How to Train Your Dragon","genres":["Fantasy"],"formats":["Blu-ray"],"cog":11.5,"market":null,"acquisitionDate":"2017-08-18","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"237e315c","title":"Howl's Moving Castle","year":null,"universe":"Studio Ghibli","genres":["Fantasy","Adventure"],"formats":["Blu-ray"],"cog":14.96,"market":null,"acquisitionDate":"2025-03-29","vendor":"Walmart","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"c35a3953","title":"Hunger Games, The","year":null,"universe":"Hunger Games","genres":["Action","Adventure","Dystopia"],"formats":["Blu-ray"],"cog":5.0,"market":null,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","status":"Sell/donate","type":"Movie","lastWatched":null,"poster":null},{"id":"50368500","title":"Hunger Games, The [5-movies]","year":null,"universe":"Hunger Games","genres":["Battle Royale","Dystopia"],"formats":["DVD","Blu-ray"],"cog":29.96,"market":null,"acquisitionDate":"2025-03-26","vendor":"Walmart","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"af541cdd","title":"Hunger Games: Catching Fire","year":null,"universe":"Hunger Games","genres":["Battle Royale","Dystopia"],"formats":["DVD","Blu-ray"],"cog":4.99,"market":null,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","status":"Sell/donate","type":"Movie","lastWatched":null,"poster":null},{"id":"4a981975","title":"Inside Out","year":null,"universe":null,"genres":["Animated","Comedy","Drama"],"formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"b6b7a170","title":"Insidious","year":null,"universe":null,"genres":["Supernatural"],"formats":["Blu-ray"],"cog":4.99,"market":null,"acquisitionDate":null,"vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"469f6f64","title":"Invisible Man, The","year":null,"universe":null,"genres":["Sci-Fi","Psychological"],"formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"ea1202a6","title":"Iron Man","year":null,"universe":"Marvel","genres":["Superpower","Sci-Fi","Action"],"formats":["DVD"],"cog":0.43,"market":7.95,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"09e22c37","title":"Island, The","year":null,"universe":null,"genres":["Dystopia","Sci-Fi"],"formats":["DVD"],"cog":2.5,"market":4.17,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"4a7cef37","title":"It Could Happen To You","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Unwatched","type":null,"lastWatched":"unwatched","poster":null},{"id":"7755afcb","title":"It's A Mad, Mad, Mad, Mad World","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Unwatched","type":null,"lastWatched":"unwatched","poster":null},{"id":"d01c7bf5","title":"It's Always Sunny in Philadelphia A Very Sunny Christmas","year":null,"universe":null,"genres":["Comedy","Holiday"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"2c566943","title":"John Wick 4","year":null,"universe":"John Wick","genres":["Action","Revenge"],"formats":["Blu-ray"],"cog":12.99,"market":null,"acquisitionDate":"2025-03-26","vendor":"Walmart","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"812ae73a","title":"John Wick Chapters 1-3","year":null,"universe":"John Wick","genres":["Action","Revenge"],"formats":["Blu-ray","DVD"],"cog":24.45,"market":10.99,"acquisitionDate":"2017-03-10","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"5b0b5d83","title":"Joker","year":null,"universe":"DC","genres":["Crime","Drama"],"formats":["Blu-ray","DVD"],"cog":0.0,"market":null,"acquisitionDate":null,"vendor":"Gift","status":"Sell/donate","type":"Movie","lastWatched":null,"poster":null},{"id":"cc5b9ec3","title":"Jumanji: The Next Level","year":null,"universe":"Jumanji","genres":["Adventure","Comedy","Fantasy"],"formats":["Blu-ray","DVD"],"cog":11.68,"market":null,"acquisitionDate":"2021-08-18","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"ca177ae1","title":"Jumanji: Welcome to the Jungle","year":null,"universe":"Jumanji","genres":["Adventure","Comedy","Fantasy"],"formats":["Blu-ray"],"cog":15.0,"market":null,"acquisitionDate":"2018-05-08","vendor":"Target","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"48eefe55","title":"Kill Bill Volume 1","year":null,"universe":"Kill Bill","genres":["Action"],"formats":["Blu-ray"],"cog":7.43,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"9768a21a","title":"Kill Bill Volume 2","year":null,"universe":"Kill Bill","genres":["Action"],"formats":["Blu-ray"],"cog":7.43,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"09a17a21","title":"Kindergarten Cop","year":null,"universe":null,"genres":["Comedy"],"formats":["DVD"],"cog":2.99,"market":6.0,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"41387ea8","title":"Knives Out","year":null,"universe":"Knives Out","genres":["Mystery","Crime","Drama"],"formats":["Blu-ray"],"cog":7.5,"market":10.93,"acquisitionDate":"2022-09-20","vendor":"Target","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"f17bdc44","title":"Lion King, The","year":null,"universe":null,"genres":["Drama","Adventure"],"formats":["DVD"],"cog":4.24,"market":6.79,"acquisitionDate":"2022-11-20","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"4a23f42d","title":"Logan's Run","year":null,"universe":null,"genres":["Dystopia"],"formats":[],"cog":6.0,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"1b0b911a","title":"Lottery, The","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Unwatched","type":null,"lastWatched":"unwatched","poster":null},{"id":"8d9d100a","title":"Love and Monsters","year":null,"universe":null,"genres":["Creature","Post-Apocalypse","Romance","Adventure","Sci-Fi"],"formats":["Blu-ray"],"cog":6.36,"market":null,"acquisitionDate":"2021-11-19","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"af38b7d8","title":"Mad Max: Beyond Thunderdrome","year":null,"universe":"Mad Max","genres":["Post-Apocalypse","Action","Adventure"],"formats":["Blu-ray"],"cog":5.3,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","status":"Unwatched","type":"Movie","lastWatched":"unwatched","poster":null},{"id":"ebfb2aa4","title":"Mamma Mia","year":null,"universe":null,"genres":["Musical"],"formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":"2023-09-09","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"83498396","title":"Man of Steel","year":null,"universe":"DC","genres":["Superpower","Drama"],"formats":["Blu-ray"],"cog":3.0,"market":null,"acquisitionDate":"2021-12-05","vendor":"OfferUp","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"9f1d8bd7","title":"Martian, The","year":null,"universe":null,"genres":["Space"],"formats":["Blu-ray"],"cog":3.0,"market":null,"acquisitionDate":"2021-12-05","vendor":"OfferUp","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"d853e1fe","title":"Marvel's Avengers","year":null,"universe":"Marvel","genres":["Action","Superpower"],"formats":["DVD","Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"4c7a7542","title":"Matrix Triple Feature","year":null,"universe":"The Matrix","genres":["Action","Adventure","Cyber","Sci-Fi","Post-Apocalypse"],"formats":["Blu-ray"],"cog":null,"market":10.3,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"049c01db","title":"Meg 2: The Trench","year":null,"universe":"The Meg","genres":["Creature"],"formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","status":"Unwatched","type":"Movie","lastWatched":"unwatched","poster":null},{"id":"0a6b5626","title":"Meg, The","year":null,"universe":"The Meg","genres":["Creature"],"formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"ae617464","title":"Mega Shark vs Giant Octopus","year":null,"universe":null,"genres":["Creature"],"formats":["Blu-ray"],"cog":2.99,"market":7.95,"acquisitionDate":"2023-06-09","vendor":"Used Book Superstore","status":"Unwatched","type":"Movie","lastWatched":"unwatched","poster":null},{"id":"d203b362","title":"Melancholy of Haruhi Suzumiya 1 + 2, The","year":null,"universe":null,"genres":["Anime","Fantasy","School Life","Sci-Fi","Time Travel"],"formats":["Blu-ray"],"cog":21.24,"market":26.24,"acquisitionDate":"2025-03-26","vendor":"Walmart","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"d280b70a","title":"Memento","year":null,"universe":null,"genres":["Drama","Mystery","Psychological"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"e412b7e1","title":"Memoirs of a Geisha","year":null,"universe":null,"genres":["Drama","Historical"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"1dfc23fb","title":"Men In Black Trilogy","year":null,"universe":"Men in Black","genres":["Action","Adventure","Extra-Terrestrial"],"formats":["Blu-ray"],"cog":14.39,"market":12.0,"acquisitionDate":"2025-03-29","vendor":"Walmart","status":"Keep","type":"Movie","lastWatched":"2026-05-22","poster":null},{"id":"d79f1332","title":"Midsommar","year":null,"universe":null,"genres":["Dystopia","Psychological"],"formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"68f22ec7","title":"Minority Report","year":null,"universe":null,"genres":["Sci-Fi","Drama","Dystopia"],"formats":["DVD"],"cog":2.5,"market":null,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"f730babb","title":"Misery","year":null,"universe":null,"genres":["Psychological"],"formats":["DVD"],"cog":3.99,"market":null,"acquisitionDate":"2022-07-28","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"824e359a","title":"Mr. Robot","year":null,"universe":null,"genres":["Cyber","Drama","Heist"],"formats":[],"cog":44.99,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"58efff52","title":"Murder By Numbers","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Unwatched","type":null,"lastWatched":"unwatched","poster":null},{"id":"617d1ef7","title":"My Hime","year":null,"universe":null,"genres":["Anime","Magical Girl"],"formats":["DVD"],"cog":0.0,"market":null,"acquisitionDate":null,"vendor":"Gift","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"ed80c979","title":"My Z Hime My Otome","year":null,"universe":null,"genres":["Anime","Magical Girl"],"formats":["Blu-ray"],"cog":47.8,"market":null,"acquisitionDate":"2020-09-17","vendor":"Best Buy","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"612148e5","title":"Neverending Story, The","year":null,"universe":null,"genres":["Adventure","Fantasy"],"formats":["Blu-ray"],"cog":6.59,"market":null,"acquisitionDate":"2021-10-05","vendor":"Target","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"a44fb421","title":"Night at the Museum","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"c2618256","title":"Nightmare Before Christmas, The","year":null,"universe":null,"genres":["Christmas","Halloween"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"ca9f4aa9","title":"Nine Inch Nails Broken","year":null,"universe":null,"genres":["Concert"],"formats":["VHS"],"cog":null,"market":90.0,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"dbcad9fe","title":"Ninth Gate, The","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Unwatched","type":null,"lastWatched":"unwatched","poster":null},{"id":"4db56660","title":"Ocean's Twelve","year":null,"universe":null,"genres":["Heist"],"formats":["DVD"],"cog":0.43,"market":5.59,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"76dd8125","title":"Office Space","year":null,"universe":null,"genres":["Comedy"],"formats":["Blu-ray"],"cog":6.36,"market":null,"acquisitionDate":"2017-10-04","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"5e2d5c4c","title":"One Cut of the Dead","year":null,"universe":null,"genres":["Comedy","Drama","Zombie"],"formats":[],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"9387ab30","title":"Pacific Rim","year":null,"universe":null,"genres":["Kaiju","Mecha"],"formats":["Blu-ray"],"cog":10.0,"market":null,"acquisitionDate":"2017-08-11","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"0c2128f7","title":"Pay It Forward","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Unwatched","type":null,"lastWatched":"unwatched","poster":null},{"id":"37c18413","title":"Pee-Wee's Big Adventure","year":null,"universe":null,"genres":["Adventure","Comedy"],"formats":["DVD"],"cog":2.99,"market":null,"acquisitionDate":"2026-04-18","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"2cebdc2c","title":"Pinky Violence Collection, The","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Unwatched","type":null,"lastWatched":"unwatched","poster":null},{"id":"2d443cab","title":"Pitch Perfect","year":null,"universe":"Pitch Perfect","genres":["Comedy","Musical"],"formats":["DVD"],"cog":2.49,"market":6.0,"acquisitionDate":"2023-11-12","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"f6c6f127","title":"Planet Earth","year":null,"universe":"Planet Earth","genres":["Nature Documentary"],"formats":["Blu-ray"],"cog":9.99,"market":null,"acquisitionDate":"2024-10-05","vendor":"Used Book Superstore","status":"Keep","type":"Documentary","lastWatched":null,"poster":null},{"id":"8d142afc","title":"Pokemon Detective Pikachu","year":null,"universe":"Pokemon","genres":["Adventure","Action","Fantasy"],"formats":["Blu-ray"],"cog":7.5,"market":null,"acquisitionDate":"2021-10-05","vendor":"Target","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"6d136446","title":"Pokemon Triple Feature","year":null,"universe":"Pokemon","genres":["Adventure","Action","Fantasy"],"formats":["Blu-ray"],"cog":14.88,"market":null,"acquisitionDate":"2021-12-19","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"f1c1a300","title":"Police Academy","year":null,"universe":null,"genres":["Comedy","Satire"],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"0d15a853","title":"Postman Always Rings Twice, The","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Unwatched","type":null,"lastWatched":"unwatched","poster":null},{"id":"5c234420","title":"Postman, The","year":null,"universe":null,"genres":["Drama","Post-Apocalypse"],"formats":[],"cog":12.46,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"a89880ce","title":"Power Rangers","year":null,"universe":null,"genres":["Sentai"],"formats":["Blu-ray"],"cog":4.0,"market":6.0,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"ad270f99","title":"Prestige, The","year":null,"universe":null,"genres":["Drama","Sci-Fi"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"771f6968","title":"Pretty In Pink","year":null,"universe":null,"genres":["Romance"],"formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2023-08-08","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"cc978121","title":"Princess Bride, The","year":null,"universe":null,"genres":["Adventure","Action","Comedy","Fantasy","Romance"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"c9692421","title":"Prometheus","year":null,"universe":"Alien","genres":["Space"],"formats":["Blu-ray"],"cog":4.99,"market":null,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"95dd7db4","title":"Punisher, The","year":null,"universe":"Marvel","genres":["Retribution"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"7e40ed32","title":"Raw","year":null,"universe":null,"genres":["Psychological"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"3451920d","title":"Ready Player One","year":null,"universe":null,"genres":["Dystopia","Adventure","Action","Romance"],"formats":["Blu-ray"],"cog":26.55,"market":null,"acquisitionDate":"2018-09-06","vendor":"Target","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"35b10134","title":"Red Dawn","year":null,"universe":null,"genres":["War"],"formats":["Blu-ray"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"7e420e53","title":"Red Dragon","year":null,"universe":"Silence of the Lambs","genres":["Mystery"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"0f149228","title":"Repo! The Genetic Opera","year":null,"universe":null,"genres":["Dystopia","Musical"],"formats":["Blu-ray"],"cog":8.49,"market":null,"acquisitionDate":"2020-09-22","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"b5e2875d","title":"Reservoir Dogs","year":null,"universe":null,"genres":["Crime","Drama"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"7183329b","title":"Ring, The","year":null,"universe":null,"genres":["Paranormal"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"0961ae8c","title":"Road Warrior, The","year":null,"universe":"Mad Max","genres":["Action","Adventure","Post-Apocalypse"],"formats":["Blu-ray"],"cog":6.36,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"b628a5b4","title":"Robin Hood Men in Tights","year":null,"universe":null,"genres":["Comedy","Historical","Action"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"4837b83f","title":"Rock of Ages","year":null,"universe":null,"genres":["Drama","Musical"],"formats":["Blu-ray"],"cog":3.99,"market":null,"acquisitionDate":"2023-06-09","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"5615ff30","title":"Rock, The","year":null,"universe":null,"genres":["Action"],"formats":["DVD"],"cog":2.99,"market":null,"acquisitionDate":"2025-09-20","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"a7a7eec2","title":"Rocky II","year":null,"universe":null,"genres":["Drama","Sports"],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Sell/donate","type":null,"lastWatched":null,"poster":null},{"id":"7811566c","title":"Rogue One A Star Wars Story","year":null,"universe":"Star Wars","genres":["Adventure","Sci-Fi","Space"],"formats":["Blu-ray"],"cog":28.92,"market":null,"acquisitionDate":"2017-06-24","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"bf669f56","title":"Roxanne","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Unwatched","type":null,"lastWatched":"unwatched","poster":null},{"id":"6365661f","title":"Running Man, The","year":null,"universe":"Stephen King","genres":["Action","Dystopia"],"formats":["Blu-ray"],"cog":19.11,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"ba439f6e","title":"Salem's Lot","year":null,"universe":"Stephen King","genres":["Vampire"],"formats":["Blu-ray"],"cog":10.0,"market":null,"acquisitionDate":"2017-10-08","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"310afcb6","title":"Saving Face","year":null,"universe":null,"genres":["Romance"],"formats":["DVD"],"cog":null,"market":14.99,"acquisitionDate":null,"vendor":"Gift","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"379d48da","title":"Schitts Creek","year":null,"universe":null,"genres":["Comedy","Drama"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Gift","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"d48b4194","title":"Scream","year":null,"universe":"Scream","genres":["Slasher"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"b4f7b18b","title":"Secret World of Alex Mack, The","year":null,"universe":null,"genres":["Superpower"],"formats":["DVD"],"cog":23.15,"market":null,"acquisitionDate":"2023-09-08","vendor":"eBay","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"ccc6947f","title":"Serenity","year":null,"universe":"Firefly","genres":["Space"],"formats":["DVD"],"cog":2.99,"market":6.45,"acquisitionDate":"2023-06-01","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"88ddc542","title":"Series 7 The Contenders","year":null,"universe":null,"genres":["Battle Royale"],"formats":["DVD"],"cog":null,"market":20.0,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"4eca66b4","title":"Seven","year":null,"universe":null,"genres":["Psychological","Crime","Mystery","Drama"],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"13e3dbf7","title":"Sherlock Holmes: World's Most Famous Detectives","year":null,"universe":null,"genres":["Mystery"],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Sell/donate","type":null,"lastWatched":null,"poster":null},{"id":"66160130","title":"Shining, The","year":null,"universe":"Stephen King","genres":["Psychological","Paranormal"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"70fea6f8","title":"Sixth Sense, The","year":null,"universe":null,"genres":["Drama","Paranormal"],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":"Movie","lastWatched":"2026-05-24","poster":null},{"id":"833dd16a","title":"Sleepers","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Unwatched","type":null,"lastWatched":"unwatched","poster":null},{"id":"66437c26","title":"Slither","year":null,"universe":null,"genres":["Creature"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"e5b481d6","title":"Smokey and the Bandit","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.43,"market":10.99,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Sell/donate","type":null,"lastWatched":null,"poster":null},{"id":"4994354b","title":"Snowpiercer","year":null,"universe":null,"genres":["Dystopia","Post-Apocalypse","Action"],"formats":["Blu-ray"],"cog":12.99,"market":null,"acquisitionDate":"2017-04-23","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"923a3050","title":"Sound of Music, The","year":null,"universe":null,"genres":["Musical","Historical"],"formats":["DVD"],"cog":0.99,"market":6.0,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"1fb5afa7","title":"Spider-Man Into the Spider-Verse","year":null,"universe":"Marvel","genres":["Multi-Verse","Super Powered"],"formats":["DVD","Blu-ray"],"cog":11.68,"market":null,"acquisitionDate":"2021-08-18","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"5596bcba","title":"Star Trek Beyond","year":null,"universe":"Star Trek","genres":["Adventure","Space"],"formats":[],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"069a4d03","title":"Star Wars Episode IV A New Hope","year":null,"universe":"Star Wars","genres":["Adventure","Space"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"9bf0371a","title":"Star Wars Episode V The Empire Strikes Back","year":null,"universe":"Star Wars","genres":["Adventure","Space"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"40e6201a","title":"Star Wars Episode VI Return of the Jedi","year":null,"universe":"Star Wars","genres":["Adventure","Space"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"b299f31c","title":"Stardust","year":null,"universe":null,"genres":["Adventure","Fantasy","Romance"],"formats":["DVD"],"cog":2.99,"market":null,"acquisitionDate":"2024-11-24","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"c4559e4e","title":"Superman III","year":null,"universe":"DC","genres":["Superpower"],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"1ae50045","title":"Superman IV: The Quest For Peace","year":null,"universe":"DC","genres":["Superpower"],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"5363a2d7","title":"Superman Returns","year":null,"universe":"DC","genres":["Superpower"],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"46898292","title":"Supernatural","year":"Season 1","universe":"Supernatural","genres":["Drama","Supernatural"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"9f6bcfbc","title":"Supernatural","year":"Season 2","universe":"Supernatural","genres":["Drama","Supernatural"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"a502d7c8","title":"Supernatural","year":"Season 3","universe":"Supernatural","genres":["Drama","Supernatural"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"288423f4","title":"Sushi Girl","year":null,"universe":null,"genres":["Heist","Crime","Drama"],"formats":["Blu-ray"],"cog":4.99,"market":null,"acquisitionDate":"2024-10-05","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":"2026-05-23","poster":null},{"id":"aaedc0cf","title":"Talented Mr. Ripley, The","year":null,"universe":null,"genres":["Psychological","Crime"],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"ff511399","title":"Talk To Me","year":null,"universe":null,"genres":["Paranormal"],"formats":["Blu-ray","4K"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"8892dc4b","title":"Teenage Mutant Ninja Turtles","year":null,"universe":"TMNT","genres":["Action","Comedy"],"formats":["DVD"],"cog":2.95,"market":null,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"8e2df6f0","title":"Three Stooges, The","year":null,"universe":null,"genres":["Comedy"],"formats":["DVD"],"cog":0.43,"market":1.79,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Sell/donate","type":null,"lastWatched":null,"poster":null},{"id":"1ef85a79","title":"Three Stooges, The","year":"Volume 1","universe":null,"genres":["Comedy"],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Sell/donate","type":null,"lastWatched":null,"poster":null},{"id":"dc9d625a","title":"Time Machine, The","year":null,"universe":null,"genres":["Time Manipulation","Adventure","Romance"],"formats":["DVD"],"cog":1.99,"market":8.99,"acquisitionDate":"2026-05-16","vendor":"Used Book Superstore","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"76fc0ed6","title":"Torchwood","year":"Season 1","universe":"Dr. Who","genres":["Fantasy","Adventure","Drama","Paranormal","Romance"],"formats":["DVD"],"cog":8.0,"market":null,"acquisitionDate":"2025-02-01","vendor":"Used Book Superstore","status":"Sell/donate","type":"Series","lastWatched":null,"poster":null},{"id":"a8d78949","title":"Torchwood","year":"Season 2","universe":"Dr. Who","genres":["Fantasy","Adventure","Drama","Paranormal","Romance"],"formats":["DVD"],"cog":8.0,"market":null,"acquisitionDate":"2025-02-01","vendor":"Used Book Superstore","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"27832f26","title":"Torn Curtain","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Unwatched","type":null,"lastWatched":"unwatched","poster":null},{"id":"a38a98eb","title":"Total Recall","year":"1990","universe":null,"genres":["Extra-Terrestrial","Dystopia","Sci-Fi","Action","Adventure"],"formats":["DVD"],"cog":2.49,"market":null,"acquisitionDate":"2023-07-31","vendor":"Used Book Superstore","status":"Sell/donate","type":"Movie","lastWatched":null,"poster":null},{"id":"722d4f1b","title":"Total Recall","year":"1990","universe":null,"genres":["Extra-Terrestrial","Dystopia","Sci-Fi","Action","Adventure"],"formats":["Blu-ray"],"cog":10.61,"market":null,"acquisitionDate":"2022-04-01","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"a25c8a7a","title":"Tourist, The","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Unwatched","type":null,"lastWatched":"unwatched","poster":null},{"id":"a5b0a9ea","title":"True Blood","year":"Season 1","universe":"True Blood","genres":["Drama","Romance","Vampire"],"formats":["Blu-ray"],"cog":6.96,"market":null,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"7a9c8a12","title":"True Blood","year":"Season 2","universe":"True Blood","genres":["Drama","Romance","Vampire"],"formats":["Blu-ray"],"cog":9.0,"market":null,"acquisitionDate":"2025-03-21","vendor":"Used Book Superstore","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"b86f951c","title":"True Blood","year":"Season 3","universe":"True Blood","genres":["Drama","Romance","Vampire"],"formats":["Blu-ray"],"cog":7.99,"market":null,"acquisitionDate":"2024-10-05","vendor":"Used Book Superstore","status":"Keep","type":"Series","lastWatched":null,"poster":null},{"id":"55a70f2d","title":"Tucker: The Man and His Dream","year":null,"universe":null,"genres":[],"formats":["DVD"],"cog":0.43,"market":10.99,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Sell/donate","type":null,"lastWatched":null,"poster":null},{"id":"bc6de671","title":"Twister","year":null,"universe":"Twister","genres":["Disaster","Drama"],"formats":[],"cog":6.0,"market":null,"acquisitionDate":"2026-05-20","vendor":"Gruv","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"3ed2ed94","title":"Universe, The","year":null,"universe":null,"genres":["Documentary"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":"Stacia","status":"Keep","type":"Documentary","lastWatched":null,"poster":null},{"id":"80d5fa40","title":"V for Vendetta","year":null,"universe":null,"genres":["Drama","Dystopia","Mystery"],"formats":["DVD"],"cog":null,"market":null,"acquisitionDate":null,"vendor":null,"status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"9a1b9cb5","title":"Valerian and the City of a Thousand Planets","year":null,"universe":null,"genres":["Adventure","Extra-Terrestrial","Space","Sci-Fi"],"formats":["Blu-ray"],"cog":5.3,"market":null,"acquisitionDate":"2020-09-22","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"814d130b","title":"Venom","year":null,"universe":"Marvel","genres":["Extra-Terrestrial","Superpower","Action"],"formats":["DVD","Blu-ray"],"cog":6.36,"market":null,"acquisitionDate":"2021-11-15","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"8ee45268","title":"Warcraft","year":null,"universe":null,"genres":["Fantasy","Adventure","Drama"],"formats":["Blu-ray"],"cog":5.0,"market":null,"acquisitionDate":"2019-11-05","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"5f49e321","title":"Watchmen","year":null,"universe":null,"genres":["Drama","Superpower"],"formats":["Blu-ray"],"cog":25.49,"market":null,"acquisitionDate":"2020-02-29","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"d0e850b2","title":"Waterworld","year":null,"universe":null,"genres":["Post-Apocalypse","Drama","Romance","Adventure"],"formats":["Blu-ray"],"cog":5.0,"market":null,"acquisitionDate":"2025-02-01","vendor":"Used Book Superstore","status":null,"type":"Movie","lastWatched":null,"poster":null},{"id":"4d3f230b","title":"Wedding Planner, The","year":null,"universe":null,"genres":["Romance","Comedy"],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":null,"lastWatched":null,"poster":null},{"id":"9867e6ab","title":"Whip It","year":null,"universe":null,"genres":["Romance","Sports"],"formats":["Blu-ray"],"cog":null,"market":8.0,"acquisitionDate":null,"vendor":"Bull Moose","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"8ce612f5","title":"Wonder Woman","year":null,"universe":"DC","genres":["Adventure","Action","Superpower"],"formats":["Blu-ray"],"cog":25.04,"market":null,"acquisitionDate":"2017-10-08","vendor":"Best Buy","status":"Keep","type":"Movie","lastWatched":null,"poster":null},{"id":"ed041d56","title":"You've Got Mail","year":null,"universe":null,"genres":["Romance"],"formats":["DVD"],"cog":0.43,"market":null,"acquisitionDate":"2026-05-24","vendor":"Facebook","status":"Keep","type":"Movie","lastWatched":null,"poster":null}];
+const DEFAULT_OPTIONS = {"formats":["3D","4K","Blu-ray","DVD","VHS"],"vendors":["Best Buy","Bull Moose","Convention","Facebook","Gift","Gruv","OfferUp","Stacia","Target","Used Book Superstore","Walmart","eBay"],"types":["Documentary","Movie","Series"],"statuses":["Keep","Sell/donate","Unwatched"],"genres":["Action","Adventure","Animated","Anime","Battle Royale","Christmas","Comedy","Concert","Creature","Crime","Cyber","Disaster","Documentary","Drama","Dystopia","Extra-Terrestrial","Fantasy","Halloween","Heist","Historical","Holiday","Kaiju","Magical Girl","Mecha","Multi-Verse","Musical","Mystery","Mythology","Nature Documentary","Paranormal","Post-Apocalypse","Psychological","Retribution","Revenge","Romance","Satire","School Life","Sci-Fi","Sentai","Slasher","Space","Sports","Super Powered","Supernatural","Superpower","Time Manipulation","Time Travel","Vampire","War","Zombie"],"universes":["Alien","Buffy","Chucky","Code Geass","DC","Dr. Who","Dragonball","Firefly","Ghostbusters","How to Train Your Dragon","Hunger Games","John Wick","Jumanji","Kill Bill","Knives Out","Mad Max","Marvel","Men in Black","Pitch Perfect","Planet Earth","Pokemon","Scream","Silence of the Lambs","Star Trek","Star Wars","Stephen King","Studio Ghibli","Supernatural","TMNT","The Matrix","The Meg","True Blood","Twister"]};
 
 // --- State ---
 let films = [];
@@ -883,6 +1041,7 @@ let filteredFilms = [];
 let sortMode = 'alpha-asc';
 let sheetsUrl = localStorage.getItem('shelflife_sheets_url') || '';
 let tmdbKey = localStorage.getItem('shelflife_tmdb_key') || '';
+let githubPostersUrl = localStorage.getItem('shelflife_github_posters') || 'https://staciatucker-arch.github.io/shelf-life/posters';
 let editingId = null; // null = adding, string = editing
 let isConnected = false;
 let activeFilters = { formats: [], types: [], statuses: [], vendors: [], genres: [], universes: [], blanks: [] };
@@ -970,23 +1129,23 @@ async function loadData() {
       if (!res.ok) throw new Error('Fetch failed');
       const data = await res.json();
       if (data.error) throw new Error(data.error);
-      films = data;
+      films = data.map(normalizeDates);
       // If Sheet is empty (first time), fall back to embedded data
       if (!Array.isArray(films) || films.length === 0) {
-        films = [...SEED_DATA];
+        films = SEED_DATA.map(f => normalizeDates({...f}));
       }
       isConnected = true;
       setConnected(true);
     } catch (e) {
       console.warn('Sheets fetch failed:', e);
-      films = [...SEED_DATA];
+      films = SEED_DATA.map(f => normalizeDates({...f}));
       isConnected = false;
       setConnected(false);
     } finally {
       document.getElementById('syncBtn').classList.remove('syncing');
     }
   } else {
-    films = [...SEED_DATA];
+    films = SEED_DATA.map(f => normalizeDates({...f}));
     isConnected = false;
     setConnected(false);
   }
@@ -1058,6 +1217,115 @@ function setupSort() {
 }
 // Sort label handled by select dropdown
 
+// --- Date normalization ---
+const MONTH_MAP = {
+  january:'01',february:'02',march:'03',april:'04',may:'05',june:'06',
+  july:'07',august:'08',september:'09',october:'10',november:'11',december:'12',
+  jan:'01',feb:'02',mar:'03',apr:'04',jun:'06',jul:'07',aug:'08',
+  sep:'09',oct:'10',nov:'11',dec:'12'
+};
+
+function normalizeDate(val) {
+  if (!val) return null;
+  const s = String(val).trim();
+  if (!s) return null;
+  // Special string value
+  if (s === 'unwatched') return 'unwatched';
+  // Already YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  // "Month DD, YYYY" e.g. "May 20, 2026"
+  const longMatch = s.match(/^([A-Za-z]+)\s+(\d{1,2}),?\s+(\d{4})$/);
+  if (longMatch) {
+    const month = MONTH_MAP[longMatch[1].toLowerCase()];
+    if (month) return longMatch[3] + '-' + month + '-' + longMatch[2].padStart(2,'0');
+  }
+  // MM/DD/YYYY
+  const slashMatch = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (slashMatch) return slashMatch[3] + '-' + slashMatch[1].padStart(2,'0') + '-' + slashMatch[2].padStart(2,'0');
+  // JS Date.toString() e.g. "Tue Mar 14 2017 00:00:00 GMT-0400 (Eastern Daylight Time)"
+  const jsDateMatch = s.match(/^[A-Za-z]{3}\s+([A-Za-z]{3})\s+(\d{1,2})\s+(\d{4})/);
+  if (jsDateMatch) {
+    const month = MONTH_MAP[jsDateMatch[1].toLowerCase()];
+    if (month) return jsDateMatch[3] + '-' + month + '-' + jsDateMatch[2].padStart(2, '0');
+  }
+  // Timestamp: strip time portion
+  const tsMatch = s.match(/^(\d{4}-\d{2}-\d{2})T/);
+  if (tsMatch) return tsMatch[1];
+  return s; // return as-is if unrecognized
+}
+
+function normalizeDates(film) {
+  film.acquisitionDate = normalizeDate(film.acquisitionDate);
+  film.lastWatched = normalizeDate(film.lastWatched);
+  return film;
+}
+
+// --- Multi-select dropdown helper ---
+// Builds searchable dropdown HTML + wires up search filtering
+// dropdownId: id of the .multi-select-dropdown element
+// opts: full options array
+// selected: array of selected values
+// onToggle(val): called when an option is toggled
+// addLabel (optional): label for the "+ Add new" footer item, with data-toggle id
+function buildDropdownHtml(dropdownId, opts, selected, onToggle, addLabel, addToggleId) {
+  const dropdown = document.getElementById(dropdownId);
+  if (!dropdown) return;
+  
+  // Get or create search query for this dropdown
+  const searchKey = dropdownId + '_query';
+  const query = (window._dropdownSearch || {})[searchKey] || '';
+  const filtered = query
+    ? opts.filter(o => o.toLowerCase().includes(query.toLowerCase()))
+    : opts;
+  
+  let html = '<div class="multi-select-search"><input type="text" placeholder="Search..." value="' + escHTML(query) + '" data-search-id="' + dropdownId + '"></div>';
+  
+  if (filtered.length === 0) {
+    html += '<div class="multi-select-none">No matches</div>';
+  } else {
+    html += filtered.map(val =>
+      '<div class="multi-select-option' + (selected.includes(val) ? ' selected' : '') + '" data-value="' + escHTML(val) + '">' +
+        '<span class="check-mark">' + (selected.includes(val) ? '✓' : '') + '</span>' +
+        escHTML(val) +
+      '</div>'
+    ).join('');
+  }
+  
+  if (addLabel && addToggleId) {
+    html += '<div class="multi-select-option-add" data-toggle="' + addToggleId + '">' + addLabel + '</div>';
+  }
+  
+  dropdown.innerHTML = html;
+  
+  // Search input handler - prevent dropdown close and re-render on type
+  const searchInput = dropdown.querySelector('input[type="text"]');
+  if (searchInput) {
+    searchInput.addEventListener('click', e => e.stopPropagation());
+    searchInput.addEventListener('input', e => {
+      if (!window._dropdownSearch) window._dropdownSearch = {};
+      window._dropdownSearch[searchKey] = e.target.value;
+      buildDropdownHtml(dropdownId, opts, selected, onToggle, addLabel, addToggleId);
+      // Restore focus and cursor position
+      const newInput = document.getElementById(dropdownId).querySelector('input[type="text"]');
+      if (newInput) { newInput.focus(); newInput.setSelectionRange(newInput.value.length, newInput.value.length); }
+    });
+    // Auto-focus when dropdown opens
+    if (query === '') searchInput.focus();
+  }
+  
+  // Option click handlers
+  dropdown.querySelectorAll('.multi-select-option').forEach(opt => {
+    opt.addEventListener('click', e => {
+      e.stopPropagation();
+      onToggle(opt.dataset.value);
+    });
+  });
+}
+
+function clearDropdownSearch(dropdownId) {
+  if (window._dropdownSearch) window._dropdownSearch[dropdownId + '_query'] = '';
+}
+
 // --- Filters ---
 function setupFilters() {
   // Open/close filter panel
@@ -1085,20 +1353,179 @@ function setupFilters() {
   // Clear button
   document.getElementById('filterClear').addEventListener('click', () => {
     activeFilters = { formats: [], types: [], statuses: [], vendors: [], genres: [], universes: [], blanks: [] };
+    clearDropdownSearch('filterFormatsDropdown');
+    clearDropdownSearch('filterGenresDropdown');
     buildFilterPanel();
   });
 }
 
 function buildFilterPanel() {
-  buildFilterChecks('filterFormats', options.formats, activeFilters.formats);
+  buildFilterFormatSelect();
   buildFilterChecks('filterTypes', options.types, activeFilters.types);
   buildFilterChecks('filterStatuses', options.statuses, activeFilters.statuses);
   buildFilterChecks('filterVendors', options.vendors, activeFilters.vendors);
   buildFilterChecks('filterUniverses', options.universes || [], activeFilters.universes);
-  buildFilterChecks('filterGenres', options.genres, activeFilters.genres);
-  // Blanks are static HTML, just restore checked state
+  buildFilterGenreSelect();
   document.querySelectorAll('#filterBlanks input').forEach(cb => {
     cb.checked = activeFilters.blanks.includes(cb.value);
+  });
+}
+
+function buildFilterFormatSelect() {
+  renderFilterFormatDropdown();
+  renderFilterFormatTags();
+  
+  document.getElementById('filterFormatsTrigger').onclick = (e) => {
+    if (e.target.closest('.remove-tag')) return;
+    document.getElementById('filterFormatsSelect').classList.toggle('open');
+  };
+  
+  if (!_filterFormatClickOutsideSet) {
+    _filterFormatClickOutsideSet = true;
+    document.addEventListener('click', (e) => {
+      const select = document.getElementById('filterFormatsSelect');
+      if (select && !select.contains(e.target)) select.classList.remove('open');
+    }, { capture: true });
+  }
+}
+
+function renderFilterFormatDropdown() {
+  buildDropdownHtml('filterFormatsDropdown', options.formats, activeFilters.formats, (val) => {
+    if (activeFilters.formats.includes(val)) {
+      activeFilters.formats = activeFilters.formats.filter(v => v !== val);
+    } else {
+      activeFilters.formats.push(val);
+    }
+    renderFilterFormatDropdown();
+    renderFilterFormatTags();
+  });
+}
+
+function renderFilterFormatTags() {
+  const container = document.getElementById('filterFormatsTags');
+  if (activeFilters.formats.length === 0) {
+    container.innerHTML = '<span class="multi-select-placeholder">Any format...</span>';
+    return;
+  }
+  container.innerHTML = activeFilters.formats.map(fmt =>
+    '<span class="multi-select-tag">' + escHTML(fmt) +
+    '<span class="remove-tag" data-value="' + escHTML(fmt) + '">&times;</span></span>'
+  ).join('');
+  container.querySelectorAll('.remove-tag').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      activeFilters.formats = activeFilters.formats.filter(v => v !== btn.dataset.value);
+      renderFilterFormatDropdown();
+      renderFilterFormatTags();
+    });
+  });
+}
+
+// --- Filter genres multi-select ---
+let _filterGenreClickOutsideSet = false;
+
+function buildFilterGenreSelect() {
+  renderFilterGenreDropdown();
+  renderFilterGenreTags();
+  
+  document.getElementById('filterGenresTrigger').onclick = (e) => {
+    if (e.target.closest('.remove-tag')) return;
+    document.getElementById('filterGenresSelect').classList.toggle('open');
+  };
+  
+  if (!_filterGenreClickOutsideSet) {
+    _filterGenreClickOutsideSet = true;
+    document.addEventListener('click', (e) => {
+      const select = document.getElementById('filterGenresSelect');
+      if (select && !select.contains(e.target)) select.classList.remove('open');
+    }, { capture: true });
+  }
+}
+
+function renderFilterGenreDropdown() {
+  buildDropdownHtml('filterGenresDropdown', options.genres, activeFilters.genres, (val) => {
+    if (activeFilters.genres.includes(val)) {
+      activeFilters.genres = activeFilters.genres.filter(v => v !== val);
+    } else {
+      activeFilters.genres.push(val);
+    }
+    renderFilterGenreDropdown();
+    renderFilterGenreTags();
+  });
+}
+
+function renderFilterGenreTags() {
+  const container = document.getElementById('filterGenresTags');
+  if (activeFilters.genres.length === 0) {
+    container.innerHTML = '<span class="multi-select-placeholder">Any genre...</span>';
+    return;
+  }
+  container.innerHTML = activeFilters.genres.map(g =>
+    '<span class="multi-select-tag">' + escHTML(g) +
+    '<span class="remove-tag" data-value="' + escHTML(g) + '">&times;</span></span>'
+  ).join('');
+  container.querySelectorAll('.remove-tag').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      activeFilters.genres = activeFilters.genres.filter(v => v !== btn.dataset.value);
+      renderFilterGenreDropdown();
+      renderFilterGenreTags();
+    });
+  });
+}
+
+// --- Watch Next genres multi-select ---
+let watchSelectedGenres = [];
+let _watchGenreClickOutsideSet = false;
+
+function buildWatchGenreSelect() {
+  watchSelectedGenres = [];
+  renderWatchGenreDropdown();
+  renderWatchGenreTags();
+  
+  document.getElementById('watchGenresTrigger').onclick = (e) => {
+    if (e.target.closest('.remove-tag')) return;
+    document.getElementById('watchGenresSelect').classList.toggle('open');
+  };
+  
+  if (!_watchGenreClickOutsideSet) {
+    _watchGenreClickOutsideSet = true;
+    document.addEventListener('click', (e) => {
+      const select = document.getElementById('watchGenresSelect');
+      if (select && !select.contains(e.target)) select.classList.remove('open');
+    }, { capture: true });
+  }
+}
+
+function renderWatchGenreDropdown() {
+  buildDropdownHtml('watchGenresDropdown', options.genres, watchSelectedGenres, (val) => {
+    if (watchSelectedGenres.includes(val)) {
+      watchSelectedGenres = watchSelectedGenres.filter(v => v !== val);
+    } else {
+      watchSelectedGenres.push(val);
+    }
+    renderWatchGenreDropdown();
+    renderWatchGenreTags();
+  });
+}
+
+function renderWatchGenreTags() {
+  const container = document.getElementById('watchGenresTags');
+  if (watchSelectedGenres.length === 0) {
+    container.innerHTML = '<span class="multi-select-placeholder">Any genre (optional)...</span>';
+    return;
+  }
+  container.innerHTML = watchSelectedGenres.map(g =>
+    '<span class="multi-select-tag">' + escHTML(g) +
+    '<span class="remove-tag" data-value="' + escHTML(g) + '">&times;</span></span>'
+  ).join('');
+  container.querySelectorAll('.remove-tag').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      watchSelectedGenres = watchSelectedGenres.filter(v => v !== btn.dataset.value);
+      renderWatchGenreDropdown();
+      renderWatchGenreTags();
+    });
   });
 }
 
@@ -1111,12 +1538,11 @@ function buildFilterChecks(containerId, opts, selected) {
 }
 
 function readFilterPanel() {
-  activeFilters.formats = getCheckedIn('filterFormats');
+  // formats and genres update live, no need to re-read
   activeFilters.types = getCheckedIn('filterTypes');
   activeFilters.statuses = getCheckedIn('filterStatuses');
   activeFilters.vendors = getCheckedIn('filterVendors');
   activeFilters.universes = getCheckedIn('filterUniverses');
-  activeFilters.genres = getCheckedIn('filterGenres');
   activeFilters.blanks = getCheckedIn('filterBlanks');
 }
 
@@ -1361,6 +1787,7 @@ function cardHTML(f) {
   
   const genres = (f.genres || []).map(g => '<span class="genre-chip">' + g + '</span>').join('');
   const cogStr = f.cog != null ? '$' + f.cog.toFixed(2) : 'Unknown';
+  const watchedStr = f.lastWatched === 'unwatched' ? 'Never watched' : (f.lastWatched || '\u2014');
   const marketStr = f.market != null ? '$' + f.market.toFixed(2) : 'Unknown';
   const dateStr = f.acquisitionDate || '\u2014';
   const vendorStr = f.vendor || '\u2014';
@@ -1381,6 +1808,8 @@ function cardHTML(f) {
     '<span class="price-label">Mkt</span> ' + marketBrief +
     '</div>';
   
+  const yearHtml = f.year ? '<span class="meta-tag year-tag">' + escHTML(f.year) + '</span>' : '';
+  
   return '<div class="film-card" data-id="' + f.id + '">' +
     '<div class="card-main">' +
       '<div class="card-poster">' + thumbHtml + '</div>' +
@@ -1389,7 +1818,7 @@ function cardHTML(f) {
           '<div class="card-title">' + escHTML(f.title) + '</div>' +
           '<div class="card-format">' + bucketHtml + '</div>' +
         '</div>' +
-        '<div class="card-meta">' + typeHtml + universeHtml + statusHtml + '</div>' +
+        '<div class="card-meta">' + typeHtml + yearHtml + universeHtml + statusHtml + '</div>' +
     priceHtml +
       '</div>' +
     '</div>' +
@@ -1405,8 +1834,10 @@ function cardHTML(f) {
         '</div>' +
       '</div>' +
       '<div class="detail-grid">' +
+        (f.year ? '<div class="detail-item"><div class="detail-label">Year / Season</div><div class="detail-value">' + escHTML(f.year) + '</div></div>' : '') +
         '<div class="detail-item"><div class="detail-label">Acquired</div><div class="detail-value">' + dateStr + '</div></div>' +
         '<div class="detail-item"><div class="detail-label">Vendor</div><div class="detail-value">' + escHTML(vendorStr) + '</div></div>' +
+        '<div class="detail-item"><div class="detail-label">Last Watched</div><div class="detail-value">' + watchedStr + '</div></div>' +
       '</div>' +
       (genres ? '<div class="genre-list">' + genres + '</div>' : '') +
       '<div class="card-actions">' +
@@ -1447,6 +1878,15 @@ function setupCardInteractions() {
 
 // --- Form ---
 function setupForm() {
+  // Watched toggle
+  document.getElementById('fWatchedToggle').addEventListener('click', () => {
+    const btn = document.getElementById('fWatchedToggle');
+    const dateInput = document.getElementById('fWatched');
+    const active = btn.classList.toggle('active');
+    dateInput.style.display = active ? 'none' : '';
+    if (active) dateInput.value = '';
+  });
+  
   // Add button
   document.getElementById('addBtn').addEventListener('click', () => openAddForm());
   
@@ -1505,9 +1945,14 @@ function setupAddOption(name, category) {
     else if (category === 'statuses') buildSelect('fStatus', options.statuses, 'Status');
     
     // Auto-select the new option
-    if (category === 'formats' || category === 'genres') {
-      const cb = document.querySelector('#f' + capitalize(category) + ' input[value="' + formatted + '"]');
-      if (cb) cb.checked = true;
+    if (category === 'formats') {
+      if (!selectedFormats.includes(formatted)) selectedFormats.push(formatted);
+      renderFormatDropdown();
+      renderFormatTags();
+    } else if (category === 'genres') {
+      if (!selectedGenres.includes(formatted)) selectedGenres.push(formatted);
+      renderGenreDropdown();
+      renderGenreTags();
     } else {
       const sel = document.getElementById('f' + capitalize(category === 'vendors' ? 'vendor' : category === 'types' ? 'type' : 'status'));
       if (sel) sel.value = formatted;
@@ -1545,38 +1990,53 @@ function openEditForm(id) {
   
   // Populate
   document.getElementById('fTitle').value = film.title || '';
+  document.getElementById('fYear').value = film.year || '';
   document.getElementById('fCog').value = film.cog != null ? film.cog : '';
   document.getElementById('fMarket').value = film.market != null ? film.market : '';
   document.getElementById('fAcqDate').value = film.acquisitionDate || '';
-  document.getElementById('fWatched').value = film.lastWatched || '';
+  const isUnwatched = film.lastWatched === 'unwatched';
+  const toggleBtn = document.getElementById('fWatchedToggle');
+  toggleBtn.classList.toggle('active', isUnwatched);
+  document.getElementById('fWatched').value = isUnwatched ? '' : (film.lastWatched || '');
+  document.getElementById('fWatched').style.display = isUnwatched ? 'none' : '';
   document.getElementById('fVendor').value = film.vendor || '';
   document.getElementById('fType').value = film.type || '';
   document.getElementById('fUniverse').value = film.universe || '';
   document.getElementById('fStatus').value = film.status || '';
   
-  // Check formats
-  (film.formats || []).forEach(fmt => {
-    const cb = document.querySelector('#fFormats input[value="' + CSS.escape(fmt) + '"]');
-    if (cb) cb.checked = true;
-  });
+  // Set formats
+  selectedFormats = [...(film.formats || [])];
+  renderFormatDropdown();
+  renderFormatTags();
   
-  // Check genres
-  (film.genres || []).forEach(g => {
-    const cb = document.querySelector('#fGenres input[value="' + CSS.escape(g) + '"]');
-    if (cb) cb.checked = true;
-  });
+  // Set genres
+  selectedGenres = [...(film.genres || [])];
+  renderGenreDropdown();
+  renderGenreTags();
   
   document.getElementById('formOverlay').classList.add('open');
 }
 
 function clearForm() {
   document.getElementById('fTitle').value = '';
+  document.getElementById('fYear').value = '';
   document.getElementById('fCog').value = '';
   document.getElementById('fMarket').value = '';
   document.getElementById('fAcqDate').value = '';
   document.getElementById('fWatched').value = '';
+  document.getElementById('fWatchedToggle').classList.remove('active');
+  document.getElementById('fWatched').style.display = '';
+  selectedFormats = [];
+  selectedGenres = [];
+  clearDropdownSearch('fFormatsDropdown');
+  clearDropdownSearch('fGenresDropdown');
   // Hide all inline add areas
   document.querySelectorAll('.inline-add').forEach(el => el.classList.remove('open'));
+  // Close dropdowns
+  const fmtSelect = document.getElementById('fFormatsSelect');
+  if (fmtSelect) fmtSelect.classList.remove('open');
+  const genreSelect = document.getElementById('fGenresSelect');
+  if (genreSelect) genreSelect.classList.remove('open');
 }
 
 function closeForm() {
@@ -1593,18 +2053,117 @@ function buildFormOptions() {
   buildSelect('fStatus', options.statuses, 'Status');
 }
 
+let selectedFormats = [];
+let _formatClickOutsideSet = false;
+let _filterFormatClickOutsideSet = false;
+
 function buildFormatChecks() {
-  const container = document.getElementById('fFormats');
-  container.innerHTML = options.formats.map(fmt =>
-    '<label class="check-item"><input type="checkbox" value="' + escHTML(fmt) + '">' + escHTML(fmt) + '</label>'
-  ).join('') + '<button class="add-option-btn" data-toggle="addFormatWrap">+ New</button>';
+  renderFormatDropdown();
+  renderFormatTags();
+  
+  // Toggle dropdown
+  document.getElementById('fFormatsTrigger').onclick = (e) => {
+    if (e.target.closest('.remove-tag')) return;
+    document.getElementById('fFormatsSelect').classList.toggle('open');
+  };
+  
+  // Close dropdown when clicking outside (only attach once)
+  if (!_formatClickOutsideSet) {
+    _formatClickOutsideSet = true;
+    document.addEventListener('click', (e) => {
+      const select = document.getElementById('fFormatsSelect');
+      if (select && !select.contains(e.target)) {
+        select.classList.remove('open');
+      }
+    }, { capture: true });
+  }
 }
 
+function renderFormatDropdown() {
+  buildDropdownHtml('fFormatsDropdown', options.formats, selectedFormats, (val) => {
+    if (selectedFormats.includes(val)) {
+      selectedFormats = selectedFormats.filter(v => v !== val);
+    } else {
+      selectedFormats.push(val);
+    }
+    renderFormatDropdown();
+    renderFormatTags();
+  }, '+ Add new format', 'addFormatWrap');
+}
+
+function renderFormatTags() {
+  const container = document.getElementById('fFormatsTags');
+  if (selectedFormats.length === 0) {
+    container.innerHTML = '<span class="multi-select-placeholder">Select formats...</span>';
+    return;
+  }
+  container.innerHTML = selectedFormats.map(fmt =>
+    '<span class="multi-select-tag">' + escHTML(fmt) +
+    '<span class="remove-tag" data-value="' + escHTML(fmt) + '">&times;</span></span>'
+  ).join('');
+  
+  // Remove tag handlers
+  container.querySelectorAll('.remove-tag').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      selectedFormats = selectedFormats.filter(v => v !== btn.dataset.value);
+      renderFormatDropdown();
+      renderFormatTags();
+    });
+  });
+}
+
+let selectedGenres = [];
+let _genreClickOutsideSet = false;
+
 function buildGenreChecks() {
-  const container = document.getElementById('fGenres');
-  container.innerHTML = options.genres.map(g =>
-    '<label class="check-item"><input type="checkbox" value="' + escHTML(g) + '">' + escHTML(g) + '</label>'
-  ).join('') + '<button class="add-option-btn" data-toggle="addGenreWrap">+ New</button>';
+  renderGenreDropdown();
+  renderGenreTags();
+  
+  document.getElementById('fGenresTrigger').onclick = (e) => {
+    if (e.target.closest('.remove-tag')) return;
+    document.getElementById('fGenresSelect').classList.toggle('open');
+  };
+  
+  if (!_genreClickOutsideSet) {
+    _genreClickOutsideSet = true;
+    document.addEventListener('click', (e) => {
+      const select = document.getElementById('fGenresSelect');
+      if (select && !select.contains(e.target)) select.classList.remove('open');
+    }, { capture: true });
+  }
+}
+
+function renderGenreDropdown() {
+  buildDropdownHtml('fGenresDropdown', options.genres, selectedGenres, (val) => {
+    if (selectedGenres.includes(val)) {
+      selectedGenres = selectedGenres.filter(v => v !== val);
+    } else {
+      selectedGenres.push(val);
+    }
+    renderGenreDropdown();
+    renderGenreTags();
+  }, '+ Add new genre', 'addGenreWrap');
+}
+
+function renderGenreTags() {
+  const container = document.getElementById('fGenresTags');
+  if (selectedGenres.length === 0) {
+    container.innerHTML = '<span class="multi-select-placeholder">Select genres...</span>';
+    return;
+  }
+  container.innerHTML = selectedGenres.map(g =>
+    '<span class="multi-select-tag">' + escHTML(g) +
+    '<span class="remove-tag" data-value="' + escHTML(g) + '">&times;</span></span>'
+  ).join('');
+  container.querySelectorAll('.remove-tag').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      selectedGenres = selectedGenres.filter(v => v !== btn.dataset.value);
+      renderGenreDropdown();
+      renderGenreTags();
+    });
+  });
 }
 
 // Delegate clicks for dynamic "Add New" buttons
@@ -1646,7 +2205,8 @@ async function saveForm() {
   const film = {
     id: editingId || Math.random().toString(36).substring(2, 10),
     title: title,
-    formats: getCheckedValues('fFormats'),
+    year: document.getElementById('fYear').value.trim() || null,
+    formats: [...selectedFormats],
     cog: document.getElementById('fCog').value ? parseFloat(document.getElementById('fCog').value) : null,
     market: document.getElementById('fMarket').value ? parseFloat(document.getElementById('fMarket').value) : null,
     acquisitionDate: document.getElementById('fAcqDate').value || null,
@@ -1654,8 +2214,8 @@ async function saveForm() {
     type: document.getElementById('fType').value || null,
     universe: document.getElementById('fUniverse').value || null,
     status: document.getElementById('fStatus').value || null,
-    genres: getCheckedValues('fGenres'),
-    lastWatched: document.getElementById('fWatched').value || null,
+    genres: [...selectedGenres],
+    lastWatched: document.getElementById('fWatchedToggle').classList.contains('active') ? 'unwatched' : (document.getElementById('fWatched').value || null),
     poster: null
   };
   
@@ -1879,6 +2439,7 @@ function setupWatchNext() {
   
   document.getElementById('watchNextBtn').addEventListener('click', () => {
     watchNextShown.clear();
+    clearDropdownSearch('watchGenresDropdown');
     buildWatchGenres();
     showWatchSetup();
     overlay.classList.add('open');
@@ -1911,10 +2472,7 @@ function setupWatchNext() {
 }
 
 function buildWatchGenres() {
-  const container = document.getElementById('watchGenres');
-  container.innerHTML = options.genres.map(g =>
-    '<label class="check-item"><input type="checkbox" value="' + escHTML(g) + '">' + escHTML(g) + '</label>'
-  ).join('');
+  buildWatchGenreSelect();
 }
 
 function showWatchSetup() {
@@ -1923,8 +2481,7 @@ function showWatchSetup() {
 }
 
 function pickWatchNext() {
-  // Read selected genres
-  const selectedGenres = Array.from(document.querySelectorAll('#watchGenres input:checked')).map(cb => cb.value);
+  const selectedGenres = watchSelectedGenres;
   const selectedTypes = Array.from(document.querySelectorAll('#watchTypes input:checked')).map(cb => cb.value);
   
   // Build candidate pool
@@ -1960,16 +2517,18 @@ function pickWatchNext() {
   // Weight: never watched = 10, older watched = 5, recent watched = 1
   const now = Date.now();
   const weighted = candidates.map(f => {
-    let weight = 10; // default: never watched
-    if (f.lastWatched) {
+    let weight = 10; // default: never watched (no lastWatched)
+    if (f.lastWatched === 'unwatched') {
+      weight = 15; // explicitly marked unwatched = highest priority
+    } else if (f.lastWatched) {
       const daysSince = (now - new Date(f.lastWatched).getTime()) / (1000 * 60 * 60 * 24);
       if (daysSince > 180) weight = 8;
       else if (daysSince > 90) weight = 5;
       else if (daysSince > 30) weight = 3;
       else weight = 1;
     }
-    // Bonus for unwatched status
-    if (f.status && f.status.toLowerCase() === 'unwatched') weight += 5;
+    // Bonus for unwatched status tag (belt and suspenders)
+    if (f.status && f.status.toLowerCase() === 'unwatched') weight += 3;
     return { film: f, weight };
   });
   
@@ -2004,6 +2563,7 @@ function showWatchResult(film) {
   // Meta
   let metaParts = [];
   if (film.type) metaParts.push(film.type);
+  if (film.year) metaParts.push(film.year);
   if (film.formats && film.formats.length) metaParts.push(film.formats.join(', '));
   if (film.status) metaParts.push(film.status);
   document.getElementById('wnMeta').textContent = metaParts.join(' \u00b7 ');
@@ -2015,11 +2575,12 @@ function showWatchResult(film) {
   
   // Reason
   let reason = '';
-  if (!film.lastWatched) {
+  if (!film.lastWatched || film.lastWatched === 'unwatched') {
     reason = "You've never watched this one! Time to fix that.";
   } else {
-    const days = Math.floor((Date.now() - new Date(film.lastWatched).getTime()) / (1000 * 60 * 60 * 24));
-    if (days > 365) reason = "It's been over a year since you last watched this. Due for a rewatch.";
+    const days = film.lastWatched && film.lastWatched !== 'unwatched' ? Math.floor((Date.now() - new Date(film.lastWatched).getTime()) / (1000 * 60 * 60 * 24)) : null;
+    if (days === null) reason = "You've never watched this one! Time to fix that.";
+    else if (days > 365) reason = "It's been over a year since you last watched this. Due for a rewatch.";
     else if (days > 180) reason = "Last watched about " + Math.floor(days / 30) + " months ago. Could be time.";
     else if (days > 90) reason = "Watched a few months back, but enough time has passed.";
     else reason = "Watched " + days + " days ago, but it made the cut.";
@@ -2029,6 +2590,29 @@ function showWatchResult(film) {
   // Store ID for mark as watched
   document.getElementById('watchNextMark').dataset.id = film.id;
   document.getElementById('watchNextDate').value = '';
+}
+
+// Convert film title to GitHub poster filename
+function titleToFilename(title) {
+  return title
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove accents (é→e, etc.)
+    .toLowerCase()
+    .replace(/['']/g, '')           // remove apostrophes
+    .replace(/[^a-z0-9\s-]/g, '')  // remove special chars
+    .trim()
+    .replace(/\s+/g, '-')          // spaces to hyphens
+    .replace(/-+/g, '-')           // collapse multiple hyphens
+    + '.jpg';
+}
+
+async function checkGithubPoster(title) {
+  const filename = titleToFilename(title);
+  const url = githubPostersUrl + '/' + filename;
+  try {
+    const res = await fetch(url, { method: 'HEAD' });
+    if (res.ok) return url;
+  } catch(e) {}
+  return null;
 }
 
 // --- Posters & TMDB ---
@@ -2042,9 +2626,11 @@ function openPosterModal(id) {
   posterSelectedUrl = film.poster || null;
   
   document.getElementById('posterModalTitle').textContent = film.title;
+  document.getElementById('posterSearchTitle').value = film.title;
   document.getElementById('posterCustomUrl').value = film.poster || '';
   document.getElementById('posterSearchResults').style.display = 'none';
   document.getElementById('posterSearchResults').innerHTML = '';
+  document.getElementById('githubFilename').textContent = titleToFilename(film.title);
   updatePosterPreview(film.poster);
   
   document.getElementById('posterOverlay').classList.add('open');
@@ -2097,20 +2683,41 @@ function setupPosterModal() {
     if (e.target === overlay) overlay.classList.remove('open');
   });
   
-  // Search TMDB
-  document.getElementById('posterSearchBtn').addEventListener('click', async () => {
+  // Check GitHub posters folder
+  document.getElementById('checkGithubBtn').addEventListener('click', async () => {
     const film = films.find(f => f.id === posterEditId);
     if (!film) return;
+    const btn = document.getElementById('checkGithubBtn');
+    btn.disabled = true;
+    btn.textContent = 'Checking...';
+    const url = await checkGithubPoster(film.title);
+    btn.disabled = false;
+    btn.textContent = 'Check My Posters Folder';
+    if (url) {
+      posterSelectedUrl = url;
+      document.getElementById('posterCustomUrl').value = url;
+      updatePosterPreview(url);
+      toast('Found in your posters folder!', 'success');
+    } else {
+      toast('Not found — check the filename matches exactly', 'error');
+    }
+  });
+  
+  // Search TMDB - use editable title field, allow Enter key
+  const doTmdbSearch = async () => {
+    const film = films.find(f => f.id === posterEditId);
+    if (!film) return;
+    const searchTitle = document.getElementById('posterSearchTitle').value.trim() || film.title;
     const btn = document.getElementById('posterSearchBtn');
     btn.disabled = true;
     btn.textContent = 'Searching...';
-    const results = await searchTMDB(film.title, film.type);
+    const results = await searchTMDB(searchTitle, film.type);
     btn.disabled = false;
     btn.textContent = 'Search TMDB';
     
     const container = document.getElementById('posterSearchResults');
     if (results.length === 0) {
-      container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-dim);font-size:0.8rem;padding:8px">No results found</div>';
+      container.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-dim);font-size:0.8rem;padding:8px">No results — try a different title</div>';
       container.style.display = 'grid';
       return;
     }
@@ -2131,6 +2738,11 @@ function setupPosterModal() {
         updatePosterPreview(opt.dataset.url);
       });
     });
+  };
+  
+  document.getElementById('posterSearchBtn').addEventListener('click', doTmdbSearch);
+  document.getElementById('posterSearchTitle').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); doTmdbSearch(); }
   });
   
   // Custom URL preview
@@ -2231,6 +2843,7 @@ function setupSettings() {
     overlay.classList.add('open');
     urlInput.value = sheetsUrl;
     document.getElementById('tmdbKey').value = tmdbKey;
+    document.getElementById('githubPostersInput').value = githubPostersUrl;
     document.getElementById('settingsVersion').textContent = APP_VERSION;
   });
   document.getElementById('settingsClose').addEventListener('click', () => overlay.classList.remove('open'));
@@ -2251,7 +2864,7 @@ function setupSettings() {
     if (!url) {
       sheetsUrl = '';
       localStorage.removeItem('shelflife_sheets_url');
-      films = [...SEED_DATA];
+      films = SEED_DATA.map(f => normalizeDates({...f}));
       isConnected = false;
       setConnected(false);
       applyFilters();
@@ -2302,6 +2915,13 @@ function setupSettings() {
     }
   });
   
+  document.getElementById('saveGithubPostersBtn').addEventListener('click', () => {
+    const url = document.getElementById('githubPostersInput').value.trim().replace(/\/$/, '');
+    githubPostersUrl = url || 'https://staciatucker-arch.github.io/shelf-life/posters';
+    localStorage.setItem('shelflife_github_posters', githubPostersUrl);
+    toast('Posters URL saved', 'success');
+  });
+  
   // Fetch all posters
   document.getElementById('fetchPostersBtn').addEventListener('click', fetchAllMissingPosters);
   
@@ -2311,11 +2931,11 @@ function setupSettings() {
 
 // --- CSV Export ---
 function exportCSV() {
-  const headers = ['Title','Genre','Universe','Format/System','CoG','Market','Acquisition Date','Vendor','Type','Status','Last Watched'];
+  const headers = ['Title','Release Year/Season','Universe/Franchise','Genre','Format/System','CoG','Market','Acquisition Date','Vendor','Status','Type','Last Watched'];
   const rows = films.map(f => [
-    f.title, (f.genres||[]).join(', '), f.universe||'', (f.formats||[]).join(', '),
+    f.title, f.year||'', f.universe||'', (f.genres||[]).join(', '), (f.formats||[]).join(', '),
     f.cog != null ? f.cog.toFixed(2) : '', f.market != null ? f.market.toFixed(2) : '',
-    f.acquisitionDate||'', f.vendor||'', f.type||'', f.status||'',
+    f.acquisitionDate||'', f.vendor||'', f.status||'', f.type||'',
     f.lastWatched||''
   ]);
   const csv = [headers,...rows].map(r => r.map(c => {
