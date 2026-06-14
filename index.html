@@ -3436,7 +3436,7 @@ function setupSettings() {
       toast('Connect to Google Sheets first', 'error');
       return;
     }
-    const dataToSeed = films.length > 0 ? films : SEED_DATA;
+    const dataToSeed = SEED_DATA;
     showConfirm('Are you sure? Any edits made directly in the Sheet since the last export will be lost. This will replace all Sheet data with ' + dataToSeed.length + ' titles.', async () => {
       const btn = document.getElementById('seedBtn');
       btn.disabled = true;
@@ -3445,7 +3445,7 @@ function setupSettings() {
       btn.disabled = false;
       btn.textContent = 'Refresh Sheet After App Update';
       if (result) {
-        films = [...dataToSeed];
+        films = dataToSeed.map(f => normalizeDates({...f}));
         applyFilters();
         toast('Sheet refreshed with ' + dataToSeed.length + ' titles', 'success');
       }
@@ -3539,4 +3539,4 @@ function showConfirm(msg, onYes) {
 }
 </script>
 </body>
-</html>
+</html
